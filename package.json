@@ -17,6 +17,7 @@
     "web-vitals": "^1.1.1"
   },
   "scripts": {
+    "co:login": "aws codeartifact login --tool npm --repository helpmycase --domain helpmycase --domain-owner 460234074473 --profile worldwideandweb",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
