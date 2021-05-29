@@ -1,12 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { ThemeProvider } from 'helpmycase-storybook/dist/components/External';
+import theme from 'helpmycase-storybook/dist/theme/theme';
+
 import App from './App';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <ThemeProvider theme={theme}>
+      <App />
+    </ThemeProvider>
   </React.StrictMode>,
   document.getElementById('root'),
 );
