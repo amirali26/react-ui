@@ -1,15 +1,15 @@
-import Button from 'helpmycase-storybook/dist/components/Button';
 import React from 'react';
+import { Route, Switch } from 'react-router-dom';
 import './App.css';
-import Navigation from './components/templates/Navigation';
+import Dashboard from './components/pages/Dashboard';
 
 const App: React.FC = () => (
-  <>
-    <Navigation />
-    <Button variant="text" color="primary">
-      Something wonderful
-    </Button>
-  </>
+  <Switch>
+    <Dashboard />
+    <Route path="/login">
+      <div>What would you like?</div>
+    </Route>
+  </Switch>
 );
 
 export default App;
