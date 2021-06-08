@@ -1,14 +1,13 @@
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Switch } from 'react-router-dom';
 import './App.css';
 import Dashboard from './components/pages/Dashboard';
+import Quote from './components/pages/Quote';
 
 const App: React.FC = () => (
   <Switch>
+    <Quote />
     <Dashboard />
-    <Route path="/login">
-      <div>What would you like?</div>
-    </Route>
   </Switch>
 );
 

@@ -2,6 +2,7 @@ import { Auth, Hub } from 'aws-amplify';
 import Button from 'helpmycase-storybook/dist/components/Button';
 import React, { useEffect } from 'react';
 import { Route } from 'react-router-dom';
+import routes from '../../../utils/routes/routes';
 import Navigation from '../../templates/Navigation';
 
 const Dashboard: React.FC = () => {
@@ -25,7 +26,7 @@ const Dashboard: React.FC = () => {
   });
 
   return (
-    <Route path={['/dashboard', '/']}>
+    <Route path={[routes.dashboard, routes.base]}>
       <Navigation />
       <Button variant="text" color="default" onClick={handleLoginWithGoogle}>
         Something wonderful
