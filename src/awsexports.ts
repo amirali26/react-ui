@@ -19,7 +19,8 @@ const amplifyConfiguration = Amplify.configure({
 
     // OPTIONAL - Hosted UI configuration
     oauth: {
-      domain: 'helpmycase.auth.eu-west-1.amazoncognito.com',
+      domain: 'accounts.helpmycase.co.uk',
+      scope: ['email', 'openid', 'profile'],
       redirectSignIn: 'http://localhost:3000',
       redirectSignOut: 'http://localhost:3000',
       responseType: 'code', // or 'token', note that REFRESH token will only be generated when the responseType is code

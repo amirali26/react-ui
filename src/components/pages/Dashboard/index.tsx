@@ -1,4 +1,4 @@
-import { Auth } from 'aws-amplify';
+import { Auth, Hub } from 'aws-amplify';
 import Button from 'helpmycase-storybook/dist/components/Button';
 import React, { useEffect } from 'react';
 import { Route } from 'react-router-dom';
@@ -8,13 +8,19 @@ const Dashboard: React.FC = () => {
   const x = 2;
 
   const handleLoginWithGoogle = async () => {
-    const response = await Auth.federatedSignIn({ provider: 'Google' } as any);
+    const response = await Auth.federatedSignIn(
+      {
+        provider: 'Google' as any,
+        customState: 'something wonderful',
+      },
+    );
   };
 
   useEffect(() => {
     (async () => {
-      const response = await Auth.currentSession();
-      console.log(response);
+      await Hub.listen('auth', (data) => {
+        console.log(data, 'amir');
+      });
     })();
   });
 
