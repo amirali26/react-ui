@@ -1,26 +1,26 @@
 import {
-  Container, CssBaseline, makeStyles, Typography,
+  makeStyles,
 } from 'helpmycase-storybook/dist/components/External';
 import React from 'react';
 import { Route } from 'react-router-dom';
 import routes from '../../../utils/routes/routes';
+import MainCard from './MainCard';
+import Section from './Section';
+import useQuote from './useQuote';
 
 const useStyles = makeStyles({
   root: {
-    backgroundColor: 'blue',
   },
 });
 
 const Quote: React.FC = () => {
+  const { pageIndex, setPageIndex } = useQuote();
   const styles = useStyles();
+
   return (
-    <Route path={routes.quote}>
-      <Container maxWidth="xl">
-        <div className="logo">
-          <Typography variant="h1">Some Logo</Typography>
-        </div>
-        <MainCard />
-      </Container>
+    <Route path={routes.base}>
+      <Section />
+      <MainCard pageIndex={pageIndex} setPageIndex={setPageIndex} />
     </Route>
   );
 };
