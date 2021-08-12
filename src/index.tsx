@@ -5,6 +5,9 @@ import { BrowserRouter } from 'react-router-dom';
 import theme from 'helpmycase-storybook/dist/theme/theme';
 import Amplify from 'aws-amplify';
 
+import {
+  ApolloClient, ApolloProvider, gql, InMemoryCache,
+} from '@apollo/client';
 import App from './App';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
@@ -12,13 +15,20 @@ import amplifyConfiguration from './awsexports';
 
 Amplify.configure(amplifyConfiguration);
 
+const client = new ApolloClient({
+  uri: 'https://48p1r2roz4.sse.codesandbox.io',
+  cache: new InMemoryCache(),
+});
+
 ReactDOM.render(
   <React.StrictMode>
-    <ThemeProvider theme={theme}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </ThemeProvider>
+    <ApolloProvider client={client}>
+      <ThemeProvider theme={theme}>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </ThemeProvider>
+    </ApolloProvider>
   </React.StrictMode>,
   document.getElementById('root'),
 );
