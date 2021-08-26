@@ -1,6 +1,6 @@
 import { Container, makeStyles } from 'helpmycase-storybook/dist/components/External';
 import React from 'react';
-import { Switch } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import './App.css';
 import Logo from './components/atoms/Logo';
 import Login from './components/pages/Login';
@@ -20,8 +20,10 @@ const App: React.FC = () => {
     <Container maxWidth="lg" className={styles.root}>
       <Logo />
       <Switch>
-        <Login />
-        <Quote />
+        <Route path="/login">
+          <Login />
+        </Route>
+        {/* <Quote /> */}
       </Switch>
     </Container>
   );
