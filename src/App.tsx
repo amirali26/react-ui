@@ -17,7 +17,7 @@ const App: React.FC = () => {
   return (
     <Container maxWidth="lg" className={styles.root}>
       <Switch>
-        <Route path="/login">
+        <Route path="/auth">
           <Auth />
         </Route>
         {/* <Quote /> */}

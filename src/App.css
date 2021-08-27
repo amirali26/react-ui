@@ -105,7 +105,15 @@
     padding-right: 8px !important
 }
 
+/* Borders */
+.borderRadius {
+    border-radius: 5px;
+}
+
 /* Text Transform */
+.removeUnderline {
+    text-decoration: none;
+}
 
 /* Colors */
 .red {
@@ -113,6 +121,9 @@
 }
 .black {
     color: #121212
+}
+.white {
+    color: #ffff;
 }
 
 /* Button Styles */

@@ -1,12 +1,15 @@
 import { faFacebookF, faLinkedinIn, faTwitter } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import clsx from 'clsx';
-import { IconButton, makeStyles, Typography } from 'helpmycase-storybook/dist/components/External';
+import { IconButton, makeStyles } from 'helpmycase-storybook/dist/components/External';
 import React from 'react';
+import { Route, Switch } from 'react-router-dom';
 import WelcomeBackgroundImage from '../../assets/images/homepage-main.jpg';
 import BackgroundImage from '../../assets/images/login-background.png';
 import Logo from '../../components/atoms/Logo';
 import Login from './Login';
+import LoginHelperText from './Login/HelperText';
+import Register from './Register';
 
 const useStyles = makeStyles({
   root: {
@@ -51,22 +54,26 @@ const Auth: React.FC = () => {
   const styles = useStyles();
   return (
     <div className={styles.root}>
-      <div className={clsx(styles.card, 'flex row spaceBetween')}>
+      <div className={clsx(styles.card, 'flex row spaceBetween borderRadius')}>
         <div className={styles.welcome}>
           <div className="flex column center alignCenter fullHeight textAlignCenter">
             <Logo />
-            <Typography variant="h4" className="marginTopMedium">
-              Helping you to find trusted solicitors tailored to your legal case.
-            </Typography>
-            <Typography variant="subtitle1" className="marginTopMedium">
-              Finding a trusted solicitor to handle your case is usually a big headache.
-              HelpMyCase streamlines the process of finding the perfect
-              solicitor tailored to your case for free!
-            </Typography>
+            <Switch>
+              <Route exact path="/auth/login">
+                <LoginHelperText />
+              </Route>
+            </Switch>
           </div>
         </div>
         <div className={clsx(styles.form, 'flex column center')}>
-          <Login />
+          <Switch>
+            <Route exact path="/auth/login">
+              <Login />
+            </Route>
+            <Route exact path="/auth/register">
+              <Register />
+            </Route>
+          </Switch>
           <div className="marginTop">
             <IconButton color="primary">
               <FontAwesomeIcon icon={faFacebookF} />

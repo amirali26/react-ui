@@ -6,16 +6,14 @@ import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import FormTitle from '../../../components/molecules/auth/FormTitle';
 
-const Login: React.FC = () => {
+const Register: React.FC = () => {
   const [showPassword, setShowPassword] = useState<boolean>();
 
   return (
     <form>
       <FormTitle
-        title="Log in."
-        subtitle={`To login to your account,
-                    please provide your username
-                    (normally your email address) and your password.`}
+        title="Create account"
+        subtitle={'Manage your clients effectively. Let\'s get you all set up so you can start in no time!'}
       />
       <div className="fullWidth marginTop">
         <InputLabel htmlFor="input-with-icon-adornment" className="marginBottomSmall">Username</InputLabel>
@@ -61,4 +59,4 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login;
+export default Register;
