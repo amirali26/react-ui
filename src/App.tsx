@@ -2,9 +2,7 @@ import { Container, makeStyles } from 'helpmycase-storybook/dist/components/Exte
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import './App.css';
-import Logo from './components/atoms/Logo';
-import Login from './components/pages/Login';
-import Quote from './components/pages/Quote';
+import Auth from './pages/Auth';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -18,10 +16,9 @@ const App: React.FC = () => {
 
   return (
     <Container maxWidth="lg" className={styles.root}>
-      <Logo />
       <Switch>
         <Route path="/login">
-          <Login />
+          <Auth />
         </Route>
         {/* <Quote /> */}
       </Switch>

@@ -16,7 +16,7 @@ import amplifyConfiguration from './awsexports';
 Amplify.configure(amplifyConfiguration);
 
 const client = new ApolloClient({
-  uri: 'https://48p1r2roz4.sse.codesandbox.io',
+  uri: 'localhost:8080/graphql',
   cache: new InMemoryCache(),
 });
 

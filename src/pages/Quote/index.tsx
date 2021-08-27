@@ -4,7 +4,7 @@ import {
 } from 'helpmycase-storybook/dist/components/External';
 import React from 'react';
 import { Route } from 'react-router-dom';
-import routes from '../../../utils/routes/routes';
+import routes from '../../utils/routes/routes';
 import MainCard from './MainCard';
 import Section from './Section';
 import useQuote from './useQuote';

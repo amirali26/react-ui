@@ -2,8 +2,8 @@ import { Auth, Hub } from 'aws-amplify';
 import Button from 'helpmycase-storybook/dist/components/Button';
 import React, { useEffect } from 'react';
 import { Route } from 'react-router-dom';
-import routes from '../../../utils/routes/routes';
-import Navigation from '../../templates/Navigation';
+import routes from '../../utils/routes/routes';
+import Navigation from '../../components/templates/Navigation';
 
 const Dashboard: React.FC = () => {
   const x = 2;
