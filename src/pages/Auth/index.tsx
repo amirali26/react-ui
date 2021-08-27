@@ -1,4 +1,4 @@
-import { faFacebookF, faLinkedinIn, faTwitter } from '@fortawesome/free-brands-svg-icons';
+import { faFacebookSquare, faLinkedin, faTwitterSquare } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import clsx from 'clsx';
 import { IconButton, makeStyles } from 'helpmycase-storybook/dist/components/External';
@@ -10,6 +10,9 @@ import Logo from '../../components/atoms/Logo';
 import Login from './Login';
 import LoginHelperText from './Login/HelperText';
 import Register from './Register';
+import RegisterHelperText from './Register/HelperText';
+import ResetPasswordConfirmation from './ResetPassword/Confirm';
+import ResetPasswordRequest from './ResetPassword/Request';
 
 const useStyles = makeStyles({
   root: {
@@ -32,7 +35,7 @@ const useStyles = makeStyles({
     boxShadow: '0 0 20px 2px #000',
     '& > div': {
       width: '50%',
-      padding: '64px 32px',
+      padding: '40px 24px',
     },
   },
   welcome: {
@@ -45,7 +48,7 @@ const useStyles = makeStyles({
     width: '50%',
     borderRadius: '5px',
     '& > form': {
-      width: '400px',
+      width: '500px',
     },
   },
 });
@@ -56,11 +59,14 @@ const Auth: React.FC = () => {
     <div className={styles.root}>
       <div className={clsx(styles.card, 'flex row spaceBetween borderRadius')}>
         <div className={styles.welcome}>
-          <div className="flex column center alignCenter fullHeight textAlignCenter">
+          <div className="flex column center alignLeft fullHeight textAlignLeft">
             <Logo />
             <Switch>
               <Route exact path="/auth/login">
                 <LoginHelperText />
+              </Route>
+              <Route exact path="/auth/register">
+                <RegisterHelperText />
               </Route>
             </Switch>
           </div>
@@ -73,16 +79,22 @@ const Auth: React.FC = () => {
             <Route exact path="/auth/register">
               <Register />
             </Route>
+            <Route exact path={['/auth/reset-password', '/auth/reset-password/request']}>
+              <ResetPasswordRequest />
+            </Route>
+            <Route exact path="/auth/reset-password/confirm">
+              <ResetPasswordConfirmation />
+            </Route>
           </Switch>
-          <div className="marginTop">
+          <div className="marginTop flex row center alignLeft justifyContentStart fullWidth marginLeftMedium">
             <IconButton color="primary">
-              <FontAwesomeIcon icon={faFacebookF} />
+              <FontAwesomeIcon icon={faFacebookSquare} size="lg" />
             </IconButton>
             <IconButton color="primary" className="marginLeftSmall marginRightSmall">
-              <FontAwesomeIcon icon={faLinkedinIn} />
+              <FontAwesomeIcon icon={faLinkedin} size="lg" />
             </IconButton>
             <IconButton color="primary">
-              <FontAwesomeIcon icon={faTwitter} />
+              <FontAwesomeIcon icon={faTwitterSquare} size="lg" />
             </IconButton>
           </div>
         </div>

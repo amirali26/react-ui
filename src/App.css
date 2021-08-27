@@ -9,6 +9,9 @@
 .textAlignCenter {
     text-align: center;
 }
+.textAlignLeft {
+    text-align: left;
+}
 .flex {
     display: flex;
 }
@@ -27,6 +30,12 @@
 .flex.center {
     justify-content: center;
     align-items: center;
+}
+.flex.alignLeft {
+    align-items: flex-start;
+}
+.flex.justifyContentStart {
+    justify-content: flex-start;
 }
 
 /* Margins  */
@@ -117,13 +126,13 @@
 
 /* Colors */
 .red {
-    color: #981e25
+    color: #981e25 !important;
 }
 .black {
-    color: #121212
+    color: #121212 !important;
 }
 .white {
-    color: #ffff;
+    color: #ffff !important;
 }
 
 /* Button Styles */

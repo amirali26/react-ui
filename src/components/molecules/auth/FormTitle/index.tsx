@@ -6,7 +6,7 @@ interface IProps {
     subtitle: string | JSX.Element[];
 }
 const FormTitle:React.FC<IProps> = ({ title, subtitle }: IProps) => (
-  <div className="textAlignCenter">
+  <div className="textAlignLeft">
     <Typography variant="h1" color="inherit">
       {title}
     </Typography>

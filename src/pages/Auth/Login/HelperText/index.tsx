@@ -2,7 +2,7 @@ import { Button, Typography } from 'helpmycase-storybook/dist/components/Externa
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
-const HelperText = () => (
+const HelperText: React.FC = () => (
   <div>
     <Typography variant="h4" className="marginTopMedium">
       Helping you to find trusted solicitors tailored to your legal case.
