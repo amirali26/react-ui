@@ -1,8 +1,10 @@
+import { faFacebookF, faLinkedinIn, faTwitter } from '@fortawesome/free-brands-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import clsx from 'clsx';
-import { makeStyles, Typography } from 'helpmycase-storybook/dist/components/External';
+import { IconButton, makeStyles, Typography } from 'helpmycase-storybook/dist/components/External';
 import React from 'react';
-import BackgroundImage from '../../assets/images/login-background.png';
 import WelcomeBackgroundImage from '../../assets/images/homepage-main.jpg';
+import BackgroundImage from '../../assets/images/login-background.png';
 import Logo from '../../components/atoms/Logo';
 import Login from './Login';
 
@@ -23,12 +25,11 @@ const useStyles = makeStyles({
   },
   card: {
     width: '1200px',
-    height: '80vh',
     backgroundColor: 'rgba(255,255,255,1)',
     boxShadow: '0 0 20px 2px #000',
     '& > div': {
       width: '50%',
-      padding: '32px',
+      padding: '64px 32px',
     },
   },
   welcome: {
@@ -66,6 +67,17 @@ const Auth: React.FC = () => {
         </div>
         <div className={clsx(styles.form, 'flex column center')}>
           <Login />
+          <div className="marginTop">
+            <IconButton color="primary">
+              <FontAwesomeIcon icon={faFacebookF} />
+            </IconButton>
+            <IconButton color="primary" className="marginLeftSmall marginRightSmall">
+              <FontAwesomeIcon icon={faLinkedinIn} />
+            </IconButton>
+            <IconButton color="primary">
+              <FontAwesomeIcon icon={faTwitter} />
+            </IconButton>
+          </div>
         </div>
       </div>
     </div>
