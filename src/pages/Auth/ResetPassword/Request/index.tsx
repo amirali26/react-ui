@@ -1,8 +1,8 @@
 import {
-  AddToHomeScreenOutlined, LockOutlined, Visibility, VisibilityOff,
+  AddToHomeScreenOutlined,
 } from '@material-ui/icons';
 import {
-  Button, IconButton, Input, InputAdornment, InputLabel, Typography,
+  Button, Input, InputLabel, Typography,
 } from 'helpmycase-storybook/dist/components/External';
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
@@ -34,8 +34,11 @@ const Request: React.FC = () => {
         Send Verification
       </Button>
       <div className="marginTopMedium fullWidth textAlignLeft">
-        <Typography variant="subtitle1">Want to go back?</Typography>
-        <NavLink className="underline red" to="/auth/login">Take me back to log in</NavLink>
+        <Typography variant="subtitle1">
+          Want to go back?
+          {' '}
+          <NavLink className="underline red" to="/auth/login">Take me back to log in</NavLink>
+        </Typography>
       </div>
     </form>
   );

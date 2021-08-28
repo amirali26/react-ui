@@ -1,4 +1,4 @@
-import { LockOutlined, PersonAddOutlined } from '@material-ui/icons';
+import { PersonAddOutlined } from '@material-ui/icons';
 import {
   Button, Checkbox, FormControlLabel, Input, InputLabel, Typography,
 } from 'helpmycase-storybook/dist/components/External';
@@ -118,8 +118,11 @@ const Register: React.FC = () => {
         Register
       </Button>
       <div className="marginTopMedium fullWidth textAlignLeft">
-        <Typography variant="subtitle1">Already have an account?</Typography>
-        <NavLink className="underline red" to="/auth/login">Go to login</NavLink>
+        <Typography variant="subtitle1">
+          Already have an account?
+          {' '}
+          <NavLink className="underline red" to="/auth/login">Go to login</NavLink>
+        </Typography>
       </div>
     </form>
   );

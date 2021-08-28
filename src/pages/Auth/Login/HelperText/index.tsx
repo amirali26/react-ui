@@ -13,13 +13,10 @@ const HelperText: React.FC = () => (
       solicitor tailored to your case for free!
     </Typography>
     <Button
-      variant="outlined"
-      color="inherit"
+      variant="contained"
+      color="primary"
+      className="marginTop"
       fullWidth
-      className="
-                  paddingTopMedium
-                  paddingBottomMedium
-                  marginTop"
     >
       <NavLink to="/auth/register" className="white removeUnderline">
         Don&apos;t have an account? Sign up for free

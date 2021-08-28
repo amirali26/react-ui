@@ -13,6 +13,7 @@ import Register from './Register';
 import RegisterHelperText from './Register/HelperText';
 import ResetPasswordConfirmation from './ResetPassword/Confirm';
 import ResetPasswordRequest from './ResetPassword/Request';
+import VerifyMfa from './VerifyMfa';
 
 const useStyles = makeStyles({
   root: {
@@ -33,6 +34,9 @@ const useStyles = makeStyles({
     width: '1200px',
     backgroundColor: 'rgba(255,255,255,1)',
     boxShadow: '0 0 20px 2px #000',
+    '& > div:first-of-type': {
+      boxShadow: '10px 0 5px -2px #888',
+    },
     '& > div': {
       width: '50%',
       padding: '40px 24px',
@@ -73,7 +77,7 @@ const Auth: React.FC = () => {
         </div>
         <div className={clsx(styles.form, 'flex column center')}>
           <Switch>
-            <Route exact path="/auth/login">
+            <Route exact path={['/auth', '/auth/login']}>
               <Login />
             </Route>
             <Route exact path="/auth/register">
@@ -85,8 +89,11 @@ const Auth: React.FC = () => {
             <Route exact path="/auth/reset-password/confirm">
               <ResetPasswordConfirmation />
             </Route>
+            <Route exact path="/auth/verify">
+              <VerifyMfa />
+            </Route>
           </Switch>
-          <div className="marginTop flex row center alignLeft justifyContentStart fullWidth marginLeftMedium">
+          <div className="marginTopMedium flex row center alignLeft justifyContentStart fullWidth marginLeftMedium">
             <IconButton color="primary">
               <FontAwesomeIcon icon={faFacebookSquare} size="lg" />
             </IconButton>

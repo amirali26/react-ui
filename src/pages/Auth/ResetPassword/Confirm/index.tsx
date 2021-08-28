@@ -53,8 +53,11 @@ const Confirmation: React.FC = () => {
         </Button>
       </div>
       <div className="marginTopMedium fullWidth textAlignLeft">
-        <Typography variant="subtitle1">Want to go back?</Typography>
-        <NavLink className="underline red" to="/auth/login">Take me back to log in</NavLink>
+        <Typography variant="subtitle1">
+          Want to go back?
+          {' '}
+          <NavLink className="underline red" to="/auth/login">Take me back to log in</NavLink>
+        </Typography>
       </div>
     </form>
   );
