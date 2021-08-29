@@ -1,16 +1,50 @@
 import { PersonAddOutlined } from '@material-ui/icons';
+import { useFormik } from 'formik';
 import {
-  Button, Checkbox, FormControlLabel, Input, InputLabel, Typography,
+  Button, Checkbox, CircularProgress, FormControlLabel, InputLabel, TextField, Typography,
 } from 'helpmycase-storybook/dist/components/External';
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import * as Yup from 'yup';
 import FormTitle from '../../../components/molecules/auth/FormTitle';
+import useAuth from '../useAuth';
+
+const initialValues = {
+  firstName: '',
+  lastName: '',
+  phoneNumber: '',
+  email: '',
+  password: '',
+  confirmPasword: '',
+};
+
+const formValidationSchema = Yup.object().shape({
+  firstName: Yup.string()
+    .required('First name is a required field'),
+  lastName: Yup.string()
+    .required('Last name is a required field'),
+  email: Yup.string()
+    .min(5, 'Email should be atleast 5 characters in length')
+    .required('Email is a required field'),
+  phoneNumber: Yup.string()
+    .min(5, 'Phone number should be atleast 5 characters in length')
+    .required('Phone number is a required field'),
+  password: Yup.string().min(8, 'Password must be 8 characters').required('Password is required'),
+  confirmPassword: Yup.string()
+    .oneOf([Yup.ref('password'), null], 'Passwords must match'),
+});
 
 const Register: React.FC = () => {
-  const [showPassword, setShowPassword] = useState<boolean>();
+  const [agreeToTerms, setAgreeToTerms] = useState<boolean>(false);
 
+  const { loading, signUp } = useAuth();
+  const formik = useFormik({
+    initialValues,
+    validationSchema: formValidationSchema,
+    onSubmit: (values) => signUp(values.email, values.password, values.phoneNumber, values.email),
+  });
   return (
-    <form>
+    <form onSubmit={formik.handleSubmit}>
       <FormTitle
         title="Create account"
         subtitle={'Manage your clients effectively. Let\'s get you all set up so you can start in no time!'}
@@ -22,11 +56,14 @@ const Register: React.FC = () => {
             {' '}
             <span className="red">*</span>
           </InputLabel>
-          <Input
+          <TextField
             required
+            name="firstName"
             id="input-with-icon-adornment"
-            fullWidth
             color="primary"
+            fullWidth
+            onBlur={formik.handleBlur}
+            onChange={formik.handleChange}
           />
         </div>
         <div className="fullWidth marginTop">
@@ -35,11 +72,14 @@ const Register: React.FC = () => {
             {' '}
             <span className="red">*</span>
           </InputLabel>
-          <Input
+          <TextField
             id="input-with-icon-adornment"
-            fullWidth
+            name="lastName"
             color="primary"
-            type={showPassword ? 'text' : 'password'}
+            fullWidth
+            onBlur={formik.handleBlur}
+            onChange={formik.handleChange}
+            required
           />
         </div>
       </div>
@@ -50,11 +90,14 @@ const Register: React.FC = () => {
             {' '}
             <span className="red">*</span>
           </InputLabel>
-          <Input
-            required
+          <TextField
+            name="phoneNumber"
             id="input-with-icon-adornment"
+            required
             fullWidth
             color="primary"
+            onBlur={formik.handleBlur}
+            onChange={formik.handleChange}
           />
         </div>
         <div className="fullWidth marginTop">
@@ -63,11 +106,15 @@ const Register: React.FC = () => {
             {' '}
             <span className="red">*</span>
           </InputLabel>
-          <Input
+          <TextField
+            name="email"
             id="input-with-icon-adornment"
             fullWidth
             color="primary"
-            type={showPassword ? 'text' : 'password'}
+            type="text"
+            onBlur={formik.handleBlur}
+            onChange={formik.handleChange}
+            required
           />
         </div>
       </div>
@@ -78,11 +125,15 @@ const Register: React.FC = () => {
             {' '}
             <span className="red">*</span>
           </InputLabel>
-          <Input
+          <TextField
+            name="password"
             required
             id="input-with-icon-adornment"
+            type="password"
             fullWidth
             color="primary"
+            onBlur={formik.handleBlur}
+            onChange={formik.handleChange}
           />
         </div>
         <div className="fullWidth marginTop">
@@ -91,29 +142,41 @@ const Register: React.FC = () => {
             {' '}
             <span className="red">*</span>
           </InputLabel>
-          <Input
+          <TextField
+            name="confirmPassword"
             id="input-with-icon-adornment"
             fullWidth
             color="primary"
-            type={showPassword ? 'text' : 'password'}
+            type="password"
+            onBlur={formik.handleBlur}
+            onChange={formik.handleChange}
           />
         </div>
       </div>
       <FormControlLabel
+        checked={agreeToTerms}
+        onChange={() => setAgreeToTerms(!agreeToTerms)}
         className="marginTopMedium"
-        control={<Checkbox checked={false} name="gilad" />}
-        label="Yes, I want to receive emails from potential clients"
-      />
-      <br />
-      <FormControlLabel
         control={<Checkbox checked name="gilad" />}
         label="I agree to all the Terms and Privacy Policy"
       />
       <Button
+        type="submit"
         variant="contained"
         color="primary"
         className="marginTopMedium fullWidth"
-        startIcon={<PersonAddOutlined />}
+        disabled={Boolean(
+          !agreeToTerms
+          || !formik.isValid
+          || loading
+          || !formik.touched.firstName
+          || !formik.touched.lastName
+          || !formik.touched.phoneNumber
+          || !formik.touched.email
+          || !formik.touched.password,
+        )}
+        startIcon={loading ? <CircularProgress color="secondary" size="12px" />
+          : <PersonAddOutlined />}
       >
         Register
       </Button>

@@ -1,7 +1,7 @@
 import { LockOutlined, Visibility, VisibilityOff } from '@material-ui/icons';
 import { useFormik } from 'formik';
 import {
-  Button, IconButton, Input, InputAdornment, InputLabel, Typography,
+  Button, IconButton, InputAdornment, InputLabel, TextField, Typography, CircularProgress,
 } from 'helpmycase-storybook/dist/components/External';
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
@@ -17,14 +17,13 @@ const initialValues = {
 const formValidationSchema = Yup.object().shape({
   username: Yup.string()
     .min(5, 'Username should be atleast 5 characters in length')
-    .max(12, 'Username should b at most 12 characters in length')
     .required('Username is a required field'),
   password: Yup.string().min(8, 'Password must be 8 characters').required('Password is required'),
 });
 
 const Login: React.FC = () => {
   const [showPassword, setShowPassword] = useState<boolean>();
-  const { signIn } = useAuth();
+  const { loading, signIn } = useAuth();
   const formik = useFormik({
     initialValues,
     onSubmit: (values) => signIn(values.username, values.password),
@@ -40,36 +39,50 @@ const Login: React.FC = () => {
       />
       <div className="fullWidth marginTop">
         <InputLabel htmlFor="input-with-icon-adornment" className="marginBottomSmall">Username</InputLabel>
-        <Input
+        <TextField
           id="input-with-icon-adornment"
+          name="username"
           fullWidth
           color="primary"
+          helperText={formik.touched.username && formik.errors.username}
+          error={Boolean(formik.touched.username && formik.errors.username)}
+          onBlur={formik.handleBlur}
+          onChange={formik.handleChange}
         />
       </div>
       <div className="fullWidth marginTop">
         <InputLabel htmlFor="input-with-icon-adornment" className="marginBottomSmall">Password</InputLabel>
-        <Input
-          id="input-with-icon-adornment"
-          fullWidth
-          color="primary"
-          type={showPassword ? 'text' : 'password'}
-          endAdornment={(
-            <InputAdornment position="end">
-              <IconButton
-                aria-label="toggle password visibility"
-                onClick={() => setShowPassword(!showPassword)}
-              >
-                {showPassword ? <Visibility /> : <VisibilityOff />}
-              </IconButton>
-            </InputAdornment>
-                    )}
-        />
+        <div style={{ position: 'relative' }}>
+          <TextField
+            id="input-with-icon-adornment"
+            name="password"
+            fullWidth
+            color="primary"
+            type={showPassword ? 'text' : 'password'}
+            helperText={formik.touched.password && formik.errors.password}
+            error={Boolean(formik.touched.password && formik.errors.password)}
+            onBlur={formik.handleBlur}
+            onChange={formik.handleChange}
+          />
+          <InputAdornment position="end" style={{ position: 'absolute', right: '0px', top: '15px' }}>
+            <IconButton
+              aria-label="toggle password visibility"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? <Visibility /> : <VisibilityOff />}
+            </IconButton>
+          </InputAdornment>
+        </div>
         <Button
           variant="contained"
           color="primary"
           className="marginTop fullWidth"
           type="submit"
-          startIcon={<LockOutlined />}
+          disabled={Boolean(
+            !formik.isValid || loading || !formik.touched.username || !formik.touched.password,
+          )}
+          startIcon={loading ? <CircularProgress color="secondary" size="12px" />
+            : <LockOutlined />}
         >
           Login
         </Button>

@@ -66,7 +66,7 @@ const Auth: React.FC = () => {
           <div className="flex column center alignLeft fullHeight textAlignLeft">
             <Logo />
             <Switch>
-              <Route exact path="/auth/login">
+              <Route exact path={['/auth', '/auth/login']}>
                 <LoginHelperText />
               </Route>
               <Route exact path="/auth/register">

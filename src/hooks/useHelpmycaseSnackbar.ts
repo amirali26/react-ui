@@ -1,14 +1,9 @@
 import { useSnackbar } from 'notistack';
 
-interface IProps {
-    message: string,
-    variant?: 'success' | 'info' | 'error'
-}
-
 const useHelpmycaseSnackbar = () => {
   const snackbar = useSnackbar();
 
-  const trigger = ({ variant }: IProps) => snackbar.enqueueSnackbar('', {
+  const trigger = (message: string, variant?: 'success' | 'info' | 'error') => snackbar.enqueueSnackbar(message, {
     variant: variant || 'error',
   });
 
