@@ -16,9 +16,8 @@ const initialValues = {
 
 const formValidationSchema = Yup.object().shape({
   username: Yup.string()
-    .min(5, 'Username should be atleast 5 characters in length')
-    .required('Username is a required field'),
-  password: Yup.string().min(8, 'Password must be 8 characters').required('Password is required'),
+    .required(),
+  password: Yup.string().required(),
 });
 
 const Login: React.FC = () => {

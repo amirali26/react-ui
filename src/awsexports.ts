@@ -7,6 +7,7 @@ const amplifyConfiguration = Amplify.configure({
     userPoolId: 'eu-west-1_9kq0cNnpi',
     userPoolWebClientId: '4g0krklgt4d7vfjspcr72sb9qr',
     storage: localStorage,
+    authenticationFlowType: 'USER_PASSWORD_AUTH',
   },
 });
 

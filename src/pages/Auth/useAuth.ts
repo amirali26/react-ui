@@ -62,7 +62,6 @@ const useAuth = () => {
 
       await user.confirmRegistration(code, false, (err, result) => {
         if (err) throw Error(err);
-        console.log(result);
         setUser(result);
         history.push('/dashboard');
       });
@@ -79,11 +78,8 @@ const useAuth = () => {
       setLoading(true);
 
       if (!user) throw Error('Unable to get logged in user session');
-
-      const result = await Auth.verifyTotpToken(await Auth.currentSession(), code);
-      console.log(result);
+      await Auth.confirmSignIn(user, code);
     } catch (e) {
-      console.log(e);
       sb.trigger(e.message || 'Something went wrong when verifying your MFA');
     } finally {
       setLoading(false);

@@ -1,15 +1,35 @@
 import {
   AddToHomeScreenOutlined,
 } from '@material-ui/icons';
+import { useFormik } from 'formik';
 import {
   Button, Input, InputLabel, Typography,
 } from 'helpmycase-storybook/dist/components/External';
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import * as Yup from 'yup';
 import FormTitle from '../../../../components/molecules/auth/FormTitle';
+import useAuth from '../../useAuth';
+
+const initialValues = {
+  email: '',
+};
+
+const formValidationSchema = Yup.object().shape({
+  email: Yup.string()
+    .email('Invalid email address')
+    .required('Email is a required field'),
+});
 
 const Request: React.FC = () => {
-  const [showPassword, setShowPassword] = useState<boolean>();
+  const {
+    loading,
+  } = useAuth();
+  const formik = useFormik({
+    initialValues,
+    validationSchema: formValidationSchema,
+    onSubmit: async (values) => verifyMfa(values.email),
+  });
 
   return (
     <form>
@@ -30,6 +50,9 @@ const Request: React.FC = () => {
         color="primary"
         className="marginTop fullWidth"
         startIcon={<AddToHomeScreenOutlined />}
+        disabled={
+          loading || !formik.touched.email
+        }
       >
         Send Verification
       </Button>

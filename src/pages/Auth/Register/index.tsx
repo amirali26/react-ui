@@ -24,7 +24,7 @@ const formValidationSchema = Yup.object().shape({
   lastName: Yup.string()
     .required('Last name is a required field'),
   email: Yup.string()
-    .min(5, 'Email should be atleast 5 characters in length')
+    .email('Invalid email address')
     .required('Email is a required field'),
   phoneNumber: Yup.string()
     .min(5, 'Phone number should be atleast 5 characters in length')
