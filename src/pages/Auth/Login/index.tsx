@@ -62,15 +62,19 @@ const Login: React.FC = () => {
             error={Boolean(formik.touched.password && formik.errors.password)}
             onBlur={formik.handleBlur}
             onChange={formik.handleChange}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
-          <InputAdornment position="end" style={{ position: 'absolute', right: '0px', top: '15px' }}>
-            <IconButton
-              aria-label="toggle password visibility"
-              onClick={() => setShowPassword(!showPassword)}
-            >
-              {showPassword ? <Visibility /> : <VisibilityOff />}
-            </IconButton>
-          </InputAdornment>
         </div>
         <Button
           variant="contained"

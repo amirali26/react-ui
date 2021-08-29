@@ -80,9 +80,10 @@ const useAuth = () => {
 
       if (!user) throw Error('Unable to get logged in user session');
 
-      const result = await Auth.verifyTotpToken(await Auth.userSession(user), code);
+      const result = await Auth.verifyTotpToken(await Auth.currentSession(), code);
       console.log(result);
     } catch (e) {
+      console.log(e);
       sb.trigger(e.message || 'Something went wrong when verifying your MFA');
     } finally {
       setLoading(false);
