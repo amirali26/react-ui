@@ -34,11 +34,10 @@ const Login: React.FC = () => {
       <FormTitle
         title="Log in"
         subtitle={`To login to your account,
-                    please provide your username
-                    (normally your email address) and your password.`}
+                    please provide your email and your password.`}
       />
       <div className="fullWidth marginTop">
-        <InputLabel htmlFor="input-with-icon-adornment" className="marginBottomSmall">Username</InputLabel>
+        <InputLabel htmlFor="input-with-icon-adornment" className="marginBottomSmall">Email</InputLabel>
         <TextField
           id="input-with-icon-adornment"
           name="username"

@@ -18,7 +18,7 @@ const HelperText: React.FC = () => (
       className="marginTop"
       fullWidth
     >
-      <NavLink to="/auth/register" className="white removeUnderline">
+      <NavLink to="/auth/register" className="white fullWidth removeUnderline">
         Don&apos;t have an account? Sign up for free
       </NavLink>
     </Button>

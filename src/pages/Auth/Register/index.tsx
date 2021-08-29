@@ -41,7 +41,7 @@ const Register: React.FC = () => {
   const formik = useFormik({
     initialValues,
     validationSchema: formValidationSchema,
-    onSubmit: (values) => signUp(values.email, values.password, values.phoneNumber, values.email),
+    onSubmit: (values) => signUp(values.email, values.password, values.email, values.phoneNumber),
   });
   return (
     <form onSubmit={formik.handleSubmit}>
@@ -98,6 +98,11 @@ const Register: React.FC = () => {
             color="primary"
             onBlur={formik.handleBlur}
             onChange={formik.handleChange}
+            InputProps={{
+              startAdornment: (
+                <Typography className="marginRightSmall grey">+44</Typography>
+              ),
+            }}
           />
         </div>
         <div className="fullWidth marginTop">
@@ -157,7 +162,7 @@ const Register: React.FC = () => {
         checked={agreeToTerms}
         onChange={() => setAgreeToTerms(!agreeToTerms)}
         className="marginTopMedium"
-        control={<Checkbox checked name="gilad" />}
+        control={<Checkbox checked={agreeToTerms} />}
         label="I agree to all the Terms and Privacy Policy"
       />
       <Button

@@ -118,10 +118,20 @@
 .borderRadius {
     border-radius: 5px;
 }
+.borderNone {
+    border: none;
+}
 
 /* Text Transform */
 .removeUnderline {
     text-decoration: none;
+}
+.underline {
+    text-decoration: underline;
+}
+.font {
+    font-family: "Lato", Sans-serif;
+    font-size: 16px;
 }
 
 /* Colors */
@@ -133,6 +143,9 @@
 }
 .white {
     color: #ffff !important;
+}
+.grey {
+    color: #9999 !important
 }
 
 /* Button Styles */

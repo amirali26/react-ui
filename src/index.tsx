@@ -1,17 +1,17 @@
+import {
+  ApolloClient, ApolloProvider, InMemoryCache,
+} from '@apollo/client';
+import Amplify from 'aws-amplify';
+import { ThemeProvider } from 'helpmycase-storybook/dist/components/External';
+import theme from 'helpmycase-storybook/dist/theme/theme';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { ThemeProvider } from 'helpmycase-storybook/dist/components/External';
-import { BrowserRouter } from 'react-router-dom';
-import theme from 'helpmycase-storybook/dist/theme/theme';
-import Amplify from 'aws-amplify';
-
-import {
-  ApolloClient, ApolloProvider, gql, InMemoryCache,
-} from '@apollo/client';
+import { Router } from 'react-router-dom';
 import App from './App';
+import amplifyConfiguration from './awsexports';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-import amplifyConfiguration from './awsexports';
+import history from './utils/routes/history';
 
 Amplify.configure(amplifyConfiguration);
 
@@ -24,9 +24,9 @@ ReactDOM.render(
   <React.StrictMode>
     <ApolloProvider client={client}>
       <ThemeProvider theme={theme}>
-        <BrowserRouter>
+        <Router history={history}>
           <App />
-        </BrowserRouter>
+        </Router>
       </ThemeProvider>
     </ApolloProvider>
   </React.StrictMode>,

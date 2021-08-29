@@ -13,8 +13,8 @@ const useAuth = () => {
     try {
       setLoading(true);
       const userResponse = await Auth.signIn(username, password);
-      console.log(userResponse);
-      if (userResponse) setUser(user);
+      if (userResponse) setUser(userResponse);
+      history.push('/auth/verify');
     } catch (e) {
       sb.trigger(e.message || 'Something went wrong with signing you in');
     } finally {
@@ -35,12 +35,19 @@ const useAuth = () => {
         password,
         attributes: {
           email,
-          phone_number: phoneNumber,
+          phone_number: `+44${phoneNumber}`,
         },
       });
 
       if (response.user) setUser(response.user);
+      if (response.codeDeliveryDetails) {
+        history.push('/auth/verify', {
+          confirm: true,
+        });
+      }
+      sb.trigger('Account successfully created - please verify your account', 'success');
     } catch (e) {
+      if (e.message === 'Unable to get logged in user session') history.push('/auth/login');
       sb.trigger(e.message || 'Something went wrong signing you up');
     } finally {
       setLoading(false);
@@ -53,12 +60,30 @@ const useAuth = () => {
 
       if (!user) throw Error('Unable to get logged in user session');
 
-      await user?.confirmRegistration(code, false, () => {
+      await user.confirmRegistration(code, false, (err, result) => {
+        if (err) throw Error(err);
+        console.log(result);
+        setUser(result);
         history.push('/dashboard');
       });
     } catch (e) {
-      sb.trigger(e || 'Something went wrong confirming your sign up');
+      sb.trigger(e.message || 'Something went wrong confirming your sign up');
       history.push('/auth/signup');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const verifyMfa = async (code: string) => {
+    try {
+      setLoading(true);
+
+      if (!user) throw Error('Unable to get logged in user session');
+
+      const result = await Auth.verifyTotpToken(await Auth.userSession(user), code);
+      console.log(result);
+    } catch (e) {
+      sb.trigger(e.message || 'Something went wrong when verifying your MFA');
     } finally {
       setLoading(false);
     }
@@ -74,7 +99,7 @@ const useAuth = () => {
         if (err) throw Error(err.message);
       });
     } catch (e) {
-      sb.trigger(e);
+      sb.trigger(e.message);
       history.push('/auth/login');
     } finally {
       setLoading(false);
@@ -87,6 +112,7 @@ const useAuth = () => {
     signUp,
     confirmSignUp,
     resendConfirmationCode,
+    verifyMfa,
   };
 };
 
