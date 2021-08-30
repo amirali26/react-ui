@@ -25,6 +25,7 @@ const Login: React.FC = () => {
   const { loading, signIn } = useAuth();
   const formik = useFormik({
     initialValues,
+    initialErrors: initialValues,
     onSubmit: (values) => signIn(values.username, values.password),
     validationSchema: formValidationSchema,
   });
@@ -80,9 +81,7 @@ const Login: React.FC = () => {
           color="primary"
           className="marginTop fullWidth"
           type="submit"
-          disabled={Boolean(
-            !formik.isValid || loading || !formik.touched.username || !formik.touched.password,
-          )}
+          disabled={Boolean(!formik.isValid || loading)}
           startIcon={loading ? <CircularProgress color="secondary" size="12px" />
             : <LockOutlined />}
         >

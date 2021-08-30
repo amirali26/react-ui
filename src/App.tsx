@@ -26,14 +26,9 @@ const App: React.FC = () => {
             <Route path="/auth">
               <Auth />
             </Route>
-            {
-            user
-            && (
             <Route path="/dashboard">
               <h2>hi</h2>
             </Route>
-            )
-          }
             <Redirect to="/auth" />
           </Switch>
         </Container>

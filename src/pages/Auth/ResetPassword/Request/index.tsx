@@ -3,9 +3,9 @@ import {
 } from '@material-ui/icons';
 import { useFormik } from 'formik';
 import {
-  Button, Input, InputLabel, Typography,
+  Button, InputLabel, TextField, Typography,
 } from 'helpmycase-storybook/dist/components/External';
-import React, { useState } from 'react';
+import React from 'react';
 import { NavLink } from 'react-router-dom';
 import * as Yup from 'yup';
 import FormTitle from '../../../../components/molecules/auth/FormTitle';
@@ -24,28 +24,39 @@ const formValidationSchema = Yup.object().shape({
 const Request: React.FC = () => {
   const {
     loading,
+    triggerForgotPassword,
   } = useAuth();
   const formik = useFormik({
     initialValues,
     validationSchema: formValidationSchema,
-    onSubmit: async (values) => verifyMfa(values.email),
+    onSubmit: async (values) => triggerForgotPassword(values.email),
   });
 
   return (
-    <form>
+    <form onSubmit={formik.handleSubmit}>
       <FormTitle
         title="Reset Password"
         subtitle={'Enter the username associated with your account and we\'ll send an email with instructions to reset your password.'}
       />
       <div className="fullWidth marginTopMedium">
-        <InputLabel htmlFor="input-with-icon-adornment" className="marginBottomSmall">Username</InputLabel>
-        <Input
+        <InputLabel htmlFor="input-with-icon-adornment" className="marginBottomSmall">
+          Email
+          {' '}
+          <span className="red">*</span>
+        </InputLabel>
+        <TextField
+          name="email"
           id="input-with-icon-adornment"
           fullWidth
           color="primary"
+          type="text"
+          onBlur={formik.handleBlur}
+          onChange={formik.handleChange}
+          required
         />
       </div>
       <Button
+        type="submit"
         variant="contained"
         color="primary"
         className="marginTop fullWidth"

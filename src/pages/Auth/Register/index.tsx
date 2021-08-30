@@ -40,6 +40,7 @@ const Register: React.FC = () => {
   const { loading, signUp } = useAuth();
   const formik = useFormik({
     initialValues,
+    initialErrors: initialValues,
     validationSchema: formValidationSchema,
     onSubmit: (values) => signUp(values.email, values.password, values.email, values.phoneNumber),
   });
@@ -173,12 +174,7 @@ const Register: React.FC = () => {
         disabled={Boolean(
           !agreeToTerms
           || !formik.isValid
-          || loading
-          || !formik.touched.firstName
-          || !formik.touched.lastName
-          || !formik.touched.phoneNumber
-          || !formik.touched.email
-          || !formik.touched.password,
+          || loading,
         )}
         startIcon={loading ? <CircularProgress color="secondary" size="12px" />
           : <PersonAddOutlined />}

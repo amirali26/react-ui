@@ -8,7 +8,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router } from 'react-router-dom';
 import App from './App';
-import amplifyConfiguration from './awsexports';
+import amplifyConfiguration from './utils/awsExports';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import history from './utils/routes/history';

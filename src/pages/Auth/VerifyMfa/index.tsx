@@ -8,10 +8,9 @@ import React from 'react';
 import ReactCodeInput from 'react-code-input';
 import { NavLink, useLocation } from 'react-router-dom';
 import FormTitle from '../../../components/molecules/auth/FormTitle';
-import history from '../../../utils/routes/history';
 import useAuth from '../useAuth';
 
-const useStyles = makeStyles({
+export const useStyles = makeStyles({
   codeWrapper: {
     '& > div': {
       display: 'flex !important',
@@ -36,19 +35,20 @@ interface IRouteState {
 
 const VerifyMfa: React.FC = () => {
   const styles = useStyles();
-  const location = useLocation();
+  const location = useLocation<IRouteState>();
   const {
     loading, resendConfirmationCode, confirmSignUp, verifyMfa,
   } = useAuth();
   const formik = useFormik({
     initialValues,
     onSubmit: async (values) => {
-      if ((location.state as IRouteState)?.verify) {
+      if (location.state?.verify) {
         return confirmSignUp(values.code);
       }
       return verifyMfa(values.code);
     },
   });
+
   return (
     <form onSubmit={formik.handleSubmit}>
       <FormTitle

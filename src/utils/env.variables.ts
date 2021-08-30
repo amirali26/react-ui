@@ -13,8 +13,8 @@ interface EnvironmentConfig {
 const environmentVars: EnvironmentConfig = {
   REACT_APP_API_URL: 'localhost:3000/',
   REACT_APP_COGNITO: {
-    poolId: 'eu-west-1_Bo5l53wSG',
-    clientId: 'jfqsq1211sofcl9nv9aalrlq8',
+    poolId: 'us-east-1_FSlSDC20z',
+    clientId: '6ljl08iv2211t0sf5nsc1h9r95',
     storage: localStorage,
   },
 };

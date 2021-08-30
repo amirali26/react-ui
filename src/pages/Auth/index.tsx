@@ -2,18 +2,23 @@ import { faFacebookSquare, faLinkedin, faTwitterSquare } from '@fortawesome/free
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import clsx from 'clsx';
 import { IconButton, makeStyles } from 'helpmycase-storybook/dist/components/External';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import WelcomeBackgroundImage from '../../assets/images/homepage-main.jpg';
 import BackgroundImage from '../../assets/images/login-background.png';
 import Logo from '../../components/atoms/Logo';
+import history from '../../utils/routes/history';
 import Login from './Login';
 import LoginHelperText from './Login/HelperText';
 import Register from './Register';
 import RegisterHelperText from './Register/HelperText';
 import ResetPasswordConfirmation from './ResetPassword/Confirm';
+import ConfirmPasswordResetHelperText from './ResetPassword/Confirm/HelperText';
 import ResetPasswordRequest from './ResetPassword/Request';
+import RequestPasswordResetHelperText from './ResetPassword/Request/HelperText';
+import useAuth from './useAuth';
 import VerifyMfa from './VerifyMfa';
+import VerifyHelperText from './VerifyMfa/HelperText';
 
 const useStyles = makeStyles({
   root: {
@@ -59,6 +64,17 @@ const useStyles = makeStyles({
 
 const Auth: React.FC = () => {
   const styles = useStyles();
+
+  const { isLoggedIn } = useAuth();
+
+  const shouldRedirectToDashboard = async () => {
+    if (isLoggedIn()) history.push('/dashboard');
+  };
+
+  useEffect(() => {
+    shouldRedirectToDashboard();
+  }, []);
+
   return (
     <div className={styles.root}>
       <div className={clsx(styles.card, 'flex row spaceBetween borderRadius')}>
@@ -71,6 +87,15 @@ const Auth: React.FC = () => {
               </Route>
               <Route exact path="/auth/register">
                 <RegisterHelperText />
+              </Route>
+              <Route exact path="/auth/verify">
+                <VerifyHelperText />
+              </Route>
+              <Route exact path={['/auth/reset-password', '/auth/reset-password/request']}>
+                <RequestPasswordResetHelperText />
+              </Route>
+              <Route exact path="/auth/reset-password/confirm">
+                <ConfirmPasswordResetHelperText />
               </Route>
             </Switch>
           </div>

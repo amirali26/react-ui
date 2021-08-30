@@ -1,53 +1,111 @@
-import { LockOutlined, Visibility, VisibilityOff } from '@material-ui/icons';
+import { PersonAddOutlined } from '@material-ui/icons';
+import clsx from 'clsx';
+import { useFormik } from 'formik';
 import {
-  Button, IconButton, Input, InputAdornment, InputLabel, Typography,
+  Button, CircularProgress, InputLabel, TextField, Typography,
 } from 'helpmycase-storybook/dist/components/External';
-import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import React from 'react';
+import ReactCodeInput from 'react-code-input';
+import { NavLink, Redirect, useLocation } from 'react-router-dom';
+import * as Yup from 'yup';
 import FormTitle from '../../../../components/molecules/auth/FormTitle';
+import useAuth from '../../useAuth';
+import { useStyles } from '../../VerifyMfa';
+
+const initialValues = {
+  code: '',
+  password: '',
+  confirmPasword: '',
+};
+
+const formValidationSchema = Yup.object().shape({
+  code: Yup.string().required('Please enter a code'),
+  password: Yup.string().min(8, 'Password must be 8 characters').required('Password is required'),
+  confirmPassword: Yup.string()
+    .oneOf([Yup.ref('password'), null], 'Passwords must match'),
+});
 
 const Confirmation: React.FC = () => {
-  const [showPassword, setShowPassword] = useState<boolean>();
+  const styles = useStyles();
+  const location = useLocation<{ email: string }>();
+  const { loading, triggerForgotPasswordSubmit } = useAuth();
+  const formik = useFormik({
+    initialValues,
+    validationSchema: formValidationSchema,
+    onSubmit: (values) => triggerForgotPasswordSubmit(
+      location.state.email, values.code, values.password,
+    ),
+  });
+
+  if (!location.state.email) {
+    return <Redirect to="/auth/login" />;
+  }
 
   return (
-    <form>
+    <form onSubmit={formik.handleSubmit}>
       <FormTitle
         title="Create new Password"
         subtitle="Please ensure your new password meets the minimum requirements and is different to your previous passwords."
       />
-      <div className="fullWidth marginTop">
-        <InputLabel htmlFor="input-with-icon-adornment" className="marginBottomSmall">Password</InputLabel>
-        <Input
-          id="input-with-icon-adornment"
-          fullWidth
-          color="primary"
-          type={showPassword ? 'text' : 'password'}
-          endAdornment={(
-            <InputAdornment position="end">
-              <IconButton
-                aria-label="toggle password visibility"
-                onClick={() => setShowPassword(!showPassword)}
-              >
-                {showPassword ? <Visibility /> : <VisibilityOff />}
-              </IconButton>
-            </InputAdornment>
-          )}
+      <div className={clsx(styles.codeWrapper, 'marginTopMedium')}>
+        <InputLabel htmlFor="input-with-icon-adornment" className="marginBottomSmall">
+          Verification code sent to your email address
+          {' '}
+          <span className="red">*</span>
+        </InputLabel>
+        <ReactCodeInput
+          type="text"
+          fields={6}
+          name="code"
+          onChange={(e) => formik.setFieldValue('code', e)}
+          inputMode="email"
         />
       </div>
       <div className="fullWidth marginTop">
-        <InputLabel htmlFor="input-with-icon-adornment" className="marginBottomSmall">Confirm Password</InputLabel>
-        <Input
+        <InputLabel htmlFor="input-with-icon-adornment" className="marginBottomSmall">
+          Password
+          {' '}
+          <span className="red">*</span>
+        </InputLabel>
+        <TextField
+          name="password"
+          required
+          id="input-with-icon-adornment"
+          type="password"
+          fullWidth
+          color="primary"
+          onBlur={formik.handleBlur}
+          onChange={formik.handleChange}
+        />
+      </div>
+      <div className="fullWidth marginTop">
+        <InputLabel htmlFor="input-with-icon-adornment" className="marginBottomSmall">
+          Confirm Password
+          {' '}
+          <span className="red">*</span>
+        </InputLabel>
+        <TextField
+          name="confirmPassword"
           id="input-with-icon-adornment"
           fullWidth
           color="primary"
-          type={showPassword ? 'text' : 'password'}
+          type="password"
+          onBlur={formik.handleBlur}
+          onChange={formik.handleChange}
         />
+        {' '}
         <InputLabel htmlFor="input-with-icon-adornment" className="marginTopMedium red">Both passwords must match.</InputLabel>
         <Button
+          type="submit"
           variant="contained"
           color="primary"
           className="marginTop fullWidth"
-          startIcon={<LockOutlined />}
+          disabled={Boolean(
+            !formik.isValid
+            || loading,
+          )}
+          startIcon={loading ? <CircularProgress color="secondary" size="12px" />
+            : <PersonAddOutlined />}
         >
           Update Password
         </Button>

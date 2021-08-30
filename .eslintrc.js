@@ -26,6 +26,7 @@ module.exports = {
   rules: {
     'react/require-default-props': 'off',
     'react/jsx-filename-extension': [1, { extensions: ['.ts', '.tsx'] }],
+    'react-hooks/exhaustive-deps': 'off',
     'no-use-before-define': 'off',
     '@typescript-eslint/no-use-before-define': ['error'],
     'no-shadow': 'off',
