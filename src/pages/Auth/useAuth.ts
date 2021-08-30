@@ -1,6 +1,5 @@
 import Auth from '@aws-amplify/auth/lib';
 import { useState } from 'react';
-import { string } from 'yup/lib/locale';
 import { useAuthContext } from '../../context/AuthContext';
 import useHelpmycaseSnackbar from '../../hooks/useHelpmycaseSnackbar';
 import history from '../../utils/routes/history';
@@ -15,7 +14,9 @@ const useAuth = () => {
       setLoading(true);
       const userResponse = await Auth.signIn(username, password);
       if (userResponse) setUser(userResponse);
-      history.push('/auth/verify');
+      history.push('/auth/verify', {
+        verify: false,
+      });
     } catch (e) {
       sb.trigger(e.message || 'Something went wrong with signing you in');
     } finally {
@@ -42,11 +43,12 @@ const useAuth = () => {
 
       if (response.user) setUser(response.user);
       if (response.codeDeliveryDetails) {
-        history.push('/auth/verify', {
+        history.push('/auth/verify-email', {
           verify: true,
+          username,
+          password,
         });
       }
-      sb.trigger('Account successfully created - please verify your account', 'success');
     } catch (e) {
       if (e.message === 'Unable to get logged in user session') history.push('/auth/login');
       sb.trigger(e.message || 'Something went wrong signing you up');
@@ -55,16 +57,19 @@ const useAuth = () => {
     }
   };
 
-  const confirmSignUp = async (code: string) => {
+  const confirmSignUp = async (code: string, username: string, password: string) => {
     try {
       setLoading(true);
 
       if (!user) throw Error('Unable to get logged in user session');
 
-      await user.confirmRegistration(code, false, (err) => {
-        if (err) throw Error(err.message);
-        history.push('/dashboard');
+      user.confirmRegistration(code, false, (err) => {
+        if (err) {
+          sb.trigger(err.message || 'Something went wrong confirming your sign up');
+        }
       });
+
+      await signIn(username, password);
     } catch (e) {
       sb.trigger(e.message || 'Something went wrong confirming your sign up');
       history.push('/auth/signup');
@@ -88,14 +93,26 @@ const useAuth = () => {
     }
   };
 
+  const resendSignUpEmail = async () => {
+    try {
+      if (!user) throw Error('Unable to get logged in user session');
+
+      const response = await Auth.resendSignUp(user.getUsername());
+      sb.trigger(`Email resent to ${response.CodeDeliveryDetails.Destination}`, 'info');
+    } catch (e) {
+      sb.trigger(e.message || 'There was an error sending your email address');
+    }
+  };
+
   const resendConfirmationCode = async () => {
     try {
       setLoading(true);
 
       if (!user) throw Error('Unable to get logged in user session');
 
-      await user.resendConfirmationCode((err, _) => {
+      user.resendConfirmationCode((err, response) => {
         if (err) throw Error(err.message);
+        sb.trigger(`Code resent to ${response.CodeDeliveryDetails.Destination}`, 'info');
       });
     } catch (e) {
       sb.trigger(e.message || 'There was an issue');
@@ -127,10 +144,23 @@ const useAuth = () => {
   };
 
   const isLoggedIn = async () => {
-    const response = await Auth.currentUserInfo();
+    try {
+      const response = await Auth.currentUserInfo();
 
-    if (response) return true;
+      if (response) return true;
+    } catch (e) {
+      sb.trigger(e.message || 'There was an issue');
+    }
     return false;
+  };
+
+  const handleLogout = async () => {
+    try {
+      await Auth.signOut();
+      history.push('/auth/login');
+    } catch (e) {
+      sb.trigger(e.message || 'There was an issue signing you out');
+    }
   };
 
   return {
@@ -143,6 +173,8 @@ const useAuth = () => {
     triggerForgotPassword,
     triggerForgotPasswordSubmit,
     isLoggedIn,
+    handleLogout,
+    resendSignUpEmail,
   };
 };
 

@@ -15,10 +15,14 @@ const useStyles = makeStyles({
   },
 });
 
-const Logo: React.FC = () => {
+interface IProps {
+  width?: number;
+}
+
+const Logo: React.FC<IProps> = ({ width }: IProps) => {
   const styles = useStyles();
   return (
-    <div className={styles.logo}>
+    <div className={styles.logo} style={{ width }}>
       <img src={logoPNG} alt="HelpMyCase logo" />
     </div>
   );

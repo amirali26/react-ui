@@ -4,7 +4,7 @@ import { useFormik } from 'formik';
 import {
   Button, CircularProgress, makeStyles, Typography,
 } from 'helpmycase-storybook/dist/components/External';
-import React from 'react';
+import React, { useEffect } from 'react';
 import ReactCodeInput from 'react-code-input';
 import { NavLink, useLocation } from 'react-router-dom';
 import FormTitle from '../../../components/molecules/auth/FormTitle';
@@ -31,19 +31,21 @@ const initialValues = {
 
 interface IRouteState {
   verify?: boolean
+  username?: string
+  password?: string
 }
 
 const VerifyMfa: React.FC = () => {
   const styles = useStyles();
   const location = useLocation<IRouteState>();
   const {
-    loading, resendConfirmationCode, confirmSignUp, verifyMfa,
+    loading, resendConfirmationCode, resendSignUpEmail, confirmSignUp, verifyMfa,
   } = useAuth();
   const formik = useFormik({
     initialValues,
     onSubmit: async (values) => {
-      if (location.state?.verify) {
-        return confirmSignUp(values.code);
+      if (location.state?.verify && location.state?.username && location.state?.password) {
+        return confirmSignUp(values.code, location.state.username, location.state.password);
       }
       return verifyMfa(values.code);
     },
@@ -52,14 +54,20 @@ const VerifyMfa: React.FC = () => {
   return (
     <form onSubmit={formik.handleSubmit}>
       <FormTitle
-        title="Authenticate Account"
-        subtitle="A verification code has been sent to your registered device. This code will be valid for 20 minutes."
+        title={
+         location.state?.verify ? 'Verify Email' : 'Authenticate Account'
+        }
+        subtitle={
+          location.state?.verify ? 'Please verify your email address address using the code sent.'
+            : 'A verification code has been sent to your registered device. This code will be valid for 20 minutes.'
+        }
       />
       <div className={clsx(styles.codeWrapper, 'marginTopMedium')}>
         <ReactCodeInput
           type="text"
           fields={6}
           name="code"
+          value={formik.values.code}
           onChange={(e) => formik.setFieldValue('code', e)}
           inputMode="email"
         />
@@ -78,12 +86,11 @@ const VerifyMfa: React.FC = () => {
       <div className="marginTopMedium fullWidth textAlignLeft">
         <Typography variant="subtitle1">
           It may take a minute to receive your code?
-          {' '}
           <button
             type="button"
             className="underline red borderNone font"
             style={{ backgroundColor: 'transparent' }}
-            onClick={resendConfirmationCode}
+            onClick={location.state?.verify ? resendSignUpEmail : resendConfirmationCode}
           >
             Resend a new code
           </button>

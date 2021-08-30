@@ -15,7 +15,7 @@ const initialValues = {
   phoneNumber: '',
   email: '',
   password: '',
-  confirmPasword: '',
+  confirmPassword: '',
 };
 
 const formValidationSchema = Yup.object().shape({
@@ -27,7 +27,9 @@ const formValidationSchema = Yup.object().shape({
     .email('Invalid email address')
     .required('Email is a required field'),
   phoneNumber: Yup.string()
-    .min(5, 'Phone number should be atleast 5 characters in length')
+    .matches(new RegExp('^[0-9]*$'), 'Phone number should be only numbers')
+    .min(10, 'Phone number should be 10 digits')
+    .max(10, 'Phone number should be 10 digits')
     .required('Phone number is a required field'),
   password: Yup.string().min(8, 'Password must be 8 characters').required('Password is required'),
   confirmPassword: Yup.string()
@@ -63,6 +65,8 @@ const Register: React.FC = () => {
             id="input-with-icon-adornment"
             color="primary"
             fullWidth
+            helperText={formik.touched.firstName && formik.errors.firstName}
+            error={Boolean(formik.touched.firstName && formik.errors.firstName)}
             onBlur={formik.handleBlur}
             onChange={formik.handleChange}
           />
@@ -80,6 +84,8 @@ const Register: React.FC = () => {
             fullWidth
             onBlur={formik.handleBlur}
             onChange={formik.handleChange}
+            helperText={formik.touched.lastName && formik.errors.lastName}
+            error={Boolean(formik.touched.lastName && formik.errors.lastName)}
             required
           />
         </div>
@@ -99,6 +105,8 @@ const Register: React.FC = () => {
             color="primary"
             onBlur={formik.handleBlur}
             onChange={formik.handleChange}
+            helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
+            error={Boolean(formik.touched.phoneNumber && formik.errors.phoneNumber)}
             InputProps={{
               startAdornment: (
                 <Typography className="marginRightSmall grey">+44</Typography>
@@ -118,6 +126,8 @@ const Register: React.FC = () => {
             fullWidth
             color="primary"
             type="text"
+            helperText={formik.touched.email && formik.errors.email}
+            error={Boolean(formik.touched.email && formik.errors.email)}
             onBlur={formik.handleBlur}
             onChange={formik.handleChange}
             required
@@ -138,6 +148,8 @@ const Register: React.FC = () => {
             type="password"
             fullWidth
             color="primary"
+            helperText={formik.touched.password && formik.errors.password}
+            error={Boolean(formik.touched.password && formik.errors.password)}
             onBlur={formik.handleBlur}
             onChange={formik.handleChange}
           />
@@ -154,6 +166,8 @@ const Register: React.FC = () => {
             fullWidth
             color="primary"
             type="password"
+            helperText={formik.touched.confirmPassword && formik.errors.confirmPassword}
+            error={Boolean(formik.touched.confirmPassword && formik.errors.confirmPassword)}
             onBlur={formik.handleBlur}
             onChange={formik.handleChange}
           />

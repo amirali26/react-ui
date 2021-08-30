@@ -68,7 +68,8 @@ const Auth: React.FC = () => {
   const { isLoggedIn } = useAuth();
 
   const shouldRedirectToDashboard = async () => {
-    if (isLoggedIn()) history.push('/dashboard');
+    const response = await isLoggedIn();
+    if (response) history.push('/dashboard');
   };
 
   useEffect(() => {
@@ -89,6 +90,9 @@ const Auth: React.FC = () => {
                 <RegisterHelperText />
               </Route>
               <Route exact path="/auth/verify">
+                <VerifyHelperText />
+              </Route>
+              <Route exact path="/auth/verify-email">
                 <VerifyHelperText />
               </Route>
               <Route exact path={['/auth/reset-password', '/auth/reset-password/request']}>
@@ -115,7 +119,10 @@ const Auth: React.FC = () => {
               <ResetPasswordConfirmation />
             </Route>
             <Route exact path="/auth/verify">
-              <VerifyMfa />
+              <VerifyMfa key={history.location.pathname} />
+            </Route>
+            <Route exact path="/auth/verify-email">
+              <VerifyMfa key={history.location.pathname} />
             </Route>
           </Switch>
           <div className="marginTopMedium flex row center alignLeft justifyContentStart fullWidth marginLeftMedium">

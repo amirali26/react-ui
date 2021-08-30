@@ -16,8 +16,8 @@ const initialValues = {
 
 const formValidationSchema = Yup.object().shape({
   username: Yup.string()
-    .required(),
-  password: Yup.string().required(),
+    .required('Email is a required field'),
+  password: Yup.string().required('Password is a required field'),
 });
 
 const Login: React.FC = () => {

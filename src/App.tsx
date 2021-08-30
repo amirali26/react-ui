@@ -6,6 +6,7 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import './App.css';
 import AuthContext from './context/AuthContext';
 import Auth from './pages/Auth';
+import Dashboard from './pages/Dashboard';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -21,17 +22,15 @@ const App: React.FC = () => {
   return (
     <SnackbarProvider maxSnack={3}>
       <AuthContext.Provider value={{ user, setUser }}>
-        <Container maxWidth="lg" className={styles.root}>
-          <Switch>
-            <Route path="/auth">
-              <Auth />
-            </Route>
-            <Route path="/dashboard">
-              <h2>hi</h2>
-            </Route>
-            <Redirect to="/auth" />
-          </Switch>
-        </Container>
+        <Switch>
+          <Route path="/auth">
+            <Auth />
+          </Route>
+          <Route path="/dashboard">
+            <Dashboard />
+          </Route>
+          <Redirect to="/auth" />
+        </Switch>
       </AuthContext.Provider>
     </SnackbarProvider>
   );

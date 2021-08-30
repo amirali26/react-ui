@@ -1,36 +1,29 @@
-import { Auth, Hub } from 'aws-amplify';
 import Button from 'helpmycase-storybook/dist/components/Button';
 import React, { useEffect } from 'react';
-import { Route } from 'react-router-dom';
-import routes from '../../utils/routes/routes';
+import { Route, useLocation } from 'react-router-dom';
 import Navigation from '../../components/templates/Navigation';
+import history from '../../utils/routes/history';
+import routes from '../../utils/routes/routes';
+import useAuth from '../Auth/useAuth';
 
 const Dashboard: React.FC = () => {
-  const x = 2;
+  const location = useLocation();
+  const { isLoggedIn } = useAuth();
 
-  const handleLoginWithGoogle = async () => {
-    const response = await Auth.federatedSignIn(
-      {
-        provider: 'Google' as any,
-        customState: 'something wonderful',
-      },
-    );
+  const redirectToLogin = async () => {
+    const response = await isLoggedIn();
+    if (!response) {
+      history.push('/auth/login');
+    }
   };
 
   useEffect(() => {
-    (async () => {
-      await Hub.listen('auth', (data) => {
-        console.log(data, 'amir');
-      });
-    })();
-  });
+    redirectToLogin();
+  }, [location.pathname]);
 
   return (
     <Route path={[routes.dashboard, routes.base]}>
       <Navigation />
-      <Button variant="text" color="default" onClick={handleLoginWithGoogle}>
-        Something wonderful
-      </Button>
     </Route>
   );
 };
