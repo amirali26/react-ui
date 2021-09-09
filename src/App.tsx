@@ -1,6 +1,5 @@
-import { SnackbarProvider } from 'notistack';
 import { CognitoUser } from '@aws-amplify/auth/lib';
-import { Container, makeStyles } from 'helpmycase-storybook/dist/components/External';
+import { SnackbarProvider } from 'notistack';
 import React, { useState } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import './App.css';
@@ -8,16 +7,12 @@ import AuthContext from './context/AuthContext';
 import Auth from './pages/Auth';
 import Dashboard from './pages/Dashboard';
 
-const useStyles = makeStyles(() => ({
-  root: {
-    paddingTop: '32px',
-    paddingBottom: '32px',
-  },
-}));
-
 const App: React.FC = () => {
-  const styles = useStyles();
   const [user, setUser] = useState<CognitoUser>();
+
+  if (!user) {
+    <Redirect to="/auth" />;
+  }
 
   return (
     <SnackbarProvider maxSnack={3}>

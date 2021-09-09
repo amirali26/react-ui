@@ -28,6 +28,7 @@ const Request: React.FC = () => {
   } = useAuth();
   const formik = useFormik({
     initialValues,
+    initialErrors: initialValues,
     validationSchema: formValidationSchema,
     onSubmit: async (values) => triggerForgotPassword(values.email),
   });
@@ -62,7 +63,7 @@ const Request: React.FC = () => {
         className="marginTop fullWidth"
         startIcon={<AddToHomeScreenOutlined />}
         disabled={
-          loading || !formik.touched.email
+          loading || !formik.isValid
         }
       >
         Send Verification

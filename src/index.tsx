@@ -1,7 +1,8 @@
 import {
-  ApolloClient, ApolloProvider, InMemoryCache,
+  ApolloClient, ApolloProvider, createHttpLink, HttpLink, InMemoryCache,
 } from '@apollo/client';
-import Amplify from 'aws-amplify';
+import { setContext } from '@apollo/client/link/context';
+import Amplify, { Auth } from 'aws-amplify';
 import { ThemeProvider } from 'helpmycase-storybook/dist/components/External';
 import theme from 'helpmycase-storybook/dist/theme/theme';
 import React from 'react';
@@ -15,8 +16,20 @@ import history from './utils/routes/history';
 
 Amplify.configure(amplifyConfiguration);
 
+const authLink = setContext(async (_, { headers }) => {
+  // get the authentication token from local storage if it exists
+  const token = (await Auth.currentSession()).getAccessToken();
+  // return the headers to the context so httpLink can read them
+  return {
+    headers: {
+      ...headers,
+      authorization: token.getJwtToken(),
+    },
+  };
+});
+
 const client = new ApolloClient({
-  uri: 'localhost:8080/graphql',
+  link: authLink.concat(createHttpLink({ uri: 'http://localhost:8080/graphql' })),
   cache: new InMemoryCache(),
 });
 

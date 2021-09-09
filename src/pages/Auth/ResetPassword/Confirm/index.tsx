@@ -15,7 +15,7 @@ import { useStyles } from '../../VerifyMfa';
 const initialValues = {
   code: '',
   password: '',
-  confirmPasword: '',
+  confirmPassword: '',
 };
 
 const formValidationSchema = Yup.object().shape({
@@ -31,6 +31,7 @@ const Confirmation: React.FC = () => {
   const { loading, triggerForgotPasswordSubmit } = useAuth();
   const formik = useFormik({
     initialValues,
+    initialErrors: initialValues,
     validationSchema: formValidationSchema,
     onSubmit: (values) => triggerForgotPasswordSubmit(
       location.state.email, values.code, values.password,
@@ -76,6 +77,8 @@ const Confirmation: React.FC = () => {
           color="primary"
           onBlur={formik.handleBlur}
           onChange={formik.handleChange}
+          helperText={formik.touched.password && formik.errors.password}
+          error={Boolean(formik.touched.password && formik.errors.password)}
         />
       </div>
       <div className="fullWidth marginTop">
@@ -92,9 +95,10 @@ const Confirmation: React.FC = () => {
           type="password"
           onBlur={formik.handleBlur}
           onChange={formik.handleChange}
+          helperText={formik.touched.confirmPassword && formik.errors.confirmPassword}
+          error={Boolean(formik.touched.confirmPassword && formik.errors.confirmPassword)}
         />
         {' '}
-        <InputLabel htmlFor="input-with-icon-adornment" className="marginTopMedium red">Both passwords must match.</InputLabel>
         <Button
           type="submit"
           variant="contained"

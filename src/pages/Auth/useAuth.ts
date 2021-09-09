@@ -29,6 +29,8 @@ const useAuth = () => {
     password: string,
     email: string,
     phoneNumber: string,
+    firstName: string,
+    lastName: string,
   ): Promise<void> => {
     try {
       setLoading(true);
@@ -38,6 +40,8 @@ const useAuth = () => {
         attributes: {
           email,
           phone_number: `+44${phoneNumber}`,
+          name: `${firstName} ${lastName}`,
+          birthdate: '15/04/1996',
         },
       });
 
@@ -145,8 +149,7 @@ const useAuth = () => {
 
   const isLoggedIn = async () => {
     try {
-      const response = await Auth.currentUserInfo();
-
+      const response = await Auth.currentAuthenticatedUser();
       if (response) return true;
     } catch (e) {
       sb.trigger(e.message || 'There was an issue');

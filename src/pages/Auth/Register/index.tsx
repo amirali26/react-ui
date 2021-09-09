@@ -44,7 +44,14 @@ const Register: React.FC = () => {
     initialValues,
     initialErrors: initialValues,
     validationSchema: formValidationSchema,
-    onSubmit: (values) => signUp(values.email, values.password, values.email, values.phoneNumber),
+    onSubmit: (values) => signUp(
+      values.email,
+      values.password,
+      values.email,
+      values.phoneNumber,
+      values.firstName,
+      values.lastName,
+    ),
   });
   return (
     <form onSubmit={formik.handleSubmit}>

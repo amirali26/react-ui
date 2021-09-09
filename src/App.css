@@ -1,3 +1,11 @@
+/* Position */
+.absolute {
+    position: absolute;
+}
+.relative {
+    position: relative;
+}
+
 
 /* Alignment  */
 .fullWidth {
@@ -36,6 +44,11 @@
 }
 .flex.justifyContentStart {
     justify-content: flex-start;
+}
+.alignCenter {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 /* Margins  */
