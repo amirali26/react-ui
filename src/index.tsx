@@ -1,5 +1,5 @@
 import {
-  ApolloClient, ApolloProvider, createHttpLink, HttpLink, InMemoryCache,
+  ApolloClient, ApolloProvider, createHttpLink, InMemoryCache,
 } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import Amplify, { Auth } from 'aws-amplify';
@@ -9,9 +9,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router } from 'react-router-dom';
 import App from './App';
-import amplifyConfiguration from './utils/awsExports';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
+import amplifyConfiguration from './utils/awsExports';
 import history from './utils/routes/history';
 
 Amplify.configure(amplifyConfiguration);

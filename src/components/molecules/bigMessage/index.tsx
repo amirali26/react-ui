@@ -1,4 +1,7 @@
-import { Button, ButtonProps, Typography } from 'helpmycase-storybook/dist/components/External';
+import {
+  Button, ButtonProps, makeStyles, Typography,
+} from 'helpmycase-storybook/dist/components/External';
+import theme from 'helpmycase-storybook/dist/theme/theme';
 import React from 'react';
 
 interface IProps {
@@ -8,18 +11,28 @@ interface IProps {
     buttonProps: ButtonProps,
 }
 
+const useStyles = makeStyles({
+  iconHolder: {
+    '& > svg': {
+      width: '100%',
+      height: '100%',
+      color: theme.palette.primary.main,
+    },
+  },
+});
+
 const BigMessage: React.FC<IProps> = ({
   icon, title, subtitle, buttonProps,
 }: IProps) => {
-  const x = 2;
+  const classes = useStyles();
   return (
-    <div className="absolute alignCenter">
-      <div className="marginBottomMedium">
+    <div className="absolute alignCenter flex column center" style={{ maxWidth: '500px' }}>
+      <div style={{ width: '100px', height: '100px' }} className={classes.iconHolder}>
         { icon }
       </div>
-      <Typography variant="h2" className="marginBottomSmall">{title}</Typography>
-      <Typography variant="subtitle1">{subtitle}</Typography>
-      <Button {...buttonProps}>
+      <Typography variant="h2" className="marginBottomSmall textAlignCenter">{title}</Typography>
+      <Typography variant="subtitle1" className="marginBottomMedium textAlignCenter">{subtitle}</Typography>
+      <Button variant="contained" color="primary" {...buttonProps}>
         {buttonProps.children}
       </Button>
     </div>

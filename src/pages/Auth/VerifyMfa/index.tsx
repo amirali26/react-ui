@@ -4,7 +4,7 @@ import { useFormik } from 'formik';
 import {
   Button, CircularProgress, makeStyles, Typography,
 } from 'helpmycase-storybook/dist/components/External';
-import React, { useEffect } from 'react';
+import React from 'react';
 import ReactCodeInput from 'react-code-input';
 import { NavLink, useLocation } from 'react-router-dom';
 import FormTitle from '../../../components/molecules/auth/FormTitle';

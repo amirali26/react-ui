@@ -10,10 +10,6 @@ import Dashboard from './pages/Dashboard';
 const App: React.FC = () => {
   const [user, setUser] = useState<CognitoUser>();
 
-  if (!user) {
-    <Redirect to="/auth" />;
-  }
-
   return (
     <SnackbarProvider maxSnack={3}>
       <AuthContext.Provider value={{ user, setUser }}>
