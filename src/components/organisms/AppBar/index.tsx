@@ -86,7 +86,7 @@ const NavigationAppBar: React.FC<IProps> = ({ handleOpen }: IProps) => {
         </Toolbar>
       </AppBar>
       <Modal open={addAccountOpen} handleClose={() => setAddAccountOpen(false)}>
-        <CreateAccountForm callback={handleClose} />
+        <CreateAccountForm callback={() => setAddAccountOpen(false)} />
       </Modal>
     </div>
   );
