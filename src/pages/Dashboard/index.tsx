@@ -57,7 +57,6 @@ const Dashboard: React.FC = () => {
     }
   }, [user]);
 
-  console.log(data);
   return (
     <Route path={[routes.dashboard, routes.base]}>
       <Navigation />

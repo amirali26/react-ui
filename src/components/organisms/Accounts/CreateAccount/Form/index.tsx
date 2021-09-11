@@ -62,7 +62,9 @@ const Form: React.FC<IProps> = ({ callback }: IProps) => {
       userVar(userAccount);
     }
     sb.trigger('An account has been successfully created', 'success');
-    if (callback) callback();
+    if (callback) {
+      callback();
+    }
   }
 
   return (
