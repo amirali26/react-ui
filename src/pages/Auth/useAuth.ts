@@ -149,8 +149,7 @@ const useAuth = () => {
 
   const isLoggedIn = async () => {
     try {
-      const response = await Auth.currentAuthenticatedUser();
-      if (response) return response.username;
+      return await Auth.currentSession();
     } catch (e) {
       sb.trigger(e.message || 'There was an issue');
     }

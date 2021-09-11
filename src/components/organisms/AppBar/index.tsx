@@ -14,6 +14,8 @@ import {
 import React from 'react';
 import useAuth from '../../../pages/Auth/useAuth';
 import Logo from '../../atoms/Logo';
+import Modal from '../../molecules/modal';
+import CreateAccountForm from '../Accounts/CreateAccount/Form';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,8 +35,9 @@ interface IProps {
 
 const NavigationAppBar: React.FC<IProps> = ({ handleOpen }: IProps) => {
   const classes = useStyles();
-  const { handleLogout } = useAuth();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [addAccountOpen, setAddAccountOpen] = React.useState<boolean>(false);
+  const { handleLogout } = useAuth();
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -67,7 +70,11 @@ const NavigationAppBar: React.FC<IProps> = ({ handleOpen }: IProps) => {
               <AccountBoxOutlined className="marginRightSmall" />
               My Profile
             </MenuItem>
-            <MenuItem onClick={handleClose}>
+            <MenuItem onClick={() => {
+              handleClose();
+              setAddAccountOpen(true);
+            }}
+            >
               <AddBoxOutlined className="marginRightSmall" />
               Add Account
             </MenuItem>
@@ -78,6 +85,9 @@ const NavigationAppBar: React.FC<IProps> = ({ handleOpen }: IProps) => {
           </Menu>
         </Toolbar>
       </AppBar>
+      <Modal open={addAccountOpen} handleClose={() => setAddAccountOpen(false)}>
+        <CreateAccountForm />
+      </Modal>
     </div>
   );
 };
