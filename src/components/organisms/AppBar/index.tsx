@@ -1,3 +1,4 @@
+import { useReactiveVar } from '@apollo/client';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -13,9 +14,11 @@ import {
 } from 'helpmycase-storybook/dist/components/External';
 import React from 'react';
 import useAuth from '../../../pages/Auth/useAuth';
+import { userVar } from '../../../pages/Dashboard';
 import Logo from '../../atoms/Logo';
 import Modal from '../../molecules/modal';
 import CreateAccountForm from '../Accounts/CreateAccount/Form';
+import SwitchAccount from '../Accounts/SwitchAccount';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -37,6 +40,9 @@ const NavigationAppBar: React.FC<IProps> = ({ handleOpen }: IProps) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [addAccountOpen, setAddAccountOpen] = React.useState<boolean>(false);
+  const [switchAccountOpen, setSwitchAccountOpen] = React.useState<boolean>(false);
+
+  const { selectedAccount } = useReactiveVar(userVar);
   const { handleLogout } = useAuth();
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -57,8 +63,26 @@ const NavigationAppBar: React.FC<IProps> = ({ handleOpen }: IProps) => {
           <div className={clsx(classes.title)}>
             <Logo width={200} />
           </div>
-          <Button className="marginRightMedium" color="inherit" startIcon={<AccountCircleOutlined />} onClick={handleClick}>Profile</Button>
-          <Button color="primary" variant="contained" startIcon={<AccountBalanceOutlined />}>Switch Account</Button>
+          <Button
+            className="marginRightMedium"
+            color="inherit"
+            startIcon={<AccountCircleOutlined />}
+            onClick={handleClick}
+          >
+            Profile
+          </Button>
+          <Button
+            color="primary"
+            variant="contained"
+            startIcon={<AccountBalanceOutlined />}
+            onClick={() => {
+              handleClose();
+              setSwitchAccountOpen(true);
+            }}
+          >
+            Switch Account
+            { selectedAccount && ` - ${selectedAccount.name}`}
+          </Button>
           <Menu
             id="simple-menu"
             anchorEl={anchorEl}
@@ -87,6 +111,9 @@ const NavigationAppBar: React.FC<IProps> = ({ handleOpen }: IProps) => {
       </AppBar>
       <Modal open={addAccountOpen} handleClose={() => setAddAccountOpen(false)}>
         <CreateAccountForm callback={() => setAddAccountOpen(false)} />
+      </Modal>
+      <Modal open={switchAccountOpen} handleClose={() => setSwitchAccountOpen(false)}>
+        <SwitchAccount callback={() => setSwitchAccountOpen(false)} />
       </Modal>
     </div>
   );

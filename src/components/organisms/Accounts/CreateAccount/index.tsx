@@ -4,7 +4,7 @@ import BigMessage from '../../../molecules/bigMessage';
 import Modal from '../../../molecules/modal';
 import Form from './Form';
 
-const CreateAccount = () => {
+const CreateAccount: React.FC = () => {
   const [open, setOpen] = useState<boolean>(false);
 
   const handleOpen = () => {
