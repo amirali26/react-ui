@@ -69,7 +69,7 @@ const Form: React.FC<IProps> = ({ callback }: IProps) => {
 
   return (
     <form onSubmit={formik.handleSubmit}>
-      <div className="fullWidth marginTop">
+      <div className="fullWidth">
         <InputLabel htmlFor="input-with-icon-adornment" className="marginBottomSmall">Account name</InputLabel>
         <TextField
           id="input-with-icon-adornment"

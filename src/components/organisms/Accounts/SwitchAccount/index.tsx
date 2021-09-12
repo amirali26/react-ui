@@ -1,5 +1,5 @@
 import { useReactiveVar } from '@apollo/client';
-import { PersonPinCircleTwoTone } from '@material-ui/icons';
+import { Person, PersonPinCircleTwoTone } from '@material-ui/icons';
 import {
   Avatar, List, ListItem, ListItemAvatar, ListItemText, Typography,
 } from 'helpmycase-storybook/dist/components/External';
@@ -30,7 +30,7 @@ const SwitchAccount: React.FC<IProps> = ({ callback }: IProps) => {
     >
       <ListItemAvatar>
         <Avatar>
-          <PersonPinCircleTwoTone />
+          <Person />
         </Avatar>
       </ListItemAvatar>
       <ListItemText primary={account.name} secondary="Administrator" />

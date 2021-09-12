@@ -10,6 +10,7 @@ import ReactDOM from 'react-dom';
 import { Router } from 'react-router-dom';
 import App from './App';
 import './index.css';
+import { userVar } from './pages/Dashboard';
 import reportWebVitals from './reportWebVitals';
 import amplifyConfiguration from './utils/awsExports';
 import history from './utils/routes/history';
@@ -24,6 +25,7 @@ const authLink = setContext(async (_, { headers }) => {
     headers: {
       ...headers,
       authorization: token.getJwtToken(),
+      accountid: userVar().selectedAccount?.id,
     },
   };
 });

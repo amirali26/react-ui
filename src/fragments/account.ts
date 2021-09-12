@@ -8,6 +8,7 @@ export const CORE_ACCOUNT_DETAILS = gql`
             id,
             name
         },
+        createdDate,
     }
 `;
 

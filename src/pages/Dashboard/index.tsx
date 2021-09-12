@@ -89,7 +89,9 @@ const Dashboard: React.FC = () => {
       {
         data?.user.accounts.length && (
           <Switch>
-            <h2>hi</h2>
+            <div className="marginTop marginBottom" style={{ marginLeft: '24px', marginRight: '24px' }}>
+              <h2>hi</h2>
+            </div>
           </Switch>
         )
       }
