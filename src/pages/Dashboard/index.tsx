@@ -5,6 +5,7 @@ import React, { useEffect } from 'react';
 import { Route, Switch, useLocation } from 'react-router-dom';
 import BackdropLoader from '../../components/molecules/backdropLoader';
 import CreateAccount from '../../components/organisms/Accounts/CreateAccount';
+import UserInformation from '../../components/organisms/User/UserInformation';
 import Navigation from '../../components/templates/Navigation';
 import usePrevious from '../../hooks/usePrev';
 import { Account } from '../../models/account';
@@ -88,11 +89,11 @@ const Dashboard: React.FC = () => {
       }
       {
         data?.user.accounts.length && (
+        <div className="marginTop marginBottom" style={{ marginLeft: '24px', marginRight: '24px' }}>
           <Switch>
-            <div className="marginTop marginBottom" style={{ marginLeft: '24px', marginRight: '24px' }}>
-              <h2>hi</h2>
-            </div>
+            <Route path="/dashboard/user-settings" component={UserInformation} />
           </Switch>
+        </div>
         )
       }
     </Route>

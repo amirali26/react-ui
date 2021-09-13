@@ -14,6 +14,7 @@ import {
   AppBar, Button, IconButton, makeStyles, Menu, MenuItem, Toolbar,
 } from 'helpmycase-storybook/dist/components/External';
 import React from 'react';
+import { Link } from 'react-router-dom';
 import useAuth from '../../../pages/Auth/useAuth';
 import { userVar } from '../../../pages/Dashboard';
 import Logo from '../../atoms/Logo';
@@ -21,7 +22,6 @@ import Modal from '../../molecules/modal';
 import AccountInformation from '../Accounts/AccountInformation';
 import CreateAccountForm from '../Accounts/CreateAccount/Form';
 import SwitchAccount from '../Accounts/SwitchAccount';
-import UserInformation from '../User/UserInformation';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -45,7 +45,6 @@ const NavigationAppBar: React.FC<IProps> = ({ handleOpen }: IProps) => {
   const [addAccountOpen, setAddAccountOpen] = React.useState<boolean>(false);
   const [switchAccountOpen, setSwitchAccountOpen] = React.useState<boolean>(false);
   const [accountInformationOpen, setAccountInformationOpen] = React.useState<boolean>(false);
-  const [userInformationOpen, setUserInformationOpen] = React.useState<boolean>(false);
   const { user, selectedAccount } = useReactiveVar(userVar);
   const { handleLogout } = useAuth();
 
@@ -94,10 +93,9 @@ const NavigationAppBar: React.FC<IProps> = ({ handleOpen }: IProps) => {
             open={Boolean(anchorEl)}
             onClose={handleClose}
           >
-            <MenuItem onClick={() => {
-              handleClose();
-              setUserInformationOpen(true);
-            }}
+            <MenuItem
+              component={Link}
+              to="/dashboard/user-settings"
             >
               <AccountBoxOutlined className="marginRightSmall" />
               My Profile
@@ -125,9 +123,6 @@ const NavigationAppBar: React.FC<IProps> = ({ handleOpen }: IProps) => {
           </Menu>
         </Toolbar>
       </AppBar>
-      <Modal open={userInformationOpen} handleClose={() => setUserInformationOpen(false)}>
-        <UserInformation />
-      </Modal>
       <Modal open={addAccountOpen} handleClose={() => setAddAccountOpen(false)}>
         <CreateAccountForm callback={() => setAddAccountOpen(false)} />
       </Modal>
