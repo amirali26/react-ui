@@ -95,6 +95,7 @@ const NavigationAppBar: React.FC<IProps> = ({ handleOpen }: IProps) => {
           >
             <MenuItem
               component={Link}
+              onClick={handleClose}
               to="/dashboard/user-settings"
             >
               <AccountBoxOutlined className="marginRightSmall" />

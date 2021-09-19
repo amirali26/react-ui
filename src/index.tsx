@@ -1,37 +1,23 @@
 import {
-  ApolloClient, ApolloProvider, createHttpLink, InMemoryCache,
+  ApolloClient, ApolloProvider, InMemoryCache,
 } from '@apollo/client';
-import { setContext } from '@apollo/client/link/context';
-import Amplify, { Auth } from 'aws-amplify';
+import Amplify from 'aws-amplify';
 import { ThemeProvider } from 'helpmycase-storybook/dist/components/External';
 import theme from 'helpmycase-storybook/dist/theme/theme';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router } from 'react-router-dom';
+import splitLink from './apollo-configuration';
 import App from './App';
 import './index.css';
-import { userVar } from './pages/Dashboard';
 import reportWebVitals from './reportWebVitals';
 import amplifyConfiguration from './utils/awsExports';
 import history from './utils/routes/history';
 
 Amplify.configure(amplifyConfiguration);
 
-const authLink = setContext(async (_, { headers }) => {
-  // get the authentication token from local storage if it exists
-  const token = (await Auth.currentSession()).getAccessToken();
-  // return the headers to the context so httpLink can read them
-  return {
-    headers: {
-      ...headers,
-      authorization: token.getJwtToken(),
-      accountid: userVar().selectedAccount?.id,
-    },
-  };
-});
-
 const client = new ApolloClient({
-  link: authLink.concat(createHttpLink({ uri: 'http://localhost:8080/graphql' })),
+  link: splitLink,
   cache: new InMemoryCache(),
 });
 

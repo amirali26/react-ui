@@ -1,4 +1,6 @@
-import { makeVar, useLazyQuery, useReactiveVar } from '@apollo/client';
+import {
+  gql, makeVar, useLazyQuery, useMutation, useReactiveVar,
+} from '@apollo/client';
 import { Auth } from 'aws-amplify';
 import { isEqual } from 'lodash';
 import React, { useEffect } from 'react';
@@ -31,7 +33,18 @@ export const userVar = makeVar<UserAccount>({
   },
 });
 
+const ADD_REQUEST = gql`
+  mutation newRequestSubmission($requestSubmission: RequestSubmissionInput!) {
+    newRequestSubmission(requestSubmission: $requestSubmission) {
+      id,
+      name
+    }
+  }
+`;
+
 const Dashboard: React.FC = () => {
+  const [addAccount] = useMutation(ADD_REQUEST);
+
   const { isLoggedIn } = useAuth();
   const user = useReactiveVar(userVar);
   const prevUser = usePrevious(user);
