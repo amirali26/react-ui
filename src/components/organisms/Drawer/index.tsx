@@ -1,10 +1,64 @@
-import { SwipeableDrawer } from 'helpmycase-storybook/dist/components/External';
+import { InboxOutlined, MailOutline } from '@material-ui/icons';
+import {
+  Box, Divider, List, ListItem, ListItemIcon, ListItemText, SwipeableDrawer,
+} from 'helpmycase-storybook/dist/components/External';
 import React from 'react';
+import history from '../../../utils/routes/history';
+
+const routes: {name: string, route: string}[] = [
+  {
+    name: 'Dashboard',
+    route: '/dashboard/cases',
+  },
+  {
+    name: 'User Profile',
+    route: '/dashboard/user-settings',
+  },
+  {
+    name: 'Logout',
+    route: '/dashboard/logout',
+  },
+];
 
 interface IProps {
     open: boolean;
     handleOpen: (open: boolean) => void;
 }
+
+const list = (handleClose: () => void) => (
+  <Box
+    role="presentation"
+  >
+    <List>
+      {routes.map((route, index) => (
+        <ListItem
+          button
+          key={route.name}
+          onClick={() => {
+            history.push(route.route);
+            handleClose();
+          }}
+        >
+          <ListItemIcon>
+            {index % 2 === 0 ? <InboxOutlined /> : <MailOutline />}
+          </ListItemIcon>
+          <ListItemText primary={route.name} />
+        </ListItem>
+      ))}
+    </List>
+    {/* <Divider />
+    <List>
+      {['All mail', 'Trash', 'Spam'].map((text, index) => (
+        <ListItem button key={text}>
+          <ListItemIcon>
+            {index % 2 === 0 ? <InboxOutlined /> : <MailOutline />}
+          </ListItemIcon>
+          <ListItemText primary={text} />
+        </ListItem>
+      ))}
+    </List> */}
+  </Box>
+);
 
 export const NavigationSideBar: React.FC<IProps> = ({
   open,
@@ -16,8 +70,9 @@ export const NavigationSideBar: React.FC<IProps> = ({
     onOpen={() => handleOpen(true)}
     color="primary"
   >
-    <h2>nice 2</h2>
+    {list(() => handleOpen(false))}
   </SwipeableDrawer>
+
 );
 
 export default NavigationSideBar;

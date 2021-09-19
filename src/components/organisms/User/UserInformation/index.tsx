@@ -1,10 +1,10 @@
 import { useQuery, useReactiveVar } from '@apollo/client';
-import { CloudUpload, PersonOutline, PhotoCamera } from '@material-ui/icons';
+import { CloudUpload, PhotoCamera } from '@material-ui/icons';
+import clsx from 'clsx';
 import {
   Avatar, Button, createStyles, Divider, InputLabel, makeStyles, TextField, Theme, Typography,
 } from 'helpmycase-storybook/dist/components/External';
 import React from 'react';
-import clsx from 'clsx';
 import { userVar } from '../../../../pages/Dashboard';
 import { GET_USER } from '../../../../queries/user';
 import BackdropLoader from '../../../molecules/backdropLoader';

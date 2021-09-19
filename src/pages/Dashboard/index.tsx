@@ -16,6 +16,7 @@ import { GET_USER, IGetUser } from '../../queries/user';
 import history from '../../utils/routes/history';
 import routes from '../../utils/routes/routes';
 import useAuth from '../Auth/useAuth';
+import Cases from '../Cases';
 
 export type UserAccount = {
   user: User,
@@ -33,18 +34,7 @@ export const userVar = makeVar<UserAccount>({
   },
 });
 
-const ADD_REQUEST = gql`
-  mutation newRequestSubmission($requestSubmission: RequestSubmissionInput!) {
-    newRequestSubmission(requestSubmission: $requestSubmission) {
-      id,
-      name
-    }
-  }
-`;
-
 const Dashboard: React.FC = () => {
-  const [addAccount] = useMutation(ADD_REQUEST);
-
   const { isLoggedIn } = useAuth();
   const user = useReactiveVar(userVar);
   const prevUser = usePrevious(user);
@@ -105,6 +95,7 @@ const Dashboard: React.FC = () => {
         <div className="marginTop marginBottom" style={{ marginLeft: '24px', marginRight: '24px' }}>
           <Switch>
             <Route path="/dashboard/user-settings" component={UserInformation} />
+            <Route path={['/dashboard/cases', '/dashboard']} component={Cases} />
           </Switch>
         </div>
         )
