@@ -1,9 +1,9 @@
-import * as React from 'react';
 import { useLazyQuery } from '@apollo/client';
+import * as React from 'react';
 import { Order } from '.';
-import GET_REQUESTS from '../../../../queries/requests';
-import { Request } from '../../../../models/request';
 import useHelpmycaseSnackbar from '../../../../hooks/useHelpmycaseSnackbar';
+import { Request } from '../../../../models/request';
+import GET_REQUESTS from '../../../../queries/requests';
 
 const useTable = () => {
   const sb = useHelpmycaseSnackbar();
@@ -16,7 +16,6 @@ const useTable = () => {
   const [order, setOrder] = React.useState<Order>('asc');
   const [orderBy, setOrderBy] = React.useState<keyof Request>('createdDate');
   const [page, setPage] = React.useState(0);
-  const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   React.useEffect(() => {
@@ -41,10 +40,6 @@ const useTable = () => {
     setPage(0);
   };
 
-  const handleChangeDense = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setDense(event.target.checked);
-  };
-
   const handleClick = (event: React.MouseEvent<unknown>, requestId: string) => {
     console.log(requestId);
   };
@@ -54,14 +49,12 @@ const useTable = () => {
     order,
     orderBy,
     page,
-    dense,
     rowsPerPage,
     getRequests,
     handleClick,
     handleRequestSort,
     handleChangePage,
     handleChangeRowsPerPage,
-    handleChangeDense,
   };
 };
 

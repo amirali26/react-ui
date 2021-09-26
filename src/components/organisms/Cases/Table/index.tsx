@@ -1,7 +1,7 @@
 import {
   Box,
-  FormControlLabel, Paper,
-  Switch, Table as MuiTable,
+  Paper,
+  Table as MuiTable,
   TableBody, TableCell,
   TableContainer,
   TablePagination, TableRow,
@@ -31,7 +31,6 @@ const Table: React.FC = () => {
   const {
     page,
     rows,
-    dense,
     order,
     orderBy,
     rowsPerPage,
@@ -39,7 +38,6 @@ const Table: React.FC = () => {
     handleClick,
     handleRequestSort,
     handleChangePage,
-    handleChangeDense,
     handleChangeRowsPerPage,
   } = useTable();
 
@@ -53,7 +51,7 @@ const Table: React.FC = () => {
           <MuiTable
             style={{ minWidth: 750 }}
             aria-labelledby="tableTitle"
-            size={dense ? 'small' : 'medium'}
+            size="small"
           >
             <Head
               order={order}
@@ -99,7 +97,7 @@ const Table: React.FC = () => {
               {emptyRows > 0 && (
                 <TableRow
                   style={{
-                    height: (dense ? 33 : 53) * emptyRows,
+                    height: 33 * emptyRows,
                   }}
                 >
                   <TableCell colSpan={6} />
@@ -109,7 +107,7 @@ const Table: React.FC = () => {
           </MuiTable>
         </TableContainer>
         <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
+          rowsPerPageOptions={[10, 25, 50]}
           count={rows.length}
           rowsPerPage={rowsPerPage}
           page={page}
@@ -117,10 +115,6 @@ const Table: React.FC = () => {
           onChangeRowsPerPage={handleChangeRowsPerPage}
         />
       </Paper>
-      <FormControlLabel
-        control={<Switch checked={dense} onChange={handleChangeDense} />}
-        label="Dense padding"
-      />
     </Box>
   );
 };

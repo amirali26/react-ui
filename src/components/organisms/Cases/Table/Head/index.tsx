@@ -43,6 +43,12 @@ const headCells: readonly HeadCell[] = [
     disablePadding: false,
     label: 'Case',
   },
+  {
+    id: 'createdDate',
+    numeric: false,
+    disablePadding: false,
+    label: 'Created Date',
+  },
 ];
 
 interface IProps {

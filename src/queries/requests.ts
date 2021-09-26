@@ -9,6 +9,7 @@ query Query {
     case,
     phoneNumber,
     email,
+    createdDate,
   }
 }
 `;
