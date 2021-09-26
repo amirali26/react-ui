@@ -74,7 +74,7 @@ const Dashboard: React.FC = () => {
 
   useEffect(() => {
     Promise.resolve(getUserOrRedirectToLogin());
-  }, [location.pathname]);
+  }, []);
 
   useEffect(() => {
     if (!isEqual(user, prevUser)) {

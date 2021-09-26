@@ -161,7 +161,10 @@
     color: #ffff !important;
 }
 .grey {
-    color: #9999 !important
+    color: #9999 !important;
+}
+.success {
+    color: #388e3c !important;
 }
 
 /* Button Styles */
