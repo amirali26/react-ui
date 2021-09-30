@@ -26,6 +26,7 @@
     "helpmycase-storybook": "^0.1.9",
     "history": "^4.10.1",
     "lodash": "^4.17.21",
+    "luxon": "^2.0.2",
     "notistack": "^1.0.10",
     "react": "^17.0.2",
     "react-code-input": "^3.10.1",
@@ -40,7 +41,7 @@
   },
   "scripts": {
     "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix",
-    "co:login": "aws codeartifact login --tool npm --repository helpmycase --domain helpmycase --domain-owner 460234074473 --profile worldwideandweb",
+    "co:login": "aws codeartifact login --tool npm --repository helpmycase --domain helpmycase --domain-owner 460234074473",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -65,6 +66,7 @@
     ]
   },
   "devDependencies": {
+    "@types/luxon": "^2.0.4",
     "@types/react-router-dom": "^5.1.7",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-import-resolver-typescript": "^2.4.0",

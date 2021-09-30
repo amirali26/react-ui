@@ -8,6 +8,7 @@ import {
 } from 'helpmycase-storybook/dist/components/External';
 import theme from 'helpmycase-storybook/dist/theme/theme';
 import * as React from 'react';
+import { DateTime } from 'luxon';
 import descendingComparator from '../../../../utils/descendingComparator';
 import stableSort from '../../../../utils/stableSort';
 import Head from './Head';
@@ -91,6 +92,9 @@ const Table: React.FC = () => {
                       <TableCell align="left">{row.phoneNumber}</TableCell>
                       <TableCell align="left">{row.email}</TableCell>
                       <TableCell align="left">{row.case}</TableCell>
+                      <TableCell align="left">
+                        {DateTime.fromSeconds(+row.createdDate).toLocaleString()}
+                      </TableCell>
                     </TableRow>
                   );
                 })}
@@ -107,7 +111,7 @@ const Table: React.FC = () => {
           </MuiTable>
         </TableContainer>
         <TablePagination
-          rowsPerPageOptions={[10, 25, 50]}
+          rowsPerPageOptions={[15, 25, 50]}
           count={rows.length}
           rowsPerPage={rowsPerPage}
           page={page}
