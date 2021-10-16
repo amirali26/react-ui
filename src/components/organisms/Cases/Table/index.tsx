@@ -89,7 +89,11 @@ const Table: React.FC = () => {
                         </div>
                       </TableCell>
                       <TableCell align="left">{row.name}</TableCell>
-                      <TableCell align="left">{row.phoneNumber}</TableCell>
+                      <TableCell align="left">
+                        +44
+                        {' '}
+                        {row.phoneNumber}
+                      </TableCell>
                       <TableCell align="left">{row.email}</TableCell>
                       <TableCell align="left">{row.case}</TableCell>
                       <TableCell align="left">

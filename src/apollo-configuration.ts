@@ -1,9 +1,8 @@
-import { createHttpLink, split } from '@apollo/client';
+import { createHttpLink } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
-import { WebSocketLink } from '@apollo/client/link/ws';
-import { getMainDefinition } from '@apollo/client/utilities';
 import { Auth } from 'aws-amplify';
 import { userVar } from './pages/Dashboard';
+import environmentVars from './utils/env.variables';
 
 const authLink = setContext(async (_, { headers }) => {
   // get the authentication token from local storage if it exists
@@ -18,16 +17,6 @@ const authLink = setContext(async (_, { headers }) => {
   };
 });
 
-const splitLink = split(
-  ({ query }) => {
-    const definition = getMainDefinition(query);
-    return (
-      definition.kind === 'OperationDefinition'
-            && definition.operation === 'subscription'
-    );
-  },
-  // authLink.concat(createHttpLink({ uri: 'http://localhost:8080/graphql' })),
-  authLink.concat(createHttpLink({ uri: 'https://dashboard-api.helpmycase.co.uk/graphql' })),
-);
+const splitLink = authLink.concat(createHttpLink({ uri: `${environmentVars.REACT_APP_API_URL}/graphql` }));
 
 export default splitLink;
