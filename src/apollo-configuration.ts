@@ -19,6 +19,7 @@ const authLink = setContext(async (_, { headers }) => {
 });
 
 const wsLink = new WebSocketLink({
+  // uri: 'ws://localhost:8080/graphql',
   uri: 'ws://localhost:8080/graphql',
   options: {
     reconnect: true,
@@ -37,7 +38,8 @@ const splitLink = split(
     );
   },
   wsLink,
-  authLink.concat(createHttpLink({ uri: 'http://localhost:8080/graphql' })),
+  // authLink.concat(createHttpLink({ uri: 'http://localhost:8080/graphql' })),
+  authLink.concat(createHttpLink({ uri: 'https://dashboard-api.helpmycase.co.uk/graphql' })),
 );
 
 export default splitLink;
