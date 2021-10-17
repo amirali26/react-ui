@@ -1,7 +1,7 @@
 import { faFacebookSquare, faLinkedin, faTwitterSquare } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import clsx from 'clsx';
-import { IconButton, makeStyles } from 'helpmycase-storybook/dist/components/External';
+import { IconButton, Styles } from 'helpmycase-storybook/dist/components/External';
 import React, { useEffect } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import WelcomeBackgroundImage from '../../assets/images/homepage-main.jpg';
@@ -20,7 +20,7 @@ import useAuth from './useAuth';
 import VerifyMfa from './VerifyMfa';
 import VerifyHelperText from './VerifyMfa/HelperText';
 
-const useStyles = makeStyles({
+const useStyles = Styles.makeStyles({
   root: {
     height: '100vh',
     display: 'flex',

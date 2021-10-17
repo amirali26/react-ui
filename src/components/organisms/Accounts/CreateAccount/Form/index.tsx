@@ -45,7 +45,7 @@ const Form: React.FC<IProps> = ({ callback }: IProps) => {
         if (error) {
           throw Error(error.message);
         }
-      } catch (e) {
+      } catch (e: any) {
         sb.trigger(e.message);
       }
     },

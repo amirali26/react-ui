@@ -31,6 +31,7 @@ export const userVar = makeVar<UserAccount>({
     email: '',
     name: '',
     phoneNumber: '',
+    accounts: [],
   },
 });
 
@@ -64,6 +65,7 @@ const Dashboard: React.FC = () => {
             email: userIdResponse.attributes.email,
             birthDate: userIdResponse.attributes.birthdate,
             phoneNumber: userIdResponse.attributes.phone_number,
+            accounts: [],
           },
         });
         return;

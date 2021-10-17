@@ -1,30 +1,28 @@
 import { useQuery, useReactiveVar } from '@apollo/client';
 import { CloudUpload, PhotoCamera } from '@mui/icons-material';
-import clsx from 'clsx';
 import {
-  Avatar, Button, createStyles, Divider, InputLabel, makeStyles, TextField, Theme, Typography,
+  Avatar, Button, Divider, InputLabel, List, ListItemButton, TextField, Typography,
 } from 'helpmycase-storybook/dist/components/External';
+import theme from 'helpmycase-storybook/dist/theme/theme';
 import React from 'react';
+import { Account } from '../../../../models/account';
+import { User } from '../../../../models/user';
 import { userVar } from '../../../../pages/Dashboard';
 import { GET_USER } from '../../../../queries/user';
 import BackdropLoader from '../../../molecules/backdropLoader';
 
-const useStyles = makeStyles((theme: Theme) => createStyles({
-  large: {
-    width: theme.spacing(10),
-    height: theme.spacing(10),
-    border: '2px solid black',
-  },
-}));
-
 const UserInformation: React.FC = () => {
-  const styles = useStyles();
+  const [selectedAccount, setSelectedAccount] = React.useState<Account>();
+
   const user = useReactiveVar(userVar);
-  const { loading, error, data } = useQuery(GET_USER, {
+  const { loading, data } = useQuery<{ user: User }>(GET_USER, {
     variables: {
       userId: user.user.id,
     },
   });
+
+  const handleSetSelectedAccount = (account?: Account) => setSelectedAccount(account);
+
   return (
     <div>
       <BackdropLoader open={loading} />
@@ -32,7 +30,14 @@ const UserInformation: React.FC = () => {
       <Typography variant="subtitle1" className="grey">View and manage your user profile on this page.</Typography>
       <Divider className="marginTop marginBottom" />
       <div className="paddingTopMedium paddingMedium flex alignItemsCenter">
-        <Avatar className={clsx(styles.large, 'marginRight')}>
+        <Avatar
+          className="marginRight"
+          sx={{
+            width: theme.spacing(10),
+            height: theme.spacing(10),
+            border: '2px solid black',
+          }}
+        >
           <PhotoCamera />
         </Avatar>
         <div style={{ width: '350px' }} className="marginRight">
@@ -52,61 +57,97 @@ const UserInformation: React.FC = () => {
         </Button>
       </div>
       <Divider className="marginTop marginBottom" />
-      <div className="paddingTopMedium paddingMedium flex spaceBetween">
-        <div>
-          <InputLabel htmlFor="input-with-icon-adornment" className="marginBottomSmall">Name</InputLabel>
-          <TextField
-            id="input-with-icon-adornment"
-            name="name"
-            fullWidth
-            color="primary"
-            value={data?.user?.name || ''}
-            disabled
-          />
+      <div className="paddingTopMedium paddingMedium flex column spaceBetween" style={{ width: '1000px' }}>
+        <div className="flex row marginBottomMedium">
+          <div className="marginRightMedium">
+            <InputLabel htmlFor="input-with-icon-adornment" className="marginBottomSmall">Full Name</InputLabel>
+            <TextField
+              id="input-with-icon-adornment"
+              name="name"
+              fullWidth
+              color="primary"
+              value={data?.user?.name || ''}
+              disabled
+            />
+          </div>
+          <div className="marginRightMedium">
+            <InputLabel htmlFor="input-with-icon-adornment" className="marginBottomSmall">Date of Birth</InputLabel>
+            <TextField
+              id="input-with-icon-adornment"
+              name="name"
+              fullWidth
+              color="primary"
+              value={data?.user?.birthDate || ''}
+              disabled
+            />
+          </div>
+          <div className="marginRightMedium">
+            <InputLabel htmlFor="input-with-icon-adornment" className="marginBottomSmall">Phone Number</InputLabel>
+            <TextField
+              id="input-with-icon-adornment"
+              name="name"
+              fullWidth
+              color="primary"
+              value={data?.user?.phoneNumber || ''}
+              disabled
+            />
+          </div>
+          <div style={{ width: '300px' }}>
+            <InputLabel htmlFor="input-with-icon-adornment" className="marginBottomSmall">Email</InputLabel>
+            <TextField
+              id="input-with-icon-adornment"
+              name="name"
+              fullWidth
+              color="primary"
+              value={data?.user?.email || ''}
+              disabled
+            />
+          </div>
         </div>
-        <div>
-          <InputLabel htmlFor="input-with-icon-adornment" className="marginBottomSmall">Name</InputLabel>
-          <TextField
-            id="input-with-icon-adornment"
-            name="name"
-            fullWidth
-            color="primary"
-            value={data?.user?.name || ''}
-            disabled
-          />
-        </div>
-        <div>
-          <InputLabel htmlFor="input-with-icon-adornment" className="marginBottomSmall">Name</InputLabel>
-          <TextField
-            id="input-with-icon-adornment"
-            name="name"
-            fullWidth
-            color="primary"
-            value={data?.user?.name || ''}
-            disabled
-          />
-        </div>
-        <div>
-          <InputLabel htmlFor="input-with-icon-adornment" className="marginBottomSmall">Name</InputLabel>
-          <TextField
-            id="input-with-icon-adornment"
-            name="name"
-            fullWidth
-            color="primary"
-            value={data?.user?.name || ''}
-            disabled
-          />
-        </div>
-        <div>
-          <InputLabel htmlFor="input-with-icon-adornment" className="marginBottomSmall">Permissions</InputLabel>
-          <TextField
-            id="input-with-icon-adornment"
-            name="name"
-            fullWidth
-            color="primary"
-            value="Full Permissions"
-            disabled
-          />
+        <div className="flex row marginTop">
+          <div style={{ width: '700px' }}>
+            <InputLabel htmlFor="input-with-icon-adornment" className="marginBottomSmall">Available Accounts</InputLabel>
+            <List
+              sx={{
+                width: '100%',
+                maxWidth: 360,
+                position: 'relative',
+                overflow: 'auto',
+                maxHeight: 300,
+                border: '1px solid #9994',
+                padding: 0,
+                '& > div': { padding: '16px' },
+              }}
+            >
+              {user.accounts?.map((account) => (
+                <ListItemButton key={account.id} onClick={() => handleSetSelectedAccount(account)}>
+                  { account.name }
+                </ListItemButton>
+              ))}
+            </List>
+          </div>
+          <div style={{ width: '700px' }}>
+            <InputLabel htmlFor="input-with-icon-adornment" className="marginBottomSmall">Available Accounts</InputLabel>
+            <List
+              sx={{
+                width: '100%',
+                maxWidth: 360,
+                position: 'relative',
+                overflow: 'auto',
+                maxHeight: 300,
+                border: '1px solid #9994',
+                padding: 0,
+                '& > div': { padding: '16px' },
+              }}
+            >
+              {user.accounts?.map((account) => (
+                <ListItemButton key={account.id} onClick={() => handleSetSelectedAccount(account)}>
+                  { account.name }
+                </ListItemButton>
+              ))}
+            </List>
+          </div>
+
         </div>
       </div>
     </div>
