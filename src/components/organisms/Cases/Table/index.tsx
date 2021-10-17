@@ -2,9 +2,11 @@ import {
   Box,
   Paper,
   Table as MuiTable,
-  TableBody, TableCell,
+  TableBody,
+  TableCell,
   TableContainer,
-  TablePagination, TableRow,
+  TablePagination,
+  TableRow,
 } from 'helpmycase-storybook/dist/components/External';
 import theme from 'helpmycase-storybook/dist/theme/theme';
 import * as React from 'react';
@@ -14,6 +16,7 @@ import stableSort from '../../../../utils/stableSort';
 import Head from './Head';
 import Toolbar from './Toolbar';
 import useTable from './useTable';
+import Modal from '../../../molecules/modal';
 
 export type Order = 'asc' | 'desc';
 export function getComparator<Key extends keyof any>(
@@ -21,7 +24,7 @@ export function getComparator<Key extends keyof any>(
   orderBy: Key,
 ): (
     a: { [key in Key]: number | string },
-    b: { [key in Key]: number | string },
+    b: { [key in Key]: number | string }
   ) => number {
   return order === 'desc'
     ? (a, b) => descendingComparator(a, b, orderBy)
@@ -35,8 +38,10 @@ const Table: React.FC = () => {
     order,
     orderBy,
     rowsPerPage,
+    modalInformation,
     getRequests,
-    handleClick,
+    handleOpenModal,
+    handleCloseModal,
     handleRequestSort,
     handleChangePage,
     handleChangeRowsPerPage,
@@ -59,35 +64,32 @@ const Table: React.FC = () => {
               orderBy={orderBy}
               onRequestSort={handleRequestSort}
             />
-            <TableBody>
+            <TableBody style={{ cursor: 'pointer' }}>
               {stableSort(rows, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
                   const labelId = `enhanced-table-checkbox-${index}`;
-
                   return (
                     <TableRow
                       hover
-                      onClick={(event) => handleClick(event, row.id)}
+                      onClick={(event) => handleOpenModal(event, row.id)}
                       tabIndex={-1}
                       key={row.id}
                     >
-                      <TableCell
-                        component="th"
-                        id={labelId}
-                        scope="row"
-                      >
-                        <div style={{
-                          borderRadius: '5px',
-                          backgroundColor: theme.palette.success.main,
-                          padding: '8px',
-                          color: 'white',
-                          textAlign: 'center',
-                        }}
+                      <TableCell component="th" id={labelId} scope="row">
+                        <div
+                          style={{
+                            borderRadius: '5px',
+                            backgroundColor: theme.palette.success.main,
+                            padding: '8px',
+                            color: 'white',
+                            textAlign: 'center',
+                          }}
                         >
                           {row.status}
                         </div>
                       </TableCell>
+                      <TableCell align="left">{row.topic}</TableCell>
                       <TableCell align="left">{row.name}</TableCell>
                       <TableCell align="left">
                         +44
@@ -97,7 +99,9 @@ const Table: React.FC = () => {
                       <TableCell align="left">{row.email}</TableCell>
                       <TableCell align="left">{row.case}</TableCell>
                       <TableCell align="left">
-                        {DateTime.fromSeconds(+row.createdDate).toLocaleString()}
+                        {DateTime.fromSeconds(
+                          +row.createdDate,
+                        ).toLocaleString()}
                       </TableCell>
                     </TableRow>
                   );
@@ -123,6 +127,11 @@ const Table: React.FC = () => {
           onChangeRowsPerPage={handleChangeRowsPerPage}
         />
       </Paper>
+      <Modal handleClose={handleCloseModal} open={Boolean(modalInformation)}>
+        <div>
+          hi
+        </div>
+      </Modal>
     </Box>
   );
 };

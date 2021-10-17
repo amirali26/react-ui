@@ -7,6 +7,7 @@ query Query {
     name,
     status,
     case,
+    topic,
     phoneNumber,
     email,
     createdDate,
