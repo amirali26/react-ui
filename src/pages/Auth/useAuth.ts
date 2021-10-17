@@ -151,7 +151,9 @@ const useAuth = () => {
     try {
       return await Auth.currentSession();
     } catch (e) {
-      sb.trigger(e.message || 'There was an issue');
+      if (!(e === 'No current user')) {
+        sb.trigger(e.message || 'There was an issue hi');
+      }
     }
     return false;
   };

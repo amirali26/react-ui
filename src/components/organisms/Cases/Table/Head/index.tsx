@@ -6,10 +6,10 @@ import { Order } from '..';
 import { Request } from '../../../../../models/request';
 
 interface HeadCell {
-    disablePadding: boolean;
-    id: keyof Request;
-    label: string;
-    numeric: boolean;
+  disablePadding: boolean;
+  id: keyof Request;
+  label: string;
+  numeric: boolean;
 }
 
 const headCells: readonly HeadCell[] = [
@@ -18,6 +18,12 @@ const headCells: readonly HeadCell[] = [
     numeric: false,
     disablePadding: false,
     label: 'Status',
+  },
+  {
+    id: 'topic',
+    numeric: false,
+    disablePadding: false,
+    label: 'Topic',
   },
   {
     id: 'name',
@@ -52,9 +58,9 @@ const headCells: readonly HeadCell[] = [
 ];
 
 interface IProps {
-    onRequestSort: (event: React.MouseEvent<unknown>, property: keyof Request) => void;
-    order: Order;
-    orderBy: string;
+  onRequestSort: (event: React.MouseEvent<unknown>, property: keyof Request) => void;
+  order: Order;
+  orderBy: string;
 }
 
 const Head: React.FC<IProps> = ({

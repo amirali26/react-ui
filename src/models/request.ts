@@ -5,6 +5,7 @@ export type Request = {
     email: string,
     status: RequestStatus,
     case: string,
+    topic: string,
     createdDate: string,
 }
 

@@ -7,7 +7,7 @@ import GET_REQUESTS from '../../../../queries/requests';
 
 const useTable = () => {
   const sb = useHelpmycaseSnackbar();
-  const [getRequests, { called, loading, data }] = useLazyQuery<{
+  const [getRequests, { data }] = useLazyQuery<{
     requestSubmissions: Request[]
   }>(GET_REQUESTS, {
     fetchPolicy: 'cache-and-network',
@@ -17,6 +17,7 @@ const useTable = () => {
   const [orderBy, setOrderBy] = React.useState<keyof Request>('createdDate');
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(15);
+  const [modalInformation, setModalInformation] = React.useState<string | undefined>();
 
   React.useEffect(() => {
     getRequests();
@@ -40,9 +41,12 @@ const useTable = () => {
     setPage(0);
   };
 
-  const handleClick = (event: React.MouseEvent<unknown>, requestId: string) => {
-    console.log(requestId);
+  const handleOpenModal = (event: React.MouseEvent<unknown>, requestId: string) => {
+    // We want to open a modal here
+    setModalInformation(requestId);
   };
+
+  const handleCloseModal = () => setModalInformation(undefined);
 
   return {
     rows: data?.requestSubmissions || [],
@@ -50,8 +54,10 @@ const useTable = () => {
     orderBy,
     page,
     rowsPerPage,
+    modalInformation,
     getRequests,
-    handleClick,
+    handleOpenModal,
+    handleCloseModal,
     handleRequestSort,
     handleChangePage,
     handleChangeRowsPerPage,
