@@ -1,4 +1,4 @@
-import { LockOutlined } from '@material-ui/icons';
+import { LockOutlined } from '@mui/icons-material';
 import clsx from 'clsx';
 import { useFormik } from 'formik';
 import {

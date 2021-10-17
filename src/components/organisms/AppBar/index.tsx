@@ -8,10 +8,10 @@ import {
   AddBoxOutlined,
   ExitToAppOutlined,
   HelpOutline,
-} from '@material-ui/icons';
+} from '@mui/icons-material';
 import clsx from 'clsx';
 import {
-  AppBar, Button, IconButton, makeStyles, Menu, MenuItem, Toolbar,
+  AppBar, Button, IconButton, makeStyles, Menu, MenuItem, Styles, Toolbar,
 } from 'helpmycase-storybook/dist/components/External';
 import React from 'react';
 import { Link } from 'react-router-dom';
@@ -23,7 +23,7 @@ import AccountInformation from '../Accounts/AccountInformation';
 import CreateAccountForm from '../Accounts/CreateAccount/Form';
 import SwitchAccount from '../Accounts/SwitchAccount';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = Styles.makeStyles((theme: any) => ({
   root: {
     flexGrow: 1,
   },

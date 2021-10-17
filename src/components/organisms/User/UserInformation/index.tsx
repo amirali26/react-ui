@@ -1,5 +1,5 @@
 import { useQuery, useReactiveVar } from '@apollo/client';
-import { CloudUpload, PhotoCamera } from '@material-ui/icons';
+import { CloudUpload, PhotoCamera } from '@mui/icons-material';
 import clsx from 'clsx';
 import {
   Avatar, Button, createStyles, Divider, InputLabel, makeStyles, TextField, Theme, Typography,

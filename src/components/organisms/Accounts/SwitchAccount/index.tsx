@@ -1,5 +1,5 @@
 import { useReactiveVar } from '@apollo/client';
-import { Person, PersonPinCircleTwoTone } from '@material-ui/icons';
+import { Person, PersonPinCircleTwoTone } from '@mui/icons-material';
 import {
   Avatar, List, ListItem, ListItemAvatar, ListItemText, Typography,
 } from 'helpmycase-storybook/dist/components/External';

@@ -1,4 +1,4 @@
-import { LockOutlined, Visibility, VisibilityOff } from '@material-ui/icons';
+import { LockOutlined, Visibility, VisibilityOff } from '@mui/icons-material';
 import { useFormik } from 'formik';
 import {
   Button, IconButton, InputAdornment, InputLabel, TextField, Typography, CircularProgress,

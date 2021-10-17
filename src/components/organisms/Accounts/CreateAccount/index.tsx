@@ -1,4 +1,4 @@
-import { ReportProblemOutlined } from '@material-ui/icons';
+import { ReportProblemOutlined } from '@mui/icons-material';
 import React, { useState } from 'react';
 import BigMessage from '../../../molecules/bigMessage';
 import Modal from '../../../molecules/modal';
