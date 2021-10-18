@@ -1,15 +1,15 @@
+import React from 'react';
 import { useQuery, useReactiveVar } from '@apollo/client';
 import {
   InputLabel, TextField, Typography,
 } from 'helpmycase-storybook/dist/components/External';
-import React from 'react';
 import { userVar } from '../../../../pages/Dashboard';
 import { GET_ACCOUNT } from '../../../../queries/account';
 import BackdropLoader from '../../../molecules/backdropLoader';
 
 const AccountInformation = () => {
   const user = useReactiveVar(userVar);
-  const { loading, error, data } = useQuery(GET_ACCOUNT, {
+  const { loading, data } = useQuery(GET_ACCOUNT, {
     variables: {
       accountId: user.selectedAccount?.id,
     },

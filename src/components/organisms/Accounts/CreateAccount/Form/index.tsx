@@ -61,7 +61,7 @@ const Form: React.FC<IProps> = ({ callback }: IProps) => {
             account: {
               name: values.name,
               usersIds: [userVar().user.id],
-              areasOfPractices: values.handledAreasOfPractice,
+              areasOfPracticeIds: values.handledAreasOfPractice,
               receiveEmails: values.receiveEmails,
             },
           },
