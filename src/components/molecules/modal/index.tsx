@@ -1,4 +1,4 @@
-import { Backdrop, Fade, Modal as MuiModal } from 'helpmycase-storybook/dist/components/External';
+import { Fade, Modal as MuiModal } from 'helpmycase-storybook/dist/components/External';
 import theme from 'helpmycase-storybook/dist/theme/theme';
 import React from 'react';
 
@@ -19,10 +19,6 @@ const Modal: React.FC<IProps> = ({ open, children, handleClose }: IProps) => (
     open={open}
     onClose={handleClose}
     closeAfterTransition
-    BackdropComponent={Backdrop}
-    BackdropProps={{
-      timeout: 500,
-    }}
   >
     <Fade in={open}>
       <div style={{

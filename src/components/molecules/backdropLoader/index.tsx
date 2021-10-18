@@ -1,5 +1,5 @@
 import {
-  Backdrop, CircularProgress, createStyles, Styles, Theme,
+  Backdrop, CircularProgress,
 } from 'helpmycase-storybook/dist/components/External';
 import theme from 'helpmycase-storybook/dist/theme/theme';
 import React from 'react';
