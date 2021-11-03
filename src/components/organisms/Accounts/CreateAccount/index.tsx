@@ -1,7 +1,7 @@
 import { ReportProblemOutlined } from '@mui/icons-material';
 import React, { useState } from 'react';
 import BigMessage from '../../../molecules/bigMessage';
-import Modal from '../../../molecules/modal';
+import Drawer from '../../../molecules/Drawer';
 import Form from './Form';
 
 const CreateAccount: React.FC = () => {
@@ -26,9 +26,9 @@ const CreateAccount: React.FC = () => {
           onClick: handleOpen,
         }}
       />
-      <Modal open={open} handleClose={handleClose}>
+      <Drawer open={open} onClose={handleClose}>
         <Form callback={handleClose} />
-      </Modal>
+      </Drawer>
     </div>
   );
 };

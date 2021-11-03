@@ -11,7 +11,7 @@ const authLink = setContext(async (_, { headers }) => {
   return {
     headers: {
       ...headers,
-      authorization: token.getJwtToken(),
+      authorization: `Bearer ${token.getJwtToken()}`,
       accountid: userVar().selectedAccount?.id,
     },
   };

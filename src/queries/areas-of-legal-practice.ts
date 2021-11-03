@@ -1,10 +1,11 @@
 import { gql } from '@apollo/client';
 
 const GET_AREASOFLEGALPRACTICE = gql`
-    query Query {
-        areasOfLegalPractices {
+    query GetAreasOfLaw {
+        areasOfPractices {
             id,
-            name
+            externalId,
+            name,
         }
     }
 `;

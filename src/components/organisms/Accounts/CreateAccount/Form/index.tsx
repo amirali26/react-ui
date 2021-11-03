@@ -41,7 +41,7 @@ const Form: React.FC<IProps> = ({ callback }: IProps) => {
   const sb = useHelpmycaseSnackbar();
 
   const legalPracticeQuery = useQuery<{
-    areasOfLegalPractices: AreasOfLegalPractice[]
+    areasOfPractices: AreasOfLegalPractice[]
   }>(GET_AREASOFLEGALPRACTICE, {
     fetchPolicy: 'cache-and-network',
   });
@@ -92,30 +92,31 @@ const Form: React.FC<IProps> = ({ callback }: IProps) => {
   }
 
   return (
-    <form onSubmit={formik.handleSubmit} style={{ width: '600px' }}>
-      <div className="fullWidth flex row">
-        <div style={{ width: '100%', padding: 8 }}>
-          <InputLabel htmlFor="input-with-icon-adornment" className="marginBottomSmall">Account Name</InputLabel>
-          <TextField
-            id="input-with-icon-adornment"
-            name="name"
-            fullWidth
-            color="primary"
-            helperText={formik.touched.name && formik.errors.name}
-            error={Boolean(formik.touched.name && formik.errors.name)}
-            onBlur={formik.handleBlur}
-            onChange={formik.handleChange}
-          />
+    <form onSubmit={formik.handleSubmit} style={{ width: '600px', height: '100%' }} className="flex column spaceBetween">
+      <div>
+        <div className="fullWidth flex row">
+          <div style={{ width: '100%', padding: 8 }}>
+            <InputLabel htmlFor="input-with-icon-adornment" className="marginBottomSmall">Account Name</InputLabel>
+            <TextField
+              id="input-with-icon-adornment"
+              name="name"
+              fullWidth
+              color="primary"
+              helperText={formik.touched.name && formik.errors.name}
+              error={Boolean(formik.touched.name && formik.errors.name)}
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
+            />
+          </div>
         </div>
-      </div>
-      <div className="marginTopMedium" style={{ padding: 8 }}>
-        <InputLabel htmlFor="input-with-icon-adornment" className="marginBottomSmall">Handled Areas of Practice</InputLabel>
-        <div style={{
-          width: '100%', height: '150px', overflow: 'auto', border: '1px solid #9994', padding: 8,
-        }}
-        >
-          {
-            legalPracticeQuery.data?.areasOfLegalPractices.map((aolp: AreasOfLegalPractice) => (
+        <div className="marginTopMedium" style={{ padding: 8 }}>
+          <InputLabel htmlFor="input-with-icon-adornment" className="marginBottomSmall">Handled Areas of Practice</InputLabel>
+          <div style={{
+            width: '100%', border: '1px solid #9994', padding: 8,
+          }}
+          >
+            {
+            legalPracticeQuery.data?.areasOfPractices.map((aolp: AreasOfLegalPractice) => (
               <FormControlLabel
                 key={aolp.id}
                 checked={formik.values.handledAreasOfPractice.includes(aolp.id)}
@@ -139,17 +140,19 @@ const Form: React.FC<IProps> = ({ callback }: IProps) => {
               />
             ))
           }
+          </div>
         </div>
+        <FormControlLabel
+          sx={{ paddingLeft: '12px' }}
+          checked={formik.values.receiveEmails}
+          onChange={() => formik.setFieldValue('receiveEmails', !formik.values.receiveEmails)}
+          className="marginTopMedium"
+          control={<Checkbox checked={formik.values.receiveEmails} />}
+          label="I would like to receive emails regarding related new cases"
+        />
       </div>
-      <FormControlLabel
-        sx={{ paddingLeft: '12px' }}
-        checked={formik.values.receiveEmails}
-        onChange={() => formik.setFieldValue('receiveEmails', !formik.values.receiveEmails)}
-        className="marginTopMedium"
-        control={<Checkbox checked={formik.values.receiveEmails} />}
-        label="I would like to receive emails regarding related new cases"
-      />
       <Button
+        sx={{ height: '48px' }}
         variant="contained"
         color="primary"
         className="marginTop fullWidth"

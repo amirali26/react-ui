@@ -11,7 +11,7 @@ import {
 } from '@mui/icons-material';
 import clsx from 'clsx';
 import {
-  AppBar, Button, IconButton, makeStyles, Menu, MenuItem, Styles, Toolbar,
+  AppBar, Button, IconButton, Menu, MenuItem, Styles, Toolbar,
 } from 'helpmycase-storybook/dist/components/External';
 import React from 'react';
 import { Link } from 'react-router-dom';
@@ -32,6 +32,7 @@ const useStyles = Styles.makeStyles((theme: any) => ({
   },
   title: {
     flexGrow: 1,
+    marginLeft: '16px',
   },
 }));
 
