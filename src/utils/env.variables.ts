@@ -13,8 +13,8 @@ interface EnvironmentConfig {
 const environmentVars: EnvironmentConfig = {
   REACT_APP_API_URL: window.location.href.includes('dashboard.helpmycase.co.uk') ? 'https://dashboard-api.helpmycase.co.uk' : 'http://localhost:8080',
   REACT_APP_COGNITO: {
-    poolId: 'eu-west-1_8xuHVtmN3',
-    clientId: '5oucm4sj9u1jdhbd5i6sl0lmof',
+    poolId: 'eu-west-1_UKEN4PjSR',
+    clientId: '74oeib76gt4308aiuo2hh9qpq1',
     storage: localStorage,
   },
 };
