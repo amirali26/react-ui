@@ -1,4 +1,4 @@
-import { InboxOutlined, MailOutline } from '@material-ui/icons';
+import { InboxOutlined, MailOutline } from '@mui/icons-material';
 import {
   Box, Divider, List, ListItem, ListItemIcon, ListItemText, SwipeableDrawer,
 } from 'helpmycase-storybook/dist/components/External';

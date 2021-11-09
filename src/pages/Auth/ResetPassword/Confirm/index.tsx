@@ -1,4 +1,4 @@
-import { PersonAddOutlined } from '@material-ui/icons';
+import { PersonAddOutlined } from '@mui/icons-material';
 import clsx from 'clsx';
 import { useFormik } from 'formik';
 import {

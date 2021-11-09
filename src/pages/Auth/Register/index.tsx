@@ -1,4 +1,4 @@
-import { PersonAddOutlined } from '@material-ui/icons';
+import { PersonAddOutlined } from '@mui/icons-material';
 import { useFormik } from 'formik';
 import {
   Button, Checkbox, CircularProgress, FormControlLabel, InputLabel, TextField, Typography,

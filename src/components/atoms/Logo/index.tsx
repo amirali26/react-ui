@@ -1,8 +1,8 @@
-import { makeStyles } from 'helpmycase-storybook/dist/components/External';
+import { Styles } from 'helpmycase-storybook/dist/components/External';
 import React from 'react';
 import logoPNG from '../../../assets/images/logoPNG.png';
 
-const useStyles = makeStyles({
+const useStyles = Styles.makeStyles({
   logo: {
     width: '256px',
     height: 'auto',

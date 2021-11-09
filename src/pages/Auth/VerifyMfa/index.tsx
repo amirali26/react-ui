@@ -1,8 +1,8 @@
-import { LockOutlined } from '@material-ui/icons';
+import { LockOutlined } from '@mui/icons-material';
 import clsx from 'clsx';
 import { useFormik } from 'formik';
 import {
-  Button, CircularProgress, makeStyles, Typography,
+  Button, CircularProgress, Styles, Typography,
 } from 'helpmycase-storybook/dist/components/External';
 import React from 'react';
 import ReactCodeInput from 'react-code-input';
@@ -10,7 +10,7 @@ import { NavLink, useLocation } from 'react-router-dom';
 import FormTitle from '../../../components/molecules/auth/FormTitle';
 import useAuth from '../useAuth';
 
-export const useStyles = makeStyles({
+export const useStyles = Styles.makeStyles({
   codeWrapper: {
     '& > div': {
       display: 'flex !important',

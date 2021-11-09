@@ -1,6 +1,6 @@
 import {
   AddToHomeScreenOutlined,
-} from '@material-ui/icons';
+} from '@mui/icons-material';
 import { useFormik } from 'formik';
 import {
   Button, InputLabel, TextField, Typography,

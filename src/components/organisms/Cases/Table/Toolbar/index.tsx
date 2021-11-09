@@ -1,5 +1,5 @@
 import { OperationVariables, QueryLazyOptions } from '@apollo/client';
-import { RefreshOutlined } from '@material-ui/icons';
+import { RefreshOutlined } from '@mui/icons-material';
 import {
   IconButton, Toolbar as MuiToolbar, Tooltip, Typography,
 } from 'helpmycase-storybook/dist/components/External';

@@ -1,5 +1,5 @@
 import {
-  Button, ButtonProps, makeStyles, Typography,
+  Button, ButtonProps, Styles, Typography,
 } from 'helpmycase-storybook/dist/components/External';
 import theme from 'helpmycase-storybook/dist/theme/theme';
 import React from 'react';
@@ -11,7 +11,7 @@ interface IProps {
     buttonProps: ButtonProps,
 }
 
-const useStyles = makeStyles({
+const useStyles = Styles.makeStyles({
   iconHolder: {
     '& > svg': {
       width: '100%',
