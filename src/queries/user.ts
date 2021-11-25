@@ -4,26 +4,29 @@ import { Account } from '../models/account';
 
 export interface IGetUser {
     user: {
-        id: string,
+        externalId: string,
         name: string,
+        dateOfBirth: string,
+        phoneNumber: string,
+        email: string,
+        createdAt: string,
         accounts: Account[],
     }
 }
 export const GET_USER = gql`
-    ${CORE_ACCOUNT_DETAILS}
-    query User($userId: String!) {
-        user(userId: $userId) {
+    query user {
+        user {
             id,
             name,
+            dateOfBirth,
             phoneNumber,
             email,
-            birthDate,
             accounts {
-            ...AccountDetails
+              id,
+              name
             }
         }
-    }
-`;
+    }`;
 
 export default {
   GET_USER,

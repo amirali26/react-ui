@@ -4,7 +4,6 @@ const GET_AREASOFLEGALPRACTICE = gql`
     query GetAreasOfLaw {
         areasOfPractices {
             id,
-            externalId,
             name,
         }
     }

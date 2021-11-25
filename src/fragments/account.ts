@@ -2,13 +2,16 @@ import { gql } from '@apollo/client';
 
 export const CORE_ACCOUNT_DETAILS = gql`
     fragment AccountDetails on Account {
-        id
+        id,
         name,
-        permissions {
+        users {
             id,
-            name
+            name,
         },
-        createdDate,
+        createdBy {
+            id,
+            name,
+        }
     }
 `;
 
