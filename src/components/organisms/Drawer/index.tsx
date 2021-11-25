@@ -65,6 +65,11 @@ export const NavigationSideBar: React.FC<IProps> = ({
   handleOpen,
 }: IProps) => (
   <SwipeableDrawer
+    sx={{
+      '& .MuiButtonBase-root': {
+        paddingRight: '30px',
+      },
+    }}
     open={open}
     onClose={() => handleOpen(false)}
     onOpen={() => handleOpen(true)}

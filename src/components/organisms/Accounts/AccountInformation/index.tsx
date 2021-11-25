@@ -10,14 +10,12 @@ import BackdropLoader from '../../../molecules/backdropLoader';
 
 const AccountInformation = () => {
   const user = useReactiveVar(userVar);
-  console.log(user);
   const { loading, data } = useQuery(GET_ACCOUNT, {
     variables: {
       accountId: user.selectedAccount?.id,
     },
     fetchPolicy: 'network-only',
   });
-  console.log(data);
   return (
     <div>
       <BackdropLoader open={loading} />
