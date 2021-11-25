@@ -18,6 +18,7 @@ import { Link } from 'react-router-dom';
 import useAuth from '../../../pages/Auth/useAuth';
 import { userVar } from '../../../pages/Dashboard';
 import Logo from '../../atoms/Logo';
+import Drawer from '../../molecules/Drawer';
 import Modal from '../../molecules/modal';
 import AccountInformation from '../Accounts/AccountInformation';
 import CreateAccountForm from '../Accounts/CreateAccount/Form';
@@ -125,9 +126,9 @@ const NavigationAppBar: React.FC<IProps> = ({ handleOpen }: IProps) => {
           </Menu>
         </Toolbar>
       </AppBar>
-      <Modal open={addAccountOpen} handleClose={() => setAddAccountOpen(false)}>
+      <Drawer open={addAccountOpen} onClose={() => setAddAccountOpen(false)}>
         <CreateAccountForm callback={() => setAddAccountOpen(false)} />
-      </Modal>
+      </Drawer>
       <Modal open={switchAccountOpen} handleClose={() => setSwitchAccountOpen(false)}>
         <SwitchAccount callback={() => setSwitchAccountOpen(false)} />
       </Modal>

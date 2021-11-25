@@ -58,11 +58,9 @@ const Form: React.FC<IProps> = ({ callback }: IProps) => {
       try {
         addAccount({
           variables: {
-            account: {
+            accountInput: {
               name: values.name,
-              usersIds: [userVar().user.id],
-              areasOfPracticeIds: values.handledAreasOfPractice,
-              receiveEmails: values.receiveEmails,
+              areasOfPracticeId: values.handledAreasOfPractice,
             },
           },
         });

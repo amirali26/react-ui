@@ -8,15 +8,11 @@ export const CORE_ACCOUNT_DETAILS = gql`
             id,
             name
         },
-<<<<<<< Updated upstream
-        createdDate,
-=======
         createdBy {
             id,
             name,
         },
         createdAt
->>>>>>> Stashed changes
     }
 `;
 
