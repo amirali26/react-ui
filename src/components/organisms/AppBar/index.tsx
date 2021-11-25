@@ -131,9 +131,9 @@ const NavigationAppBar: React.FC<IProps> = ({ handleOpen }: IProps) => {
       <Modal open={switchAccountOpen} handleClose={() => setSwitchAccountOpen(false)}>
         <SwitchAccount callback={() => setSwitchAccountOpen(false)} />
       </Modal>
-      <Modal open={accountInformationOpen} handleClose={() => setAccountInformationOpen(false)}>
+      <Drawer open={accountInformationOpen} onClose={() => setAccountInformationOpen(false)}>
         <AccountInformation />
-      </Modal>
+      </Drawer>
     </div>
   );
 };

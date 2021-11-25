@@ -3,6 +3,7 @@ import { useQuery, useReactiveVar } from '@apollo/client';
 import {
   InputLabel, TextField, Typography,
 } from 'helpmycase-storybook/dist/components/External';
+import { DateTime } from 'luxon';
 import { userVar } from '../../../../pages/Dashboard';
 import { GET_ACCOUNT } from '../../../../queries/account';
 import BackdropLoader from '../../../molecules/backdropLoader';
@@ -15,6 +16,7 @@ const AccountInformation = () => {
     },
     fetchPolicy: 'network-only',
   });
+  console.log(data);
   return (
     <div>
       <BackdropLoader open={loading} />
@@ -28,7 +30,7 @@ const AccountInformation = () => {
               name="name"
               fullWidth
               color="primary"
-              value={data?.account?.name || ''}
+              value={data?.userAccount?.name || ''}
               disabled
             />
           </div>
@@ -52,18 +54,18 @@ const AccountInformation = () => {
               name="name"
               fullWidth
               color="primary"
-              value={data?.account?.createdBy?.name || ''}
+              value={data?.userAccount?.createdBy?.name || ''}
               disabled
             />
           </div>
           <div className="fullWidth marginLeftSmall">
-            <InputLabel htmlFor="input-with-icon-adornment" className="marginBottomSmall">Created By</InputLabel>
+            <InputLabel htmlFor="input-with-icon-adornment" className="marginBottomSmall">Created Date</InputLabel>
             <TextField
               id="input-with-icon-adornment"
               name="name"
               fullWidth
               color="primary"
-              value={data?.account?.createdDate ? new Date(+data.account?.createdDate).toLocaleString() : ''}
+              value={DateTime.fromISO(data?.userAccount?.createdAt || '').toFormat('DDDD')}
               disabled
             />
           </div>
