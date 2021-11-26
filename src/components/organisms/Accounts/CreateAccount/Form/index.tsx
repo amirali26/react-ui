@@ -14,21 +14,17 @@ import GET_AREASOFLEGALPRACTICE from '../../../../../queries/areas-of-legal-prac
 
 type InitialValues = {
   name: string,
-  receiveEmails: boolean
   handledAreasOfPractice: string[],
 }
 
 const initialValues: InitialValues = {
   name: '',
-  receiveEmails: true,
   handledAreasOfPractice: [],
 };
 
 const formValidationSchema = Yup.object().shape({
   name: Yup.string()
     .required('Account name is required'),
-  receiveEmails: Yup.bool()
-    .required('Would you like to receive emails for new cases?'),
   handledAreasOfPractice: Yup.array().min(1, 'You must choose atleast one area which you cover'),
   users: Yup.array().min(1, 'You must choose atleast one account permission'),
 });
@@ -140,14 +136,6 @@ const Form: React.FC<IProps> = ({ callback }: IProps) => {
           }
           </div>
         </div>
-        <FormControlLabel
-          sx={{ paddingLeft: '12px' }}
-          checked={formik.values.receiveEmails}
-          onChange={() => formik.setFieldValue('receiveEmails', !formik.values.receiveEmails)}
-          className="marginTopMedium"
-          control={<Checkbox checked={formik.values.receiveEmails} />}
-          label="I would like to receive emails regarding related new cases"
-        />
       </div>
       <Button
         sx={{ height: '48px' }}

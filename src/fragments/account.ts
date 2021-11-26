@@ -4,10 +4,6 @@ export const CORE_ACCOUNT_DETAILS = gql`
     fragment AccountDetails on Account {
         id
         name,
-        permissions {
-            id,
-            name
-        },
         createdBy {
             id,
             name,
