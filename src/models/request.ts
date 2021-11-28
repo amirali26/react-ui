@@ -1,16 +1,29 @@
+import { Topic } from './topic';
+
 export type Request = {
     id: string,
     name: string,
     phoneNumber: string,
     email: string,
     status: RequestStatus,
-    case: string,
-    topic: string,
+    enquiry: string,
+    topic: Topic,
     createdDate: string,
 }
 
-enum RequestStatus {
+export type RequestDto = {
+    topic: string;
+    id: string;
+    name: string;
+    phoneNumber: string;
+    email: string;
+    status: RequestStatus;
+    enquiry: string;
+    createdDate: string;
+}
+
+export enum RequestStatus {
     OPEN = 'OPEN',
-    CLOSED = 'CLOSED',
-    HANDLED = 'HANDLED',
+    PENDING = 'PENDING',
+    RESOLVED = 'RESOLVED',
 }

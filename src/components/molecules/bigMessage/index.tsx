@@ -8,7 +8,7 @@ interface IProps {
     icon: JSX.Element,
     title: string,
     subtitle: string,
-    buttonProps: ButtonProps,
+    buttonProps?: ButtonProps,
 }
 
 const useStyles = Styles.makeStyles({
@@ -26,15 +26,20 @@ const BigMessage: React.FC<IProps> = ({
 }: IProps) => {
   const classes = useStyles();
   return (
-    <div className="absolute alignCenter flex column center" style={{ maxWidth: '500px' }}>
+    <div className="absolute alignCenter flex column center" style={{ maxWidth: '700px' }}>
       <div style={{ width: '100px', height: '100px' }} className={classes.iconHolder}>
         { icon }
       </div>
       <Typography variant="h2" className="marginBottomSmall textAlignCenter">{title}</Typography>
-      <Typography variant="subtitle1" className="marginBottomMedium textAlignCenter">{subtitle}</Typography>
+      <Typography variant="h6" className="marginBottomMedium textAlignCenter">{subtitle}</Typography>
+      {
+        buttonProps
+      && (
       <Button variant="contained" color="primary" {...buttonProps}>
         {buttonProps.children}
       </Button>
+      )
+      }
     </div>
   );
 };

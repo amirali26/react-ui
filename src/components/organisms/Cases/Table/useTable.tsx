@@ -2,13 +2,13 @@ import { useLazyQuery } from '@apollo/client';
 import * as React from 'react';
 import { Order } from '.';
 import useHelpmycaseSnackbar from '../../../../hooks/useHelpmycaseSnackbar';
-import { Request } from '../../../../models/request';
+import { Request, RequestDto } from '../../../../models/request';
 import GET_REQUESTS from '../../../../queries/requests';
 
 const useTable = () => {
   const sb = useHelpmycaseSnackbar();
   const [getRequests, { data }] = useLazyQuery<{
-    requestSubmissions: Request[]
+    requests: Request[]
   }>(GET_REQUESTS, {
     fetchPolicy: 'cache-and-network',
     onCompleted: () => sb.trigger('Successfully retrieved latest cases', 'success'),
@@ -17,7 +17,7 @@ const useTable = () => {
   const [orderBy, setOrderBy] = React.useState<keyof Request>('createdDate');
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(15);
-  const [modalInformation, setModalInformation] = React.useState<string | undefined>();
+  const [selectedRow, setSelectedRow] = React.useState<RequestDto | undefined>();
 
   React.useEffect(() => {
     getRequests();
@@ -41,20 +41,19 @@ const useTable = () => {
     setPage(0);
   };
 
-  const handleOpenModal = (event: React.MouseEvent<unknown>, requestId: string) => {
-    // We want to open a modal here
-    setModalInformation(requestId);
+  const handleOpenModal = (event: React.MouseEvent<unknown>, request: RequestDto) => {
+    setSelectedRow(request);
   };
 
-  const handleCloseModal = () => setModalInformation(undefined);
+  const handleCloseModal = () => setSelectedRow(undefined);
 
   return {
-    rows: data?.requestSubmissions || [],
+    rows: data?.requests ? data.requests.map((r) => ({ ...r, topic: r.topic.name })) : [],
     order,
     orderBy,
     page,
     rowsPerPage,
-    modalInformation,
+    selectedRow,
     getRequests,
     handleOpenModal,
     handleCloseModal,

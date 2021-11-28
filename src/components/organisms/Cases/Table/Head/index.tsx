@@ -44,10 +44,10 @@ const headCells: readonly HeadCell[] = [
     label: 'Email',
   },
   {
-    id: 'case',
+    id: 'topic',
     numeric: false,
     disablePadding: false,
-    label: 'Case',
+    label: 'Topic',
   },
   {
     id: 'createdDate',

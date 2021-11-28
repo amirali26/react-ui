@@ -1,15 +1,17 @@
 import { gql } from '@apollo/client';
 
 const GET_REQUESTS = gql`
-query Query {
-  requestSubmissions {
+query GetRequests {
+  requests {
     id,
     name,
-    status,
-    case,
-    topic,
     phoneNumber,
     email,
+    status,
+    enquiry,
+    topic {
+      name
+    }
     createdDate,
   }
 }

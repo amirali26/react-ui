@@ -11,10 +11,6 @@ const routes: {name: string, route: string}[] = [
     route: '/dashboard/cases',
   },
   {
-    name: 'User Profile',
-    route: '/dashboard/user-settings',
-  },
-  {
     name: 'Logout',
     route: '/dashboard/logout',
   },

@@ -1,11 +1,12 @@
-import React from 'react';
 import { useQuery, useReactiveVar } from '@apollo/client';
 import {
   InputLabel, TextField, Typography,
 } from 'helpmycase-storybook/dist/components/External';
 import { DateTime } from 'luxon';
+import React from 'react';
 import { userVar } from '../../../../pages/Dashboard';
 import { GET_ACCOUNT } from '../../../../queries/account';
+import convertToDateTime from '../../../../utils/datetime';
 import BackdropLoader from '../../../molecules/backdropLoader';
 
 const AccountInformation = () => {
@@ -64,7 +65,7 @@ const AccountInformation = () => {
               name="name"
               fullWidth
               color="primary"
-              value={DateTime.fromISO(data?.userAccount?.createdAt || '').toFormat('DDDD')}
+              value={convertToDateTime(data?.userAccount?.createdAt)}
               disabled
             />
           </div>

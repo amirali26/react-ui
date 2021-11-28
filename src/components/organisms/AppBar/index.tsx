@@ -11,7 +11,13 @@ import {
 } from '@mui/icons-material';
 import clsx from 'clsx';
 import {
-  AppBar, Button, IconButton, Menu, MenuItem, Styles, Toolbar,
+  AppBar,
+  Button,
+  IconButton,
+  Menu,
+  MenuItem,
+  Styles,
+  Toolbar,
 } from 'helpmycase-storybook/dist/components/External';
 import React from 'react';
 import { Link } from 'react-router-dom';
@@ -19,10 +25,10 @@ import useAuth from '../../../pages/Auth/useAuth';
 import { userVar } from '../../../pages/Dashboard';
 import Logo from '../../atoms/Logo';
 import Drawer from '../../molecules/Drawer';
-import Modal from '../../molecules/modal';
 import AccountInformation from '../Accounts/AccountInformation';
 import CreateAccountForm from '../Accounts/CreateAccount/Form';
 import SwitchAccount from '../Accounts/SwitchAccount';
+import UserInformation from '../User/UserInformation';
 
 const useStyles = Styles.makeStyles((theme: any) => ({
   root: {
@@ -47,6 +53,7 @@ const NavigationAppBar: React.FC<IProps> = ({ handleOpen }: IProps) => {
   const [addAccountOpen, setAddAccountOpen] = React.useState<boolean>(false);
   const [switchAccountOpen, setSwitchAccountOpen] = React.useState<boolean>(false);
   const [accountInformationOpen, setAccountInformationOpen] = React.useState<boolean>(false);
+  const [userProfileOpen, setUserProfileOpen] = React.useState<boolean>(false);
   const { user, selectedAccount } = useReactiveVar(userVar);
   const { handleLogout } = useAuth();
 
@@ -62,7 +69,13 @@ const NavigationAppBar: React.FC<IProps> = ({ handleOpen }: IProps) => {
     <div className={classes.root}>
       <AppBar position="static" color="secondary">
         <Toolbar>
-          <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu" onClick={() => handleOpen(true)}>
+          <IconButton
+            edge="start"
+            className={classes.menuButton}
+            color="inherit"
+            aria-label="menu"
+            onClick={() => handleOpen(true)}
+          >
             <FontAwesomeIcon icon={faBars} />
           </IconButton>
           <div className={clsx(classes.title)}>
@@ -74,7 +87,7 @@ const NavigationAppBar: React.FC<IProps> = ({ handleOpen }: IProps) => {
             startIcon={<AccountCircleOutlined />}
             onClick={handleClick}
           >
-            {user ? user.name.toUpperCase() : 'Profile' }
+            {user ? user.name.toUpperCase() : 'Profile'}
           </Button>
           <Button
             color="primary"
@@ -86,7 +99,7 @@ const NavigationAppBar: React.FC<IProps> = ({ handleOpen }: IProps) => {
             }}
           >
             Switch Account
-            { selectedAccount && ` - ${selectedAccount.name}`}
+            {selectedAccount && ` - ${selectedAccount.name}`}
           </Button>
           <Menu
             id="simple-menu"
@@ -97,24 +110,29 @@ const NavigationAppBar: React.FC<IProps> = ({ handleOpen }: IProps) => {
           >
             <MenuItem
               component={Link}
-              onClick={handleClose}
+              onClick={() => {
+                handleClose();
+                setUserProfileOpen(true);
+              }}
               to="/dashboard/user-settings"
             >
               <AccountBoxOutlined className="marginRightSmall" />
               My Profile
             </MenuItem>
-            <MenuItem onClick={() => {
-              handleClose();
-              setAddAccountOpen(true);
-            }}
+            <MenuItem
+              onClick={() => {
+                handleClose();
+                setAddAccountOpen(true);
+              }}
             >
               <AddBoxOutlined className="marginRightSmall" />
               Add Account
             </MenuItem>
-            <MenuItem onClick={() => {
-              handleClose();
-              setAccountInformationOpen(true);
-            }}
+            <MenuItem
+              onClick={() => {
+                handleClose();
+                setAccountInformationOpen(true);
+              }}
             >
               <HelpOutline className="marginRightSmall" />
               Account Information
@@ -126,13 +144,22 @@ const NavigationAppBar: React.FC<IProps> = ({ handleOpen }: IProps) => {
           </Menu>
         </Toolbar>
       </AppBar>
+      <Drawer open={userProfileOpen} onClose={() => setUserProfileOpen(false)}>
+        <UserInformation />
+      </Drawer>
       <Drawer open={addAccountOpen} onClose={() => setAddAccountOpen(false)}>
         <CreateAccountForm callback={() => setAddAccountOpen(false)} />
       </Drawer>
-      <Modal open={switchAccountOpen} handleClose={() => setSwitchAccountOpen(false)}>
+      <Drawer
+        open={switchAccountOpen}
+        onClose={() => setSwitchAccountOpen(false)}
+      >
         <SwitchAccount callback={() => setSwitchAccountOpen(false)} />
-      </Modal>
-      <Drawer open={accountInformationOpen} onClose={() => setAccountInformationOpen(false)}>
+      </Drawer>
+      <Drawer
+        open={accountInformationOpen}
+        onClose={() => setAccountInformationOpen(false)}
+      >
         <AccountInformation />
       </Drawer>
     </div>

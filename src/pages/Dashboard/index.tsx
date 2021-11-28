@@ -1,6 +1,4 @@
-import {
-  gql, makeVar, useLazyQuery, useMutation, useReactiveVar,
-} from '@apollo/client';
+import { makeVar, useLazyQuery, useReactiveVar } from '@apollo/client';
 import { Auth } from 'aws-amplify';
 import { isEqual } from 'lodash';
 import React, { useEffect } from 'react';
@@ -27,7 +25,7 @@ export type UserAccount = {
 export const userVar = makeVar<UserAccount>({
   user: {
     id: '',
-    birthDate: '',
+    dateOfBirth: '',
     email: '',
     name: '',
     phoneNumber: '',
@@ -63,7 +61,7 @@ const Dashboard: React.FC = () => {
             id: userIdResponse.username,
             name: userIdResponse.attributes.name,
             email: userIdResponse.attributes.email,
-            birthDate: userIdResponse.attributes.birthdate,
+            dateOfBirth: userIdResponse.attributes.dateOfBirth,
             phoneNumber: userIdResponse.attributes.phone_number,
             accounts: [],
           },
@@ -96,7 +94,6 @@ const Dashboard: React.FC = () => {
         data?.user.accounts.length && (
         <div className="marginTop marginBottom" style={{ marginLeft: '24px', marginRight: '24px' }}>
           <Switch>
-            <Route path="/dashboard/user-settings" component={UserInformation} />
             <Route path={['/dashboard/cases', '/dashboard']} component={Cases} />
           </Switch>
         </div>

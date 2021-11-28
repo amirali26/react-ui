@@ -57,55 +57,59 @@ const UserInformation: React.FC = () => {
         </Button>
       </div>
       <Divider className="marginTop marginBottom" />
-      <div className="paddingTopMedium paddingMedium flex column spaceBetween" style={{ width: '1000px' }}>
-        <div className="flex row marginBottomMedium">
-          <div className="marginRightMedium">
-            <InputLabel htmlFor="input-with-icon-adornment" className="marginBottomSmall">Full Name</InputLabel>
-            <TextField
-              id="input-with-icon-adornment"
-              name="name"
-              fullWidth
-              color="primary"
-              value={data?.user?.name || ''}
-              disabled
-            />
+      <div className="paddingTopMedium paddingMedium flex column spaceBetween">
+        <div className="flex column marginBottomMedium">
+          <div className="flex row marginBottom">
+            <div className="marginRightMedium" style={{ width: '50%' }}>
+              <InputLabel htmlFor="input-with-icon-adornment" className="marginBottomSmall">Full Name</InputLabel>
+              <TextField
+                id="input-with-icon-adornment"
+                name="name"
+                fullWidth
+                color="primary"
+                value={data?.user?.name || ''}
+                disabled
+              />
+            </div>
+            <div style={{ width: '50%' }}>
+              <InputLabel htmlFor="input-with-icon-adornment" className="marginBottomSmall">Date of Birth</InputLabel>
+              <TextField
+                id="input-with-icon-adornment"
+                name="name"
+                fullWidth
+                color="primary"
+                value={data?.user?.dateOfBirth || ''}
+                disabled
+              />
+            </div>
           </div>
-          <div className="marginRightMedium">
-            <InputLabel htmlFor="input-with-icon-adornment" className="marginBottomSmall">Date of Birth</InputLabel>
-            <TextField
-              id="input-with-icon-adornment"
-              name="name"
-              fullWidth
-              color="primary"
-              value={data?.user?.birthDate || ''}
-              disabled
-            />
-          </div>
-          <div className="marginRightMedium">
-            <InputLabel htmlFor="input-with-icon-adornment" className="marginBottomSmall">Phone Number</InputLabel>
-            <TextField
-              id="input-with-icon-adornment"
-              name="name"
-              fullWidth
-              color="primary"
-              value={data?.user?.phoneNumber || ''}
-              disabled
-            />
-          </div>
-          <div style={{ width: '300px' }}>
-            <InputLabel htmlFor="input-with-icon-adornment" className="marginBottomSmall">Email</InputLabel>
-            <TextField
-              id="input-with-icon-adornment"
-              name="name"
-              fullWidth
-              color="primary"
-              value={data?.user?.email || ''}
-              disabled
-            />
+          <div className="flex row">
+            <div className="marginRightMedium" style={{ width: '50%' }}>
+              <InputLabel htmlFor="input-with-icon-adornment" className="marginBottomSmall">Phone Number</InputLabel>
+              <TextField
+                id="input-with-icon-adornment"
+                name="name"
+                fullWidth
+                color="primary"
+                value={data?.user?.phoneNumber || ''}
+                disabled
+              />
+            </div>
+            <div style={{ width: '50%' }}>
+              <InputLabel htmlFor="input-with-icon-adornment" className="marginBottomSmall">Email</InputLabel>
+              <TextField
+                id="input-with-icon-adornment"
+                name="name"
+                fullWidth
+                color="primary"
+                value={data?.user?.email || ''}
+                disabled
+              />
+            </div>
           </div>
         </div>
         <div className="flex row marginTop">
-          <div style={{ width: '700px' }}>
+          <div className="marginRightMedium" style={{ width: '50%' }}>
             <InputLabel htmlFor="input-with-icon-adornment" className="marginBottomSmall">Available Accounts</InputLabel>
             <List
               sx={{
@@ -126,7 +130,7 @@ const UserInformation: React.FC = () => {
               ))}
             </List>
           </div>
-          <div style={{ width: '700px' }}>
+          <div style={{ width: '50%' }}>
             <InputLabel htmlFor="input-with-icon-adornment" className="marginBottomSmall">Available Accounts</InputLabel>
             <List
               sx={{
