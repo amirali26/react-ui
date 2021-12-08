@@ -1,5 +1,4 @@
 import { gql } from '@apollo/client';
-import { CORE_ACCOUNT_DETAILS } from '../fragments/account';
 import { Account } from '../models/account';
 
 export interface IGetUser {
@@ -11,7 +10,7 @@ export interface IGetUser {
         email: string,
         createdAt: string,
         accounts: Account[],
-    }
+    }[]
 }
 export const GET_USER = gql`
     query user {

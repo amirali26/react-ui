@@ -43,8 +43,8 @@ const Dashboard: React.FC = () => {
       if (user) {
         userVar({
           ...user,
-          accounts: _data.user.accounts,
-          selectedAccount: _data.user.accounts[0],
+          accounts: _data.user[0].accounts,
+          selectedAccount: _data.user[0].accounts[0],
         });
       }
     },
@@ -87,11 +87,11 @@ const Dashboard: React.FC = () => {
       <Navigation />
       <BackdropLoader open={loading} />
       {
-        !data?.user.accounts.length && !loading
+        !data?.user[0].accounts.length && !loading
         && <CreateAccount />
       }
       {
-        data?.user.accounts.length && (
+        data?.user[0].accounts.length && (
         <div className="marginTop marginBottom" style={{ marginLeft: '24px', marginRight: '24px' }}>
           <Switch>
             <Route path={['/dashboard/cases', '/dashboard']} component={Cases} />

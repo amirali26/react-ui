@@ -11,6 +11,7 @@ import { AreasOfLegalPractice } from '../../../../../models/areas-of-legal-pract
 import { ADD_ACCOUNT } from '../../../../../mutations/account';
 import { UserAccount, userVar } from '../../../../../pages/Dashboard';
 import GET_AREASOFLEGALPRACTICE from '../../../../../queries/areas-of-legal-practice';
+import Title from '../../../../molecules/Title';
 
 type InitialValues = {
   name: string,
@@ -88,6 +89,10 @@ const Form: React.FC<IProps> = ({ callback }: IProps) => {
   return (
     <form onSubmit={formik.handleSubmit} style={{ width: '600px', height: '100%' }} className="flex column spaceBetween">
       <div>
+        <Title
+          title="Create Account"
+          subtitle="Create a new account for your user on this page"
+        />
         <div className="fullWidth flex row">
           <div style={{ width: '100%', padding: 8 }}>
             <InputLabel htmlFor="input-with-icon-adornment" className="marginBottomSmall">Account Name</InputLabel>

@@ -8,6 +8,7 @@ import { userVar } from '../../../../pages/Dashboard';
 import { GET_ACCOUNT } from '../../../../queries/account';
 import convertToDateTime from '../../../../utils/datetime';
 import BackdropLoader from '../../../molecules/backdropLoader';
+import Title from '../../../molecules/Title';
 
 const AccountInformation = () => {
   const user = useReactiveVar(userVar);
@@ -20,6 +21,10 @@ const AccountInformation = () => {
   return (
     <div>
       <BackdropLoader open={loading} />
+      <Title
+        title="Account Information"
+        subtitle="View your account information on this page"
+      />
       <Typography variant="h5" className="marginBottom">Account Information</Typography>
       <div className="flex column">
         <div className="flex">

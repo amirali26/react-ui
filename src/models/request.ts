@@ -5,8 +5,7 @@ export type Request = {
     name: string,
     phoneNumber: string,
     email: string,
-    status: RequestStatus,
-    enquiry: string,
+    description: string,
     topic: Topic,
     createdDate: string,
 }
@@ -17,8 +16,7 @@ export type RequestDto = {
     name: string;
     phoneNumber: string;
     email: string;
-    status: RequestStatus;
-    enquiry: string;
+    description: string;
     createdDate: string;
 }
 

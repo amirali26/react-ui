@@ -1,11 +1,12 @@
 import { useReactiveVar } from '@apollo/client';
-import { Person, PersonPinCircleTwoTone } from '@mui/icons-material';
+import { Person } from '@mui/icons-material';
 import {
-  Avatar, List, ListItem, ListItemAvatar, ListItemText, Typography,
+  Avatar, List, ListItem, ListItemAvatar, ListItemText,
 } from 'helpmycase-storybook/dist/components/External';
 import React from 'react';
 import useHelpmycaseSnackbar from '../../../../hooks/useHelpmycaseSnackbar';
 import { userVar } from '../../../../pages/Dashboard';
+import Title from '../../../molecules/Title';
 
 interface IProps {
     callback?: () => void;
@@ -38,7 +39,10 @@ const SwitchAccount: React.FC<IProps> = ({ callback }: IProps) => {
   ));
   return (
     <>
-      <Typography variant="h5" className="marginBottomMedium">Available Accounts</Typography>
+      <Title
+        title="Switch Accounts"
+        subtitle="View available accounts associated with your users and switch between them"
+      />
       <List>
         {items}
       </List>

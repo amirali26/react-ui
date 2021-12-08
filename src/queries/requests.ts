@@ -7,8 +7,7 @@ query GetRequests {
     name,
     phoneNumber,
     email,
-    status,
-    enquiry,
+    description,
     topic {
       name
     }

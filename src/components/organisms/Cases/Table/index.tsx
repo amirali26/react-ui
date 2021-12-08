@@ -45,7 +45,7 @@ const Table: React.FC = () => {
     selectedRow,
     getRequests,
     handleOpenModal,
-    handleCloseModal,
+    handleModal,
     handleRequestSort,
     handleChangePage,
     handleChangeRowsPerPage,
@@ -82,19 +82,6 @@ const Table: React.FC = () => {
                             tabIndex={-1}
                             key={row.id}
                           >
-                            <TableCell component="th" id={labelId} scope="row">
-                              <div
-                                style={{
-                                  borderRadius: '5px',
-                                  backgroundColor: theme.palette.success.main,
-                                  padding: '8px',
-                                  color: 'white',
-                                  textAlign: 'center',
-                                }}
-                              >
-                                {row.status}
-                              </div>
-                            </TableCell>
                             <TableCell align="left">{row.topic}</TableCell>
                             <TableCell align="left">{row.name}</TableCell>
                             <TableCell align="left">
@@ -131,7 +118,13 @@ const Table: React.FC = () => {
                 onRowsPerPageChange={handleChangeRowsPerPage}
               />
             </Paper>
-            <Drawer onClose={handleCloseModal} open={Boolean(selectedRow)}>
+            <Drawer onClose={handleModal} open={Boolean(selectedRow)}>
+              {
+                selectedRow
+                && <Case {...selectedRow} />
+              }
+            </Drawer>
+            <Drawer onClose={handleModal} open={Boolean(selectedRow)}>
               {
                 selectedRow
                 && <Case {...selectedRow} />

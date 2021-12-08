@@ -10,6 +10,7 @@ import { User } from '../../../../models/user';
 import { userVar } from '../../../../pages/Dashboard';
 import { GET_USER } from '../../../../queries/user';
 import BackdropLoader from '../../../molecules/backdropLoader';
+import Title from '../../../molecules/Title';
 
 const UserInformation: React.FC = () => {
   const [selectedAccount, setSelectedAccount] = React.useState<Account>();
@@ -26,9 +27,10 @@ const UserInformation: React.FC = () => {
   return (
     <div>
       <BackdropLoader open={loading} />
-      <Typography variant="h5">User Profile</Typography>
-      <Typography variant="subtitle1" className="grey">View and manage your user profile on this page.</Typography>
-      <Divider className="marginTop marginBottom" />
+      <Title
+        title="User Profile"
+        subtitle="View and manage your user profile on this page."
+      />
       <div className="paddingTopMedium paddingMedium flex alignItemsCenter">
         <Avatar
           className="marginRight"
