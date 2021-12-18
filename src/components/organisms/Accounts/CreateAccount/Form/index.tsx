@@ -43,7 +43,7 @@ const Form: React.FC<IProps> = ({ callback }: IProps) => {
     fetchPolicy: 'cache-and-network',
   });
 
-  const [addAccount, { loading, error }] = useMutation<{ addAccount: Account}>(ADD_ACCOUNT, {
+  const [addAccount, { loading, error }] = useMutation<{ addAccount: Account }>(ADD_ACCOUNT, {
     // eslint-disable-next-line @typescript-eslint/no-use-before-define
     onCompleted: (data) => updateUserVar(data.addAccount),
   });
@@ -64,8 +64,8 @@ const Form: React.FC<IProps> = ({ callback }: IProps) => {
         if (error) {
           throw Error(error.message);
         }
-      } catch (e: any) {
-        sb.trigger(e.message);
+      } catch (e) {
+        sb.trigger(e instanceof Error ? e.message : '');
       }
     },
     validationSchema: formValidationSchema,
@@ -115,30 +115,30 @@ const Form: React.FC<IProps> = ({ callback }: IProps) => {
           }}
           >
             {
-            legalPracticeQuery.data?.areasOfPractices.map((aolp: AreasOfLegalPractice) => (
-              <FormControlLabel
-                key={aolp.id}
-                checked={formik.values.handledAreasOfPractice.includes(aolp.id)}
-                onChange={() => {
-                  const index = formik.values.handledAreasOfPractice.indexOf(aolp.id);
-                  const copiedArray = [...formik.values.handledAreasOfPractice];
-                  if (index >= 0) {
-                    formik.setFieldValue('handledAreasOfPractice',
-                      copiedArray.filter((a) => a !== aolp.id));
-                    return;
+              legalPracticeQuery.data?.areasOfPractices.map((aolp: AreasOfLegalPractice) => (
+                <FormControlLabel
+                  key={aolp.id}
+                  checked={formik.values.handledAreasOfPractice.includes(aolp.id)}
+                  onChange={() => {
+                    const index = formik.values.handledAreasOfPractice.indexOf(aolp.id);
+                    const copiedArray = [...formik.values.handledAreasOfPractice];
+                    if (index >= 0) {
+                      formik.setFieldValue('handledAreasOfPractice',
+                        copiedArray.filter((a) => a !== aolp.id));
+                      return;
+                    }
+                    copiedArray.push(aolp.id);
+                    formik.setFieldValue('handledAreasOfPractice', copiedArray);
+                  }}
+                  className="marginTopMedium"
+                  control={
+                    <Checkbox checked={formik.values.handledAreasOfPractice.includes(aolp.id)} />
                   }
-                  copiedArray.push(aolp.id);
-                  formik.setFieldValue('handledAreasOfPractice', copiedArray);
-                }}
-                className="marginTopMedium"
-                control={
-                  <Checkbox checked={formik.values.handledAreasOfPractice.includes(aolp.id)} />
-                }
-                label={aolp.name}
-                sx={{ margin: 0, marginTop: '0 !important', width: '100%' }}
-              />
-            ))
-          }
+                  label={aolp.name}
+                  sx={{ margin: 0, marginTop: '0 !important', width: '100%' }}
+                />
+              ))
+            }
           </div>
         </div>
       </div>

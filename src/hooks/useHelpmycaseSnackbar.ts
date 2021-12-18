@@ -7,7 +7,7 @@ const useHelpmycaseSnackbar = () => {
     variant: variant || 'error',
     anchorOrigin: {
       vertical: 'bottom',
-      horizontal: 'center',
+      horizontal: 'left',
     },
   });
 

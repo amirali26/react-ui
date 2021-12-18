@@ -10,18 +10,18 @@ import {
   TableRow,
 } from 'helpmycase-storybook/dist/components/External';
 import * as React from 'react';
+import { Enquiry as EnquiryType } from '../../../../models/enquiry';
 import { RequestDto } from '../../../../models/request';
 import convertToDateTime from '../../../../utils/datetime';
 import descendingComparator from '../../../../utils/descendingComparator';
+import history from '../../../../utils/routes/history';
 import stableSort from '../../../../utils/stableSort';
 import BigMessage from '../../../molecules/bigMessage';
 import Drawer from '../../../molecules/Drawer';
-import Enquiry from '../../Enquiries/Enquiry';
-import Case from '../Case';
+import Enquiry from '../Enquiry';
 import Head from './Head';
 import Toolbar from './Toolbar';
 import useTable from './useTable';
-import history from '../../../../utils/routes/history';
 
 export type Order = 'asc' | 'desc';
 export function getComparator<Key extends keyof never>(
@@ -36,6 +36,11 @@ export function getComparator<Key extends keyof never>(
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
+export type TableItem = RequestDto & {
+  enquiry: EnquiryType,
+  topic: string,
+}
+
 const Table: React.FC = () => {
   const {
     page,
@@ -43,15 +48,14 @@ const Table: React.FC = () => {
     order,
     orderBy,
     rowsPerPage,
+    tableItems,
     selectedRow,
-    enquiry,
-    getRequests,
+    getTableItems,
     handleOpenDrawer,
     handleCloseDrawer,
-    handleRequestSort,
+    handleSort,
     handleChangePage,
     handleChangeRowsPerPage,
-    handleEnquiryClick,
   } = useTable();
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
@@ -61,7 +65,7 @@ const Table: React.FC = () => {
         ? (
           <>
             <Paper style={{ width: '100%' }}>
-              <Toolbar getRequests={getRequests} />
+              <Toolbar getEnquiries={getTableItems} />
               <TableContainer>
                 <MuiTable
                   style={{ minWidth: 750 }}
@@ -71,12 +75,12 @@ const Table: React.FC = () => {
                   <Head
                     order={order}
                     orderBy={orderBy}
-                    onRequestSort={handleRequestSort}
+                    onSort={handleSort}
                   />
                   <TableBody style={{ cursor: 'pointer' }}>
-                    {stableSort<RequestDto>(rows, getComparator(order, orderBy))
+                    {stableSort<TableItem>(rows, getComparator(order, orderBy))
                       .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                      .map((row: RequestDto, index) => {
+                      .map((row: TableItem, index) => {
                         const labelId = `enhanced-table-checkbox-${index}`;
                         return (
                           <TableRow
@@ -99,11 +103,7 @@ const Table: React.FC = () => {
                         );
                       })}
                     {emptyRows > 0 && (
-                      <TableRow
-                        style={{
-                          height: 33 * emptyRows,
-                        }}
-                      >
+                      <TableRow style={{ height: 33 * emptyRows }}>
                         <TableCell colSpan={6} />
                       </TableRow>
                     )}
@@ -119,20 +119,14 @@ const Table: React.FC = () => {
                 onRowsPerPageChange={handleChangeRowsPerPage}
               />
             </Paper>
-            <Drawer onClose={handleCloseDrawer} open={Boolean(selectedRow)}>
-              {
-                selectedRow
-                && <Case {...selectedRow} handleEnquiryClick={handleEnquiryClick} />
-              }
-            </Drawer>
             <Drawer
               onClose={handleCloseDrawer}
-              open={Boolean(enquiry)}
+              open={Boolean(selectedRow)}
               onBackdropClick={handleCloseDrawer}
             >
               {
-                enquiry
-                && <Enquiry id={enquiry} />
+                selectedRow?.id
+                && <Enquiry id={selectedRow?.id} enquiry={selectedRow} />
               }
             </Drawer>
           </>
@@ -140,11 +134,11 @@ const Table: React.FC = () => {
         : (
           <BigMessage
             icon={<ReportProblemOutlined />}
-            title="There are currently no requests"
-            subtitle="Unfortunately, we are unable to find any requests available to you at this time."
+            title="No Enquiries Found"
+            subtitle="Your organisation does not currently have any enquiries"
             buttonProps={{
-              children: 'View All Enquiries',
-              onClick: () => history.push('/dashboard/enquiries'),
+              children: 'View All Requests',
+              onClick: () => history.push('/dashboard'),
             }}
           />
         )}

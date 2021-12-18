@@ -15,6 +15,7 @@ import history from '../../utils/routes/history';
 import routes from '../../utils/routes/routes';
 import useAuth from '../Auth/useAuth';
 import Cases from '../Cases';
+import Enquiries from '../Enquiries';
 
 export type UserAccount = {
   user: User,
@@ -49,7 +50,6 @@ const Dashboard: React.FC = () => {
       }
     },
   });
-  const location = useLocation();
 
   const getUserOrRedirectToLogin = async (): Promise<void> => {
     const response = await isLoggedIn();
@@ -92,11 +92,12 @@ const Dashboard: React.FC = () => {
       }
       {
         data?.user[0].accounts.length && (
-        <div className="marginTop marginBottom" style={{ marginLeft: '24px', marginRight: '24px' }}>
-          <Switch>
-            <Route path={['/dashboard/cases', '/dashboard']} component={Cases} />
-          </Switch>
-        </div>
+          <div className="marginTop marginBottom" style={{ marginLeft: '24px', marginRight: '24px' }}>
+            <Switch>
+              <Route path={['/dashboard/enquiries']} component={Enquiries} />
+              <Route path={['/dashboard/cases', '/dashboard']} component={Cases} />
+            </Switch>
+          </div>
         )
       }
     </Route>

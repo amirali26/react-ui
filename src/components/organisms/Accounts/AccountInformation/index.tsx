@@ -2,7 +2,6 @@ import { useQuery, useReactiveVar } from '@apollo/client';
 import {
   InputLabel, TextField, Typography,
 } from 'helpmycase-storybook/dist/components/External';
-import { DateTime } from 'luxon';
 import React from 'react';
 import { userVar } from '../../../../pages/Dashboard';
 import { GET_ACCOUNT } from '../../../../queries/account';
@@ -18,6 +17,17 @@ const AccountInformation = () => {
     },
     fetchPolicy: 'network-only',
   });
+
+  if (loading && !data) {
+    return <BackdropLoader open />;
+  }
+
+  if ((!data && !loading) || data?.userAccount?.length < 1) {
+    return null;
+  }
+
+  const accountInformation = data?.userAccount[0];
+
   return (
     <div>
       <BackdropLoader open={loading} />
@@ -35,7 +45,7 @@ const AccountInformation = () => {
               name="name"
               fullWidth
               color="primary"
-              value={data?.userAccount?.name || ''}
+              value={accountInformation.name}
               disabled
             />
           </div>
@@ -59,7 +69,7 @@ const AccountInformation = () => {
               name="name"
               fullWidth
               color="primary"
-              value={data?.userAccount?.createdBy?.name || ''}
+              value={accountInformation.createdBy?.name}
               disabled
             />
           </div>
@@ -70,7 +80,7 @@ const AccountInformation = () => {
               name="name"
               fullWidth
               color="primary"
-              value={convertToDateTime(data?.userAccount?.createdAt)}
+              value={convertToDateTime(accountInformation.createdAt)}
               disabled
             />
           </div>
