@@ -94,8 +94,8 @@ const Dashboard: React.FC = () => {
         data?.user[0].accounts.length && (
           <div className="marginTop marginBottom" style={{ marginLeft: '24px', marginRight: '24px' }}>
             <Switch>
-              <Route path={['/dashboard/enquiries']} component={Enquiries} />
-              <Route path={['/dashboard/cases', '/dashboard']} component={Cases} />
+              <Route path={['/dashboard/enquiries']} component={Enquiries} key={user.selectedAccount?.id} />
+              <Route path={['/dashboard/cases', '/dashboard']} component={Cases} key={user.selectedAccount?.id} />
             </Switch>
           </div>
         )

@@ -3,9 +3,8 @@ import { useFormik } from 'formik';
 import {
   Button, Checkbox, FormControlLabel, InputAdornment, InputLabel, OutlinedInput, TextField,
 } from 'helpmycase-storybook/dist/components/External';
-import React, { useEffect } from 'react';
+import React from 'react';
 import * as Yup from 'yup';
-import { boolean } from 'yup/lib/locale';
 import useHelpmycaseSnackbar from '../../../../hooks/useHelpmycaseSnackbar';
 import EnquiryInput, { Enquiry as EnquiryType } from '../../../../models/enquiry';
 import { ADD_ENQUIRY } from '../../../../mutations/enquiry';
