@@ -11,7 +11,6 @@ const useTable = () => {
     requests: Request[]
   }>(GET_REQUESTS, {
     fetchPolicy: 'cache-and-network',
-    onCompleted: () => sb.trigger('Successfully retrieved latest cases', 'success'),
   });
   const [order, setOrder] = React.useState<Order>('asc');
   const [orderBy, setOrderBy] = React.useState<keyof Request>('createdDate');

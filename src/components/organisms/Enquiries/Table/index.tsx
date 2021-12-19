@@ -126,7 +126,13 @@ const Table: React.FC = () => {
             >
               {
                 selectedRow?.id
-                && <Enquiry id={selectedRow?.id} enquiry={selectedRow} />
+                && (
+                  <Enquiry
+                    id={selectedRow?.id}
+                    enquiry={selectedRow}
+                    handleCallback={handleCloseDrawer}
+                  />
+                )
               }
             </Drawer>
           </>

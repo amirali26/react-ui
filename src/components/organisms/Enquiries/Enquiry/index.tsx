@@ -15,6 +15,7 @@ import Title from '../../../molecules/Title';
 type Props = {
   id: string,
   enquiry?: EnquiryType,
+  handleCallback?: () => void,
 }
 
 const initialValues: EnquiryInput = {
@@ -39,9 +40,15 @@ const formValidationSchema = Yup.object().shape({
 const Enquiry: React.FC<Props> = ({
   id,
   enquiry,
+  handleCallback,
 }) => {
   const sb = useHelpmycaseSnackbar();
-  const [addEnquiry, { data, loading, error }] = useMutation(ADD_ENQUIRY);
+  const [addEnquiry, { data, loading, error }] = useMutation(ADD_ENQUIRY, {
+    onCompleted: () => {
+      sb.trigger('Successfully submitted your enquiry', 'success');
+      if (handleCallback) handleCallback();
+    },
+  });
 
   async function handleFormSubmit(values: EnquiryInput) {
     try {
@@ -56,7 +63,6 @@ const Enquiry: React.FC<Props> = ({
         },
         refetchQueries: [GET_REQUESTS],
       });
-      sb.trigger('Successfully submitted your enquiry', 'success');
     } catch (e) {
       sb.trigger(e instanceof Error ? e.message : 'Something went wrong submitting your enquiry');
     }
