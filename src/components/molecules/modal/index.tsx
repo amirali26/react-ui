@@ -3,9 +3,9 @@ import theme from 'helpmycase-storybook/dist/theme/theme';
 import React from 'react';
 
 interface IProps {
-    open: boolean,
-    children: JSX.Element | JSX.Element[]
-    handleClose: () => void,
+  open: boolean,
+  children: JSX.Element | JSX.Element[]
+  handleClose: () => void,
 }
 const Modal: React.FC<IProps> = ({ open, children, handleClose }: IProps) => (
   <MuiModal
@@ -22,13 +22,13 @@ const Modal: React.FC<IProps> = ({ open, children, handleClose }: IProps) => (
   >
     <Fade in={open}>
       <div style={{
-        backgroundColor: theme.palette.background.paper,
-        border: '2px solid #000',
+        backgroundColor: '#121212',
+        borderRadius: '5px',
         boxShadow: theme.shadows[5],
-        padding: theme.spacing(4, 4, 4, 4),
+        padding: theme.spacing(6, 12, 6, 12),
       }}
       >
-        { children }
+        {children}
       </div>
     </Fade>
   </MuiModal>

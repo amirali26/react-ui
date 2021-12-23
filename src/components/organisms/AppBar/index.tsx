@@ -30,7 +30,7 @@ import CreateAccountForm from '../Accounts/CreateAccount/Form';
 import SwitchAccount from '../Accounts/SwitchAccount';
 import UserInformation from '../User/UserInformation';
 
-const useStyles = Styles.makeStyles((theme: any) => ({
+export const useStyles = Styles.makeStyles((theme: any) => ({
   root: {
     flexGrow: 1,
   },

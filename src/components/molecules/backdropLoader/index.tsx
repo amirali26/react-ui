@@ -5,7 +5,7 @@ import theme from 'helpmycase-storybook/dist/theme/theme';
 import React from 'react';
 
 interface IProps {
-    open: boolean;
+  open: boolean;
 }
 
 const BackdropLoader: React.FC<IProps> = ({ open }: IProps) => (

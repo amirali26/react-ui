@@ -132,7 +132,7 @@ const Table: React.FC = () => {
             >
               {
                 enquiry
-                && <Enquiry id={enquiry} />
+                && <Enquiry id={enquiry} handleCallback={handleCloseDrawer} />
               }
             </Drawer>
           </>

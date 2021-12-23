@@ -8,6 +8,13 @@ export const ADD_ENQUIRY = gql`
     }
 `;
 
+export const ADD_GENERATE_CLIENT_TOTP = gql`
+    mutation AddGenerateClientTotp($email: String!, $phoneNumber: String!) {
+        addGenerateClientTotp(email: $email, phoneNumber: $phoneNumber)
+    }
+`;
+
 export default {
   ADD_ENQUIRY,
+  ADD_GENERATE_CLIENT_TOTP,
 };
