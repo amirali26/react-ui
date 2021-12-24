@@ -2,15 +2,19 @@ import { Divider, Typography } from 'helpmycase-storybook/dist/components/Extern
 import React from 'react';
 
 interface IProps {
-    title: string,
-    subtitle: string,
+  title: string,
+  subtitle: string,
+  hideDivider?: boolean,
 }
 
-const Title: React.FC<IProps> = ({ title, subtitle }) => (
+const Title: React.FC<IProps> = ({ title, subtitle, hideDivider }) => (
   <div>
     <Typography variant="h5">{title}</Typography>
-    <Typography variant="subtitle1" className="grey">{ subtitle }</Typography>
-    <Divider className="marginTop marginBottom" />
+    <Typography variant="subtitle1" className="grey">{subtitle}</Typography>
+    {
+      hideDivider
+      || <Divider className="marginTop marginBottom" />
+    }
   </div>
 );
 

@@ -5,7 +5,7 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import './App.css';
 import AuthContext from './context/AuthContext';
 import Auth from './pages/Auth';
-import Enquiries from './pages/Client/Enquiries';
+import Client from './pages/Client';
 import Dashboard from './pages/Dashboard';
 
 const App: React.FC = () => {
@@ -21,8 +21,8 @@ const App: React.FC = () => {
           <Route path="/dashboard">
             <Dashboard />
           </Route>
-          <Route path="/client/:id">
-            <Enquiries />
+          <Route path="/client">
+            <Client />
           </Route>
           <Redirect to="/auth" />
         </Switch>
