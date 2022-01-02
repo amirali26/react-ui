@@ -9,7 +9,7 @@ import { userVar } from '../../../../pages/Dashboard';
 import Title from '../../../molecules/Title';
 
 interface IProps {
-    callback?: () => void;
+  callback?: () => void;
 }
 
 const SwitchAccount: React.FC<IProps> = ({ callback }: IProps) => {
@@ -40,8 +40,8 @@ const SwitchAccount: React.FC<IProps> = ({ callback }: IProps) => {
   return (
     <>
       <Title
-        title="Switch Accounts"
-        subtitle="View available accounts associated with your users and switch between them"
+        title="Switch Firm"
+        subtitle="View available firms associated with your user and switch between them"
       />
       <List>
         {items}

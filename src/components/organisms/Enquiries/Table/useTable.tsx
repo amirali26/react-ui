@@ -61,6 +61,9 @@ const useTable = () => {
     id: e.id,
     enquiry: { ...e },
     topic: e.request.topic.name,
+    name: e.request.client.name,
+    phoneNumber: e.request.client.phoneNumber,
+    email: e.request.client.email,
   })) || [];
 
   return {

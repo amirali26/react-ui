@@ -13,7 +13,7 @@ const useTable = () => {
     fetchPolicy: 'cache-and-network',
   });
   const [order, setOrder] = React.useState<Order>('asc');
-  const [orderBy, setOrderBy] = React.useState<keyof Request>('createdDate');
+  const [orderBy, setOrderBy] = React.useState<keyof RequestDto>('createdDate');
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(15);
   const [selectedRow, setSelectedRow] = React.useState<RequestDto | undefined>();
@@ -25,7 +25,7 @@ const useTable = () => {
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
-    property: keyof Request,
+    property: keyof RequestDto,
   ) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -56,7 +56,13 @@ const useTable = () => {
   };
 
   return {
-    rows: data?.requests ? data.requests.map((r) => ({ ...r, topic: r.topic.name })) : [],
+    rows: data?.requests ? data.requests.map((r) => ({
+      ...r,
+      topic: r.topic.name,
+      email: r.client.email,
+      name: r.client.name,
+      phoneNumber: r.client.phoneNumber,
+    })) : [],
     order,
     orderBy,
     page,

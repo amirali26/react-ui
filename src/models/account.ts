@@ -1,5 +1,20 @@
+export enum AccountType {
+    LONDON_LARGE_COMMERCIAL = 'LONDON_LARGE_COMMERCIAL',
+    LONDON_AMERICAN_FIRMS = 'LONDON_AMERICAN_FIRMS',
+    LONDON_MID_SIZED_COMMERCIAL = 'LONDON_MID_SIZED_COMMERCIAL',
+    LONDON_SMALLER_COMMERCIAL = 'LONDON_SMALLER_COMMERCIAL',
+    REGIONAL_FIRMS = 'REGIONAL_FIRMS',
+    GENERAL_PRACTICE_SMALL_FIRMS = 'GENERAL_PRACTICE_SMALL_FIRMS',
+    NATIONAL_MULTISITE_FIRMS = 'NATIONAL_MULTISITE_FIRMS',
+    NICHE_FIRMS = 'NICHE_FIRMS',
+}
+
 export type Account = {
     id: string,
     name: string,
+    email: string,
+    phoneNumber: string,
+    website: string,
+    size: AccountType,
     permissions: string[],
 }

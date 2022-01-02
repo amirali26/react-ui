@@ -19,10 +19,10 @@ const CreateAccount: React.FC = () => {
     <div>
       <BigMessage
         icon={<ReportProblemOutlined />}
-        title="No Account Found"
-        subtitle="Your user is not currently associated with any accounts, please click on the button below to create a free account"
+        title="No Firms Found"
+        subtitle="Your user is not currently associated with any firms, please click on the button below to register your firm for free"
         buttonProps={{
-          children: 'Create an account',
+          children: 'Register Firm',
           onClick: handleOpen,
         }}
       />

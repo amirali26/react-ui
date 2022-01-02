@@ -12,6 +12,7 @@ import {
 import clsx from 'clsx';
 import {
   AppBar,
+  Badge,
   Button,
   IconButton,
   Menu,
@@ -54,7 +55,9 @@ const NavigationAppBar: React.FC<IProps> = ({ handleOpen }: IProps) => {
   const [switchAccountOpen, setSwitchAccountOpen] = React.useState<boolean>(false);
   const [accountInformationOpen, setAccountInformationOpen] = React.useState<boolean>(false);
   const [userProfileOpen, setUserProfileOpen] = React.useState<boolean>(false);
-  const { user, selectedAccount } = useReactiveVar(userVar);
+  const {
+    user, selectedAccount, accountUserInvitations, accounts,
+  } = useReactiveVar(userVar);
   const { handleLogout } = useAuth();
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -89,18 +92,22 @@ const NavigationAppBar: React.FC<IProps> = ({ handleOpen }: IProps) => {
           >
             {user ? user.name.toUpperCase() : 'Profile'}
           </Button>
-          <Button
-            color="primary"
-            variant="contained"
-            startIcon={<AccountBalanceOutlined />}
-            onClick={() => {
-              handleClose();
-              setSwitchAccountOpen(true);
-            }}
-          >
-            Switch Account
-            {selectedAccount && ` - ${selectedAccount.name}`}
-          </Button>
+          {
+            Boolean(accounts?.length) && (
+              <Button
+                color="primary"
+                variant="contained"
+                startIcon={<AccountBalanceOutlined />}
+                onClick={() => {
+                  handleClose();
+                  setSwitchAccountOpen(true);
+                }}
+              >
+                Switch Firm
+                {selectedAccount && ` - ${selectedAccount.name}`}
+              </Button>
+            )
+          }
           <Menu
             id="simple-menu"
             anchorEl={anchorEl}
@@ -116,7 +123,6 @@ const NavigationAppBar: React.FC<IProps> = ({ handleOpen }: IProps) => {
               }}
               to="/dashboard/user-settings"
             >
-              <AccountBoxOutlined className="marginRightSmall" />
               My Profile
             </MenuItem>
             <MenuItem
@@ -125,20 +131,34 @@ const NavigationAppBar: React.FC<IProps> = ({ handleOpen }: IProps) => {
                 setAddAccountOpen(true);
               }}
             >
-              <AddBoxOutlined className="marginRightSmall" />
-              Add Account
+              Add Firm
             </MenuItem>
+            {
+              Boolean(user.accounts.length)
+              && (
+                <MenuItem
+                  onClick={() => {
+                    handleClose();
+                    setAccountInformationOpen(true);
+                  }}
+                >
+                  Firm Information
+                </MenuItem>
+              )
+            }
             <MenuItem
               onClick={() => {
                 handleClose();
                 setAccountInformationOpen(true);
               }}
+              sx={{
+                paddingRight: '40px',
+              }}
             >
-              <HelpOutline className="marginRightSmall" />
-              Account Information
+              Firm Invitations
+              <Badge badgeContent={accountUserInvitations?.length || 0} color="primary" sx={{ left: '15px', top: '1px' }} />
             </MenuItem>
             <MenuItem onClick={handleLogout}>
-              <ExitToAppOutlined className="marginRightSmall" />
               Logout
             </MenuItem>
           </Menu>
