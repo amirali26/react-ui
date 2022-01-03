@@ -1,41 +1,47 @@
 import { useQuery, useReactiveVar } from '@apollo/client';
 import {
-  InputLabel, TextField, Typography,
+  InputLabel, TextField,
 } from 'helpmycase-storybook/dist/components/External';
 import React from 'react';
+import { Account } from '../../../../models/account';
 import { userVar } from '../../../../pages/Dashboard';
 import { GET_ACCOUNT } from '../../../../queries/account';
 import convertToDateTime from '../../../../utils/datetime';
 import BackdropLoader from '../../../molecules/backdropLoader';
 import Title from '../../../molecules/Title';
 
-const AccountInformation = () => {
+type Props = {
+  account?: Account;
+}
+
+const AccountInformation: React.FC<Props> = ({ account }) => {
   const user = useReactiveVar(userVar);
+
   const { loading, data } = useQuery(GET_ACCOUNT, {
     variables: {
       accountId: user.selectedAccount?.id,
     },
     fetchPolicy: 'network-only',
+    skip: Boolean(account),
   });
 
-  if (loading && !data) {
+  if (loading && !data && !account) {
     return <BackdropLoader open />;
   }
 
-  if ((!data && !loading) || data?.userAccount?.length < 1) {
+  if ((!data && !loading && !account) || data?.userAccount?.length < 1) {
     return null;
   }
 
-  const accountInformation = data?.userAccount[0];
+  const accountInformation = account || data?.userAccount[0];
 
   return (
     <div>
       <BackdropLoader open={loading} />
       <Title
-        title="Account Information"
-        subtitle="View your account information on this page"
+        title="Firm Information"
+        subtitle="A detailed description of the registered details for the selected firm"
       />
-      <Typography variant="h5" className="marginBottom">Account Information</Typography>
       <div className="flex column">
         <div className="flex">
           <div className="fullWidth marginRightSmall">

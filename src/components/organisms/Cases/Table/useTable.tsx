@@ -1,12 +1,11 @@
 import { useLazyQuery } from '@apollo/client';
 import * as React from 'react';
 import { Order } from '.';
-import useHelpmycaseSnackbar from '../../../../hooks/useHelpmycaseSnackbar';
 import { Request, RequestDto } from '../../../../models/request';
 import GET_REQUESTS from '../../../../queries/requests';
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 const useTable = () => {
-  const sb = useHelpmycaseSnackbar();
   const [getRequests, { data }] = useLazyQuery<{
     requests: Request[]
   }>(GET_REQUESTS, {

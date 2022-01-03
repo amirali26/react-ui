@@ -1,12 +1,11 @@
 import { useLazyQuery } from '@apollo/client';
 import * as React from 'react';
 import { Order, TableItem } from '.';
-import useHelpmycaseSnackbar from '../../../../hooks/useHelpmycaseSnackbar';
 import { Enquiry } from '../../../../models/enquiry';
 import GET_ENQUIRIES from '../../../../queries/enquiries';
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 const useTable = () => {
-  const sb = useHelpmycaseSnackbar();
   const [getTableItems, { data }] = useLazyQuery<{
     enquiries: Enquiry[]
   }>(GET_ENQUIRIES, {
@@ -42,7 +41,6 @@ const useTable = () => {
   };
 
   const handleOpenDrawer = (event: React.MouseEvent<unknown>, _tableItem: TableItem) => {
-    console.log(_tableItem);
     setSelectedRow(_tableItem.enquiry);
   };
 

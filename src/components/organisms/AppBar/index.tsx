@@ -2,12 +2,7 @@ import { useReactiveVar } from '@apollo/client';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  AccountBalanceOutlined,
-  AccountBoxOutlined,
-  AccountCircleOutlined,
-  AddBoxOutlined,
-  ExitToAppOutlined,
-  HelpOutline,
+  AccountBalanceOutlined, AccountCircleOutlined,
 } from '@mui/icons-material';
 import clsx from 'clsx';
 import {
@@ -18,6 +13,7 @@ import {
   Menu,
   MenuItem,
   Styles,
+  Theme,
   Toolbar,
 } from 'helpmycase-storybook/dist/components/External';
 import React from 'react';
@@ -26,12 +22,12 @@ import useAuth from '../../../pages/Auth/useAuth';
 import { userVar } from '../../../pages/Dashboard';
 import Logo from '../../atoms/Logo';
 import Drawer from '../../molecules/Drawer';
-import AccountInformation from '../Accounts/AccountInformation';
+import AccountInvitation from '../Accounts/AccountInvitation';
 import CreateAccountForm from '../Accounts/CreateAccount/Form';
 import SwitchAccount from '../Accounts/SwitchAccount';
 import UserInformation from '../User/UserInformation';
 
-export const useStyles = Styles.makeStyles((theme: any) => ({
+export const useStyles = Styles.makeStyles((theme: Theme) => ({
   root: {
     flexGrow: 1,
   },
@@ -54,10 +50,12 @@ const NavigationAppBar: React.FC<IProps> = ({ handleOpen }: IProps) => {
   const [addAccountOpen, setAddAccountOpen] = React.useState<boolean>(false);
   const [switchAccountOpen, setSwitchAccountOpen] = React.useState<boolean>(false);
   const [accountInformationOpen, setAccountInformationOpen] = React.useState<boolean>(false);
+  const [accountInvitationOpen, setAccountInvitationOpen] = React.useState<boolean>(false);
   const [userProfileOpen, setUserProfileOpen] = React.useState<boolean>(false);
   const {
     user, selectedAccount, accountUserInvitations, accounts,
   } = useReactiveVar(userVar);
+
   const { handleLogout } = useAuth();
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -134,7 +132,7 @@ const NavigationAppBar: React.FC<IProps> = ({ handleOpen }: IProps) => {
               Add Firm
             </MenuItem>
             {
-              Boolean(user.accounts.length)
+              Boolean(accounts?.length)
               && (
                 <MenuItem
                   onClick={() => {
@@ -149,7 +147,7 @@ const NavigationAppBar: React.FC<IProps> = ({ handleOpen }: IProps) => {
             <MenuItem
               onClick={() => {
                 handleClose();
-                setAccountInformationOpen(true);
+                setAccountInvitationOpen(true);
               }}
               sx={{
                 paddingRight: '40px',
@@ -178,9 +176,26 @@ const NavigationAppBar: React.FC<IProps> = ({ handleOpen }: IProps) => {
       </Drawer>
       <Drawer
         open={accountInformationOpen}
-        onClose={() => setAccountInformationOpen(false)}
+        onClose={() => {
+          setAccountInformationOpen(false);
+        }}
       >
-        <AccountInformation />
+        {selectedAccount && (
+          <CreateAccountForm
+            accountInformation={{
+              ...selectedAccount,
+              type: selectedAccount.size,
+              handledAreasOfPractice: selectedAccount.areasOfPractice.map((aop) => aop.id),
+            }}
+            readonly
+          />
+        )}
+      </Drawer>
+      <Drawer
+        open={accountInvitationOpen}
+        onClose={() => setAccountInvitationOpen(false)}
+      >
+        <AccountInvitation />
       </Drawer>
     </div>
   );

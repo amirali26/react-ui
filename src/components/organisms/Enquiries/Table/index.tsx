@@ -48,7 +48,6 @@ const Table: React.FC = () => {
     order,
     orderBy,
     rowsPerPage,
-    tableItems,
     selectedRow,
     getTableItems,
     handleOpenDrawer,
@@ -80,28 +79,24 @@ const Table: React.FC = () => {
                   <TableBody style={{ cursor: 'pointer' }}>
                     {stableSort<TableItem>(rows, getComparator(order, orderBy))
                       .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                      .map((row: TableItem, index) => {
-                        const labelId = `enhanced-table-checkbox-${index}`;
-                        return (
-                          <TableRow
-                            hover
-                            onClick={(event) => handleOpenDrawer(event, row)}
-                            tabIndex={-1}
-                            key={row.id}
-                          >
-                            <TableCell align="left">{row.topic}</TableCell>
-                            <TableCell align="left">{row.name}</TableCell>
-                            <TableCell align="left">
-                              {row.phoneNumber}
-                            </TableCell>
-                            <TableCell align="left">{row.email}</TableCell>
-                            <TableCell align="left">{row.topic}</TableCell>
-                            <TableCell align="left">
-                              {convertToDateTime(row.createdDate)}
-                            </TableCell>
-                          </TableRow>
-                        );
-                      })}
+                      .map((row: TableItem) => (
+                        <TableRow
+                          hover
+                          onClick={(event) => handleOpenDrawer(event, row)}
+                          tabIndex={-1}
+                          key={row.id}
+                        >
+                          <TableCell align="left">{row.topic}</TableCell>
+                          <TableCell align="left">{row.name}</TableCell>
+                          <TableCell align="left">
+                            {row.phoneNumber}
+                          </TableCell>
+                          <TableCell align="left">{row.email}</TableCell>
+                          <TableCell align="left">
+                            {convertToDateTime(row.createdDate)}
+                          </TableCell>
+                        </TableRow>
+                      ))}
                     {emptyRows > 0 && (
                       <TableRow style={{ height: 33 * emptyRows }}>
                         <TableCell colSpan={6} />

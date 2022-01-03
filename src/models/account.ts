@@ -1,3 +1,6 @@
+import { AreasOfLegalPractice } from './areas-of-legal-practice';
+import { User } from './user';
+
 export enum AccountType {
     LONDON_LARGE_COMMERCIAL = 'LONDON_LARGE_COMMERCIAL',
     LONDON_AMERICAN_FIRMS = 'LONDON_AMERICAN_FIRMS',
@@ -17,4 +20,8 @@ export type Account = {
     website: string,
     size: AccountType,
     permissions: string[],
+    registeredDate: string,
+    areasOfPractice: AreasOfLegalPractice[],
+    createdBy: User,
+    createdAt: string,
 }

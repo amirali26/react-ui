@@ -60,9 +60,11 @@ const formValidationSchema = Yup.object().shape({
 
 interface IProps {
   callback?: () => void;
+  readonly?: true
+  accountInformation?: InitialValues;
 }
 
-const Form: React.FC<IProps> = ({ callback }: IProps) => {
+const Form: React.FC<IProps> = ({ callback, readonly, accountInformation }: IProps) => {
   const sb = useHelpmycaseSnackbar();
 
   const legalPracticeQuery = useQuery<{
@@ -77,7 +79,7 @@ const Form: React.FC<IProps> = ({ callback }: IProps) => {
   });
 
   const formik = useFormik({
-    initialValues,
+    initialValues: readonly && accountInformation ? accountInformation : initialValues,
     validateOnMount: true,
     onSubmit: async (values) => {
       try {
@@ -118,8 +120,12 @@ const Form: React.FC<IProps> = ({ callback }: IProps) => {
     <form onSubmit={formik.handleSubmit} style={{ width: '600px', height: '100%' }} className="flex column spaceBetween">
       <div>
         <Title
-          title="Register Firm"
-          subtitle="Register your firm with your user, and add existing users to it. Your firm will be visible to clients whenever you make an enquiry."
+          title={readonly ? 'Firm Information' : 'Register Firm'}
+          subtitle={
+            readonly
+              ? 'A detailed description of the registered details for the selected firm'
+              : 'Register your firm with your user, and add existing users to it. Your firm will be visible to clients whenever you make an enquiry.'
+          }
         />
         <div className="fullWidth flex row" style={{ flexWrap: 'wrap' }}>
           <div style={{ width: '47%', padding: 8 }}>
@@ -131,8 +137,10 @@ const Form: React.FC<IProps> = ({ callback }: IProps) => {
               color="primary"
               helperText={formik.touched.name && formik.errors.name}
               error={Boolean(formik.touched.name && formik.errors.name)}
+              value={formik.values.name}
               onBlur={formik.handleBlur}
               onChange={formik.handleChange}
+              disabled={readonly}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -152,7 +160,9 @@ const Form: React.FC<IProps> = ({ callback }: IProps) => {
               helperText={formik.touched.email && formik.errors.email}
               error={Boolean(formik.touched.email && formik.errors.email)}
               onBlur={formik.handleBlur}
+              value={formik.values.email}
               onChange={formik.handleChange}
+              disabled={readonly}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -171,6 +181,8 @@ const Form: React.FC<IProps> = ({ callback }: IProps) => {
               color="primary"
               helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
               error={Boolean(formik.touched.phoneNumber && formik.errors.phoneNumber)}
+              value={formik.values.phoneNumber}
+              disabled={readonly}
               onBlur={formik.handleBlur}
               onChange={formik.handleChange}
               InputProps={{
@@ -187,6 +199,8 @@ const Form: React.FC<IProps> = ({ callback }: IProps) => {
               color="primary"
               helperText={formik.touched.website && formik.errors.website}
               error={Boolean(formik.touched.website && formik.errors.website)}
+              value={formik.values.website}
+              disabled={readonly}
               onBlur={formik.handleBlur}
               onChange={formik.handleChange}
               InputProps={{
@@ -204,6 +218,7 @@ const Form: React.FC<IProps> = ({ callback }: IProps) => {
               <Select
                 value={formik.values.type}
                 label="Select Firm Type"
+                disabled={readonly}
                 onChange={(e: SelectChangeEvent) => {
                   formik.setFieldValue('type', e.target.value);
                 }}
@@ -241,6 +256,7 @@ const Form: React.FC<IProps> = ({ callback }: IProps) => {
                 inputFormat="dd/MM/yyyy"
                 label="Registration Date"
                 value={formik.values.registeredDate}
+                disabled={readonly}
                 onChange={(newValue) => {
                   formik.setFieldValue('registeredDate', newValue);
                 }}
@@ -260,6 +276,7 @@ const Form: React.FC<IProps> = ({ callback }: IProps) => {
                 <FormControlLabel
                   key={aolp.id}
                   checked={formik.values.handledAreasOfPractice.includes(aolp.id)}
+                  disabled={readonly}
                   onChange={() => {
                     const index = formik.values.handledAreasOfPractice.indexOf(aolp.id);
                     const copiedArray = [...formik.values.handledAreasOfPractice];
@@ -283,17 +300,21 @@ const Form: React.FC<IProps> = ({ callback }: IProps) => {
           </div>
         </div>
       </div>
-      <Button
-        sx={{ height: '48px' }}
-        variant="contained"
-        color="primary"
-        className="marginTop fullWidth"
-        type="submit"
-        disabled={Boolean(!formik.isValid || loading)}
-        startIcon={loading && <CircularProgress color="secondary" size="12px" />}
-      >
-        Create Account
-      </Button>
+      {
+        !readonly && (
+          <Button
+            sx={{ height: '48px' }}
+            variant="contained"
+            color="primary"
+            className="marginTop fullWidth"
+            type="submit"
+            disabled={Boolean(!formik.isValid || loading)}
+            startIcon={loading && <CircularProgress color="secondary" size="12px" />}
+          >
+            Create Account
+          </Button>
+        )
+      }
     </form>
   );
 };

@@ -41,21 +41,11 @@ const Dashboard: React.FC = () => {
   const { isLoggedIn } = useAuth();
   const user = useReactiveVar(userVar);
   const prevUser = usePrevious(user);
-  const [getInvitations] = useLazyQuery<{
+  const [getInvitations, invitations] = useLazyQuery<{
     accountUserInvitations: AccountUserInvitation[]
-  }>(GET_ACCOUNT_USER_INVITATION, {
-    onCompleted: (_data) => {
-      if (user) {
-        userVar({
-          ...user,
-          accountUserInvitations: _data.accountUserInvitations,
-        });
-      }
-    },
-  });
+  }>(GET_ACCOUNT_USER_INVITATION);
 
   const [getUser, { loading, data }] = useLazyQuery<IGetUser>(GET_USER, {
-    fetchPolicy: 'network-only',
     onCompleted: (_data) => {
       getInvitations();
       if (user) {
@@ -92,6 +82,25 @@ const Dashboard: React.FC = () => {
   useEffect(() => {
     Promise.resolve(getUserOrRedirectToLogin());
   }, []);
+
+  useEffect(() => {
+    if (user) {
+      userVar({
+        ...user,
+        accountUserInvitations: invitations.data?.accountUserInvitations,
+      });
+    }
+  }, [invitations.data]);
+
+  useEffect(() => {
+    if (user) {
+      userVar({
+        ...user,
+        accounts: data?.user[0].accounts,
+        selectedAccount: data?.user[0].accounts[0],
+      });
+    }
+  }, [data]);
 
   useEffect(() => {
     if (!isEqual(user, prevUser)) {

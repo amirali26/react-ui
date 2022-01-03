@@ -1,4 +1,5 @@
 import { gql } from '@apollo/client';
+import { CORE_ACCOUNT_DETAILS } from '../fragments/account';
 import { Account } from '../models/account';
 
 export interface IGetUser {
@@ -13,6 +14,7 @@ export interface IGetUser {
     }[]
 }
 export const GET_USER = gql`
+    ${CORE_ACCOUNT_DETAILS}
     query user {
         user {
             id,
@@ -21,8 +23,7 @@ export const GET_USER = gql`
             phoneNumber,
             email,
             accounts {
-              id,
-              name
+              ...AccountDetails
             }
         }
     }`;

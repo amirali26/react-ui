@@ -1,10 +1,9 @@
 import {
-  TableHead, TableRow, TableCell, TableSortLabel, Box,
+  Box, TableCell, TableHead, TableRow, TableSortLabel,
 } from 'helpmycase-storybook/dist/components/External';
 import React from 'react';
 import { Order } from '..';
-import { Client } from '../../../../../models/client';
-import { Request, RequestDto } from '../../../../../models/request';
+import { RequestDto } from '../../../../../models/request';
 
 interface HeadCell {
   disablePadding: boolean;
@@ -37,12 +36,6 @@ const headCells: readonly HeadCell[] = [
     numeric: false,
     disablePadding: false,
     label: 'Email',
-  },
-  {
-    id: 'topic',
-    numeric: false,
-    disablePadding: false,
-    label: 'Topic',
   },
   {
     id: 'createdDate',

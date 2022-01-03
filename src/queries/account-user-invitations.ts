@@ -4,6 +4,14 @@ const GET_ACCOUNT_USER_INVITATION = gql`
   query GetAccountUserInvitation {
     accountUserInvitations {
       id,
+      account {
+        name
+      },
+      referUser {
+        name,
+        email,
+      },
+      createdAt
     }
   }
 `;
