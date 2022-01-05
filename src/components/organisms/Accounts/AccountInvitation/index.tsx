@@ -13,7 +13,7 @@ import convertToDateTime from '../../../../utils/datetime';
 import BackdropLoader from '../../../molecules/backdropLoader';
 import Drawer from '../../../molecules/Drawer';
 import Title from '../../../molecules/Title';
-import AccountInformation from '../AccountInformation';
+import CreateAccountForm from '../CreateAccount/Form';
 
 interface IProps {
   callback?: () => void;
@@ -29,13 +29,14 @@ const AccountInvitation: React.FC<IProps> = () => {
       refetchQueries: [GET_USER, GET_ACCOUNT_USER_INVITATION],
     },
   );
+  console.log(selectedAui, user?.accountUserInvitations);
   const items = user?.accountUserInvitations?.map((aui) => (
     <ListItem
       key={aui.id}
       disabled={aui.id === user.selectedAccount?.id}
+      className="marginBottomSmall"
       style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}
       sx={{
-        border: '1px solid rgba(0, 0, 0, 0.24)',
         '&:hover:after': {
           content: '"View Invitation"',
           position: 'absolute',
@@ -77,7 +78,14 @@ const AccountInvitation: React.FC<IProps> = () => {
           selectedAui
           && (
             <>
-              <AccountInformation account={selectedAui?.account} />
+              <CreateAccountForm
+                accountInformation={{
+                  ...selectedAui.account,
+                  type: selectedAui.account.size,
+                  handledAreasOfPractice: selectedAui.account.areasOfPractice.map((aop) => aop.id),
+                }}
+                readonly
+              />
               <div style={{ display: 'flex', flexDirection: 'row' }} className="marginTop">
                 <Button
                   variant="contained"

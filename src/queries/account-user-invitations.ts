@@ -1,17 +1,11 @@
 import { gql } from '@apollo/client';
+import CORE_ACCOUNT_USER_INVITATIONS from '../fragments/accountUserInvitations';
 
 const GET_ACCOUNT_USER_INVITATION = gql`
+  ${CORE_ACCOUNT_USER_INVITATIONS}
   query GetAccountUserInvitation {
     accountUserInvitations {
-      id,
-      account {
-        name
-      },
-      referUser {
-        name,
-        email,
-      },
-      createdAt
+      ...AccountUserInvitationDetails
     }
   }
 `;
