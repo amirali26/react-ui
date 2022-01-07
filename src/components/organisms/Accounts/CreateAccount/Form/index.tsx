@@ -1,15 +1,17 @@
 import { useMutation, useQuery } from '@apollo/client';
 import { BadgeOutlined, EmailOutlined, LanguageOutlined } from '@mui/icons-material';
-import { DatePicker, LocalizationProvider } from '@mui/lab';
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import { useFormik } from 'formik';
 import {
+  Autocomplete,
   Box,
   Button, Checkbox,
+  Chip,
   CircularProgress,
   FormControl,
   FormControlLabel, InputAdornment, InputLabel, MenuItem, Select, SelectChangeEvent, TextField,
 } from 'helpmycase-storybook/dist/components/External';
+import { DatePicker, LocalizationProvider } from '@mui/lab';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import { useFormik } from 'formik';
 import React from 'react';
 import * as Yup from 'yup';
 import useHelpmycaseSnackbar from '../../../../../hooks/useHelpmycaseSnackbar';
@@ -28,6 +30,7 @@ type InitialValues = {
   type: AccountType,
   registeredDate: string,
   handledAreasOfPractice: string[],
+  invitedUserEmails?: string[],
 }
 
 const initialValues: InitialValues = {
@@ -54,7 +57,7 @@ const formValidationSchema = Yup.object().shape({
   website: Yup.string().matches(regMatch, 'Website should be a valid URL').required('Please provide a URL'),
   type: Yup.string().oneOf([...Object.keys(AccountType)], 'Please choose a valid enum type'),
   handledAreasOfPractice: Yup.array().min(1, 'You must choose atleast one area which you cover'),
-  users: Yup.array().min(1, 'You must choose atleast one account permission'),
+  users: Yup.array().of(Yup.string().email('Please provide a valid email address')),
   registeredDate: Yup.date().required('Please provide a incorporation date for your firm'),
 });
 
@@ -268,7 +271,7 @@ const Form: React.FC<IProps> = ({ callback, readonly, accountInformation }: IPro
         <div className="marginTopMedium" style={{ padding: 8 }}>
           <InputLabel htmlFor="input-with-icon-adornment" className="marginBottomSmall">Handled Areas of Practice</InputLabel>
           <div style={{
-            width: '100%', border: '1px solid #9994', padding: 8,
+            width: '100%', border: '1px solid #5e5e5e44', borderRadius: '5px', padding: 8,
           }}
           >
             {
@@ -302,17 +305,43 @@ const Form: React.FC<IProps> = ({ callback, readonly, accountInformation }: IPro
       </div>
       {
         !readonly && (
-          <Button
-            sx={{ height: '48px' }}
-            variant="contained"
-            color="primary"
-            className="marginTop fullWidth"
-            type="submit"
-            disabled={Boolean(!formik.isValid || loading)}
-            startIcon={loading && <CircularProgress color="secondary" size="12px" />}
+          <div style={{
+            width: '100%', padding: 8,
+          }}
           >
-            Create Account
-          </Button>
+            <Autocomplete
+              multiple
+              id="tags-filled"
+              freeSolo
+              options={[]}
+              value={formik.values.invitedUserEmails}
+              onChange={(event, newValue) => {
+                formik.setFieldValue('invitedUserEmails', newValue);
+              }}
+              renderTags={(value: readonly unknown[], getTagProps) => value.map((
+                option: unknown, index: number,
+              ) => (
+                <Chip variant="filled" label={option as string} {...getTagProps({ index })} key={option as string} />
+              ))}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  placeholder="Invite Users To Account"
+                />
+              )}
+            />
+            <Button
+              sx={{ height: '48px' }}
+              variant="contained"
+              color="primary"
+              className="marginTop fullWidth"
+              type="submit"
+              disabled={Boolean(!formik.isValid || loading)}
+              startIcon={loading && <CircularProgress color="secondary" size="12px" />}
+            >
+              Create Account
+            </Button>
+          </div>
         )
       }
     </form>

@@ -136,7 +136,7 @@ const Table: React.FC = () => {
         : (
           <BigMessage
             icon={<ReportProblemOutlined />}
-            title="There are currently no requests"
+            title="No Requests"
             subtitle="Unfortunately, we are unable to find any requests available to you at this time."
             buttonProps={{
               children: 'View All Enquiries',

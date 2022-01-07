@@ -114,12 +114,10 @@ const NavigationAppBar: React.FC<IProps> = ({ handleOpen }: IProps) => {
             onClose={handleClose}
           >
             <MenuItem
-              component={Link}
               onClick={() => {
                 handleClose();
                 setUserProfileOpen(true);
               }}
-              to="/dashboard/user-settings"
             >
               My Profile
             </MenuItem>

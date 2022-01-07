@@ -1,5 +1,5 @@
 import { useMutation, useReactiveVar } from '@apollo/client';
-import { AddTask } from '@mui/icons-material';
+import { AddTask, CheckCircleOutline, ReportProblemOutlined } from '@mui/icons-material';
 import {
   Avatar, Button, List, ListItem, ListItemAvatar, ListItemText,
 } from 'helpmycase-storybook/dist/components/External';
@@ -11,6 +11,7 @@ import GET_ACCOUNT_USER_INVITATION from '../../../../queries/account-user-invita
 import { GET_USER } from '../../../../queries/user';
 import convertToDateTime from '../../../../utils/datetime';
 import BackdropLoader from '../../../molecules/backdropLoader';
+import BigMessage from '../../../molecules/bigMessage';
 import Drawer from '../../../molecules/Drawer';
 import Title from '../../../molecules/Title';
 import CreateAccountForm from '../CreateAccount/Form';
@@ -29,7 +30,6 @@ const AccountInvitation: React.FC<IProps> = () => {
       refetchQueries: [GET_USER, GET_ACCOUNT_USER_INVITATION],
     },
   );
-  console.log(selectedAui, user?.accountUserInvitations);
   const items = user?.accountUserInvitations?.map((aui) => (
     <ListItem
       key={aui.id}
@@ -70,6 +70,17 @@ const AccountInvitation: React.FC<IProps> = () => {
         title="Firm Invitations"
         subtitle="View all your firm invitations currently pending"
       />
+      {
+        (!items || items.length === 0)
+        && (
+          <BigMessage
+            icon={<CheckCircleOutline />}
+            title="All Up To Date"
+            subtitle="You are all up to date, you do not have any active invitations."
+            variant="drawer"
+          />
+        )
+      }
       <List>
         {items}
       </List>
