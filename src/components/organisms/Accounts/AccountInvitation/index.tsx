@@ -97,7 +97,7 @@ const AccountInvitation: React.FC<IProps> = () => {
                 }}
                 readonly
               />
-              <div style={{ display: 'flex', flexDirection: 'row' }} className="marginTop">
+              <div style={{ display: 'flex', flexDirection: 'row' }}>
                 <Button
                   variant="contained"
                   color="success"

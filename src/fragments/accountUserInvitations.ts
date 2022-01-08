@@ -5,6 +5,8 @@ export const CORE_ACCOUNT_USER_INVITATIONS = gql`
     ${CORE_ACCOUNT_DETAILS}
     fragment AccountUserInvitationDetails on AccountUserInvitation {
         id,
+        userEmail,
+        status,
         account {
           ...AccountDetails
         },

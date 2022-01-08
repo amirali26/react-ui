@@ -184,6 +184,8 @@ const NavigationAppBar: React.FC<IProps> = ({ handleOpen }: IProps) => {
               ...selectedAccount,
               type: selectedAccount.size,
               handledAreasOfPractice: selectedAccount.areasOfPractice.map((aop) => aop.id),
+              activeUsers: selectedAccount.users,
+              pendingInvitations: selectedAccount.accountUserInvitations,
             }}
             readonly
           />

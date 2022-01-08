@@ -1,3 +1,4 @@
+import AccountUserInvitation from './accountUserInvitation';
 import { AreasOfLegalPractice } from './areas-of-legal-practice';
 import { User } from './user';
 
@@ -24,4 +25,6 @@ export type Account = {
     areasOfPractice: AreasOfLegalPractice[],
     createdBy: User,
     createdAt: string,
+    users?: User[],
+    accountUserInvitations?: AccountUserInvitation[],
 }

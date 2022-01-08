@@ -25,7 +25,15 @@ export const GET_USER = gql`
             phoneNumber,
             email,
             accounts {
-              ...AccountDetails
+              ...AccountDetails,
+              accountUserInvitations {
+                  ...AccountUserInvitationDetails,
+              }
+              users {
+                  id,
+                  email,
+                  name
+              }
             },
             accountUserInvitations {
                 ...AccountUserInvitationDetails

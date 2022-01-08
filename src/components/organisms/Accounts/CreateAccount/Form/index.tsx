@@ -1,5 +1,7 @@
 import { useMutation, useQuery } from '@apollo/client';
-import { BadgeOutlined, EmailOutlined, LanguageOutlined } from '@mui/icons-material';
+import {
+  BadgeOutlined, EmailOutlined, LanguageOutlined,
+} from '@mui/icons-material';
 import {
   Autocomplete,
   Box,
@@ -7,7 +9,11 @@ import {
   Chip,
   CircularProgress,
   FormControl,
-  FormControlLabel, InputAdornment, InputLabel, MenuItem, Select, SelectChangeEvent, TextField,
+  FormControlLabel,
+  InputAdornment,
+  InputLabel,
+  List,
+  ListItem, ListItemText, ListSubheader, MenuItem, Select, SelectChangeEvent, TextField,
 } from 'helpmycase-storybook/dist/components/External';
 import { DatePicker, LocalizationProvider } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
@@ -21,6 +27,9 @@ import { ADD_ACCOUNT } from '../../../../../mutations/account';
 import { UserAccount, userVar } from '../../../../../pages/Dashboard';
 import GET_AREASOFLEGALPRACTICE from '../../../../../queries/areas-of-legal-practice';
 import Title from '../../../../molecules/Title';
+import { User } from '../../../../../models/user';
+import AccountUserInvitation, { AccountUserInvitationStatus } from '../../../../../models/accountUserInvitation';
+import convertToDateTime from '../../../../../utils/datetime';
 
 type InitialValues = {
   name: string,
@@ -31,6 +40,8 @@ type InitialValues = {
   registeredDate: string,
   handledAreasOfPractice: string[],
   invitedUserEmails?: string[],
+  activeUsers?: User[],
+  pendingInvitations?: AccountUserInvitation[],
 }
 
 const initialValues: InitialValues = {
@@ -118,6 +129,9 @@ const Form: React.FC<IProps> = ({ callback, readonly, accountInformation }: IPro
       callback();
     }
   }
+
+  const shouldShowUsers = readonly && accountInformation
+    && (accountInformation.activeUsers || accountInformation.pendingInvitations);
 
   return (
     <form onSubmit={formik.handleSubmit} style={{ width: '600px', height: '100%' }} className="flex column spaceBetween">
@@ -268,39 +282,109 @@ const Form: React.FC<IProps> = ({ callback, readonly, accountInformation }: IPro
             </LocalizationProvider>
           </Box>
         </div>
-        <div className="marginTopMedium" style={{ padding: 8 }}>
-          <InputLabel htmlFor="input-with-icon-adornment" className="marginBottomSmall">Handled Areas of Practice</InputLabel>
+        <div className="marginTopMedium flex row">
           <div style={{
-            width: '100%', border: '1px solid #5e5e5e44', borderRadius: '5px', padding: 8,
+            width: shouldShowUsers ? '47%' : '100%',
+            padding: '8px',
           }}
           >
-            {
-              legalPracticeQuery.data?.areasOfPractices.map((aolp: AreasOfLegalPractice) => (
-                <FormControlLabel
-                  key={aolp.id}
-                  checked={formik.values.handledAreasOfPractice.includes(aolp.id)}
-                  disabled={readonly}
-                  onChange={() => {
-                    const index = formik.values.handledAreasOfPractice.indexOf(aolp.id);
-                    const copiedArray = [...formik.values.handledAreasOfPractice];
-                    if (index >= 0) {
-                      formik.setFieldValue('handledAreasOfPractice',
-                        copiedArray.filter((a) => a !== aolp.id));
-                      return;
+            <InputLabel htmlFor="input-with-icon-adornment" className="marginBottomSmall">Handled Areas of Practice</InputLabel>
+            <div style={{
+              border: '1px solid #5e5e5e44',
+              borderRadius: '5px',
+              height: '310px',
+            }}
+            >
+              {
+                legalPracticeQuery.data?.areasOfPractices.map((aolp: AreasOfLegalPractice) => (
+                  <FormControlLabel
+                    key={aolp.id}
+                    checked={formik.values.handledAreasOfPractice.includes(aolp.id)}
+                    disabled={readonly}
+                    onChange={() => {
+                      const index = formik.values.handledAreasOfPractice.indexOf(aolp.id);
+                      const copiedArray = [...formik.values.handledAreasOfPractice];
+                      if (index >= 0) {
+                        formik.setFieldValue('handledAreasOfPractice',
+                          copiedArray.filter((a) => a !== aolp.id));
+                        return;
+                      }
+                      copiedArray.push(aolp.id);
+                      formik.setFieldValue('handledAreasOfPractice', copiedArray);
+                    }}
+                    className="marginTopMedium"
+                    control={
+                      <Checkbox checked={formik.values.handledAreasOfPractice.includes(aolp.id)} />
                     }
-                    copiedArray.push(aolp.id);
-                    formik.setFieldValue('handledAreasOfPractice', copiedArray);
-                  }}
-                  className="marginTopMedium"
-                  control={
-                    <Checkbox checked={formik.values.handledAreasOfPractice.includes(aolp.id)} />
-                  }
-                  label={aolp.name}
-                  sx={{ margin: 0, marginTop: '0 !important', width: '100%' }}
-                />
-              ))
-            }
+                    label={aolp.name}
+                    sx={{ margin: 0, marginTop: '0 !important', width: '100%' }}
+                  />
+                ))
+              }
+            </div>
           </div>
+          {
+            shouldShowUsers
+            && (
+              <div style={{
+                width: '47%',
+                padding: '8px',
+              }}
+              >
+                <InputLabel htmlFor="input-with-icon-adornment" className="marginBottomSmall">Users</InputLabel>
+                <List
+                  sx={{
+                    overflow: 'auto',
+                    height: 300,
+                    border: '1px solid #5e5e5e44',
+                    borderRadius: '5px',
+                    '& ul': { padding: 0 },
+                  }}
+                  subheader={<li />}
+                >
+                  {
+                    accountInformation.activeUsers && accountInformation.activeUsers.length > 0 && (
+                      <li>
+                        <ul>
+                          <ListSubheader>Active Users</ListSubheader>
+                          {accountInformation.activeUsers.map((item) => (
+                            <ListItem key={item.email}>
+                              <ListItemText
+                                primary={item.email}
+                                secondary={item.name}
+                              />
+                            </ListItem>
+                          ))}
+                        </ul>
+                      </li>
+                    )
+                  }
+                  {
+                    accountInformation.pendingInvitations
+                    && accountInformation.pendingInvitations.length > 0 && (
+                      <li>
+                        <ul>
+                          <ListSubheader>Invited Users</ListSubheader>
+                          {accountInformation.pendingInvitations.filter(
+                            (i) => i.status === AccountUserInvitationStatus.PENDING,
+                          ).map(
+                            (item) => (
+                              <ListItem key={item.userEmail}>
+                                <ListItemText
+                                  primary={item.userEmail}
+                                  secondary={convertToDateTime(item.createdAt)}
+                                />
+                              </ListItem>
+                            ),
+                          )}
+                        </ul>
+                      </li>
+                    )
+                  }
+                </List>
+              </div>
+            )
+          }
         </div>
       </div>
       {
