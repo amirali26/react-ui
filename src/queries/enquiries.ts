@@ -18,9 +18,11 @@ query GetEnquiries {
         }
         request {
           id,
-          name,
-          phoneNumber,
-          email,
+          client {
+            name,
+            phoneNumber,
+            email,
+          }
           description,
           topic {
             name

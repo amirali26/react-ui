@@ -8,7 +8,9 @@ import CreateAccount from '../../components/organisms/Accounts/CreateAccount';
 import Navigation from '../../components/templates/Navigation';
 import usePrevious from '../../hooks/usePrev';
 import { Account } from '../../models/account';
+import AccountUserInvitation from '../../models/accountUserInvitation';
 import { User } from '../../models/user';
+import GET_ACCOUNT_USER_INVITATION from '../../queries/account-user-invitations';
 import { GET_USER, IGetUser } from '../../queries/user';
 import history from '../../utils/routes/history';
 import routes from '../../utils/routes/routes';
@@ -20,6 +22,7 @@ export type UserAccount = {
   user: User,
   accounts?: Account[]
   selectedAccount?: Account,
+  accountUserInvitations?: AccountUserInvitation[]
 }
 
 export const userVar = makeVar<UserAccount>({
@@ -31,15 +34,20 @@ export const userVar = makeVar<UserAccount>({
     phoneNumber: '',
     accounts: [],
   },
+  accountUserInvitations: [],
 });
 
 const Dashboard: React.FC = () => {
   const { isLoggedIn } = useAuth();
   const user = useReactiveVar(userVar);
   const prevUser = usePrevious(user);
+  const [getInvitations, invitations] = useLazyQuery<{
+    accountUserInvitations: AccountUserInvitation[]
+  }>(GET_ACCOUNT_USER_INVITATION);
+
   const [getUser, { loading, data }] = useLazyQuery<IGetUser>(GET_USER, {
-    fetchPolicy: 'network-only',
     onCompleted: (_data) => {
+      getInvitations();
       if (user) {
         userVar({
           ...user,
@@ -76,6 +84,25 @@ const Dashboard: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    if (user) {
+      userVar({
+        ...user,
+        accountUserInvitations: invitations.data?.accountUserInvitations,
+      });
+    }
+  }, [invitations.data]);
+
+  useEffect(() => {
+    if (user) {
+      userVar({
+        ...user,
+        accounts: data?.user[0].accounts,
+        selectedAccount: data?.user[0].accounts[0],
+      });
+    }
+  }, [data]);
+
+  useEffect(() => {
     if (!isEqual(user, prevUser)) {
       getUser({ variables: { userId: user.user.id } });
     }
@@ -86,11 +113,11 @@ const Dashboard: React.FC = () => {
       <Navigation />
       <BackdropLoader open={loading} />
       {
-        !data?.user[0].accounts.length && !loading
+        Boolean(!data?.user[0].accounts.length) && !loading
         && <CreateAccount />
       }
       {
-        data?.user[0].accounts.length && (
+        Boolean(data?.user[0].accounts.length) && (
           <div className="marginTop marginBottom" style={{ marginLeft: '24px', marginRight: '24px' }}>
             <Switch>
               <Route path={['/dashboard/enquiries']} component={Enquiries} key={user.selectedAccount?.id} />

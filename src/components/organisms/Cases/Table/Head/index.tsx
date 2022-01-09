@@ -1,13 +1,13 @@
 import {
-  TableHead, TableRow, TableCell, TableSortLabel, Box,
+  Box, TableCell, TableHead, TableRow, TableSortLabel,
 } from 'helpmycase-storybook/dist/components/External';
 import React from 'react';
 import { Order } from '..';
-import { Request } from '../../../../../models/request';
+import { RequestDto } from '../../../../../models/request';
 
 interface HeadCell {
   disablePadding: boolean;
-  id: keyof Request;
+  id: keyof RequestDto;
   label: string;
   numeric: boolean;
 }
@@ -38,12 +38,6 @@ const headCells: readonly HeadCell[] = [
     label: 'Email',
   },
   {
-    id: 'topic',
-    numeric: false,
-    disablePadding: false,
-    label: 'Topic',
-  },
-  {
     id: 'createdDate',
     numeric: false,
     disablePadding: false,
@@ -52,7 +46,7 @@ const headCells: readonly HeadCell[] = [
 ];
 
 interface IProps {
-  onRequestSort: (event: React.MouseEvent<unknown>, property: keyof Request) => void;
+  onRequestSort: (event: React.MouseEvent<unknown>, property: keyof RequestDto) => void;
   order: Order;
   orderBy: string;
 }
@@ -60,7 +54,9 @@ interface IProps {
 const Head: React.FC<IProps> = ({
   order, orderBy, onRequestSort,
 }: IProps) => {
-  const createSortHandler = (property: keyof Request) => (event: React.MouseEvent<unknown>) => {
+  const createSortHandler = (
+    property: keyof RequestDto,
+  ) => (event: React.MouseEvent<unknown>) => {
     onRequestSort(event, property);
   };
 
