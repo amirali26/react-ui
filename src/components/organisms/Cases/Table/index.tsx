@@ -76,28 +76,24 @@ const Table: React.FC = () => {
                   <TableBody style={{ cursor: 'pointer' }}>
                     {stableSort<RequestDto>(rows, getComparator(order, orderBy))
                       .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                      .map((row: RequestDto, index) => {
-                        const labelId = `enhanced-table-checkbox-${index}`;
-                        return (
-                          <TableRow
-                            hover
-                            onClick={(event) => handleOpenDrawer(event, row)}
-                            tabIndex={-1}
-                            key={row.id}
-                          >
-                            <TableCell align="left">{row.topic}</TableCell>
-                            <TableCell align="left">{row.name}</TableCell>
-                            <TableCell align="left">
-                              {row.phoneNumber}
-                            </TableCell>
-                            <TableCell align="left">{row.email}</TableCell>
-                            <TableCell align="left">{row.topic}</TableCell>
-                            <TableCell align="left">
-                              {convertToDateTime(row.createdDate)}
-                            </TableCell>
-                          </TableRow>
-                        );
-                      })}
+                      .map((row: RequestDto) => (
+                        <TableRow
+                          hover
+                          onClick={(event) => handleOpenDrawer(event, row)}
+                          tabIndex={-1}
+                          key={row.id}
+                        >
+                          <TableCell align="left">{row.topic}</TableCell>
+                          <TableCell align="left">{row.name}</TableCell>
+                          <TableCell align="left">
+                            {row.phoneNumber}
+                          </TableCell>
+                          <TableCell align="left">{row.email}</TableCell>
+                          <TableCell align="left">
+                            {convertToDateTime(row.createdDate)}
+                          </TableCell>
+                        </TableRow>
+                      ))}
                     {emptyRows > 0 && (
                       <TableRow
                         style={{
@@ -140,7 +136,7 @@ const Table: React.FC = () => {
         : (
           <BigMessage
             icon={<ReportProblemOutlined />}
-            title="There are currently no requests"
+            title="No Requests"
             subtitle="Unfortunately, we are unable to find any requests available to you at this time."
             buttonProps={{
               children: 'View All Enquiries',

@@ -1,10 +1,9 @@
+import { Client } from './client';
 import { Topic } from './topic';
 
 export type Request = {
     id: string,
-    name: string,
-    phoneNumber: string,
-    email: string,
+    client: Client,
     description: string,
     topic: Topic,
     createdDate: string,

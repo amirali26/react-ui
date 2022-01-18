@@ -4,9 +4,11 @@ const GET_REQUESTS = gql`
 query GetRequests {
   requests {
     id,
-    name,
-    phoneNumber,
-    email,
+    client {
+      name,
+      email,
+      phoneNumber
+    },
     description,
     topic {
       name
