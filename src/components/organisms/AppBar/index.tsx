@@ -17,7 +17,6 @@ import {
   Toolbar,
 } from 'helpmycase-storybook/dist/components/External';
 import React from 'react';
-import { Link } from 'react-router-dom';
 import useAuth from '../../../pages/Auth/useAuth';
 import { userVar } from '../../../pages/Dashboard';
 import Logo from '../../atoms/Logo';
@@ -55,7 +54,6 @@ const NavigationAppBar: React.FC<IProps> = ({ handleOpen }: IProps) => {
   const {
     user, selectedAccount, accountUserInvitations, accounts,
   } = useReactiveVar(userVar);
-
   const { handleLogout } = useAuth();
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {

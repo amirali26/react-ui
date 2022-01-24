@@ -8,6 +8,10 @@ export const GET_ACCOUNT = gql`
     query UserAccount($accountId: String!) {
         userAccount(accountId: $accountId) {
             ...AccountDetails,
+            accountUserInvitations {
+                id,
+                status
+            },
             users {
             ...UserDetails
             }

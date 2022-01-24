@@ -1,5 +1,5 @@
 import { useMutation, useReactiveVar } from '@apollo/client';
-import { AddTask, CheckCircleOutline, ReportProblemOutlined } from '@mui/icons-material';
+import { AddTask, CheckCircleOutline } from '@mui/icons-material';
 import {
   Avatar, Button, List, ListItem, ListItemAvatar, ListItemText,
 } from 'helpmycase-storybook/dist/components/External';
@@ -97,7 +97,10 @@ const AccountInvitation: React.FC<IProps> = () => {
                 }}
                 readonly
               />
-              <div style={{ display: 'flex', flexDirection: 'row' }}>
+              <div style={{
+                display: 'flex', flexDirection: 'row', padding: '0 8px', marginTop: '8px',
+              }}
+              >
                 <Button
                   variant="contained"
                   color="success"

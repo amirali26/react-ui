@@ -22,7 +22,8 @@ export type UserAccount = {
   user: User,
   accounts?: Account[]
   selectedAccount?: Account,
-  accountUserInvitations?: AccountUserInvitation[]
+  accountUserInvitations?: AccountUserInvitation[],
+  permissions: 
 }
 
 export const userVar = makeVar<UserAccount>({
@@ -33,6 +34,7 @@ export const userVar = makeVar<UserAccount>({
     name: '',
     phoneNumber: '',
     accounts: [],
+    permissions: []
   },
   accountUserInvitations: [],
 });

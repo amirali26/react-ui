@@ -13,4 +13,12 @@ const ACCEPT_OR_REJECT_ACCOUNT_USER_INVITATION = gql`
   }
 `;
 
+export const REJECT_ACCOUNT_USER_INVITATION = gql`
+  mutation REJECT_ACCOUNT_USER_INVITATION($str: String!) {
+    deleteAccountUserInvitation(userEmail: $str) {
+      id
+    }
+  }
+`;
+
 export default ACCEPT_OR_REJECT_ACCOUNT_USER_INVITATION;

@@ -1,7 +1,13 @@
-import { useMutation, useQuery } from '@apollo/client';
 import {
-  BadgeOutlined, EmailOutlined, LanguageOutlined,
+  useLazyQuery, useMutation, useQuery, useReactiveVar,
+} from '@apollo/client';
+import {
+  AddCircleOutline,
+  BadgeOutlined, Delete, EmailOutlined, LanguageOutlined,
 } from '@mui/icons-material';
+import { DatePicker, LocalizationProvider } from '@mui/lab';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import { useFormik } from 'formik';
 import {
   Autocomplete,
   Box,
@@ -9,27 +15,32 @@ import {
   Chip,
   CircularProgress,
   FormControl,
-  FormControlLabel,
-  InputAdornment,
+  FormControlLabel, InputAdornment,
   InputLabel,
   List,
-  ListItem, ListItemText, ListSubheader, MenuItem, Select, SelectChangeEvent, TextField,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+  ListSubheader,
+  MenuItem, Select,
+  SelectChangeEvent,
+  TextField,
 } from 'helpmycase-storybook/dist/components/External';
-import { DatePicker, LocalizationProvider } from '@mui/lab';
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import { useFormik } from 'formik';
-import React from 'react';
+import React, { useState } from 'react';
 import * as Yup from 'yup';
 import useHelpmycaseSnackbar from '../../../../../hooks/useHelpmycaseSnackbar';
 import { Account, AccountType } from '../../../../../models/account';
+import AccountUserInvitation, { AccountUserInvitationStatus } from '../../../../../models/accountUserInvitation';
 import { AreasOfLegalPractice } from '../../../../../models/areas-of-legal-practice';
+import { User } from '../../../../../models/user';
+import { REJECT_ACCOUNT_USER_INVITATION } from '../../../../../mutations/acceptOrRejectAccountUserInvitation';
 import { ADD_ACCOUNT } from '../../../../../mutations/account';
 import { UserAccount, userVar } from '../../../../../pages/Dashboard';
+import { GET_ACCOUNT } from '../../../../../queries/account';
 import GET_AREASOFLEGALPRACTICE from '../../../../../queries/areas-of-legal-practice';
-import Title from '../../../../molecules/Title';
-import { User } from '../../../../../models/user';
-import AccountUserInvitation, { AccountUserInvitationStatus } from '../../../../../models/accountUserInvitation';
 import convertToDateTime from '../../../../../utils/datetime';
+import InviteUsersModal from '../../../../molecules/InviteUsersModal';
+import Title from '../../../../molecules/Title';
 
 type InitialValues = {
   name: string,
@@ -70,6 +81,7 @@ const formValidationSchema = Yup.object().shape({
   handledAreasOfPractice: Yup.array().min(1, 'You must choose atleast one area which you cover'),
   users: Yup.array().of(Yup.string().email('Please provide a valid email address')),
   registeredDate: Yup.date().required('Please provide a incorporation date for your firm'),
+  invitedUserEmails: Yup.array().of(Yup.string().email('Invalid Email')),
 });
 
 interface IProps {
@@ -80,16 +92,45 @@ interface IProps {
 
 const Form: React.FC<IProps> = ({ callback, readonly, accountInformation }: IProps) => {
   const sb = useHelpmycaseSnackbar();
-
+  const [openModal, setOpenModal] = useState<boolean>(false);
+  const user = useReactiveVar(userVar);
   const legalPracticeQuery = useQuery<{
     areasOfPractices: AreasOfLegalPractice[]
   }>(GET_AREASOFLEGALPRACTICE, {
     fetchPolicy: 'cache-and-network',
   });
 
+  const [accountInformationQuery] = useLazyQuery<{ userAccount: Account }[]>(GET_ACCOUNT, {
+    onCompleted: (data) => {
+      if (data.length) {
+        userVar({
+          ...user,
+          selectedAccount: data[0].userAccount,
+          accountUserInvitations: data[0].userAccount.accountUserInvitations,
+        });
+      }
+    },
+  });
+  const [deleteRequest] = useMutation(REJECT_ACCOUNT_USER_INVITATION, {
+    onCompleted: () => {
+      accountInformationQuery({
+        variables: {
+          accountId: user.selectedAccount?.id,
+        },
+      });
+      sb.trigger('Deleted invitation', 'info');
+    },
+  });
   const [addAccount, { loading, error }] = useMutation<{ addAccount: Account }>(ADD_ACCOUNT, {
-    // eslint-disable-next-line @typescript-eslint/no-use-before-define
-    onCompleted: (data) => updateUserVar(data.addAccount),
+    onCompleted: (data) => {
+      // eslint-disable-next-line @typescript-eslint/no-use-before-define
+      updateUserVar(data.addAccount);
+      accountInformationQuery({
+        variables: {
+          accountId: user.selectedAccount?.id,
+        },
+      });
+    },
   });
 
   const formik = useFormik({
@@ -134,7 +175,7 @@ const Form: React.FC<IProps> = ({ callback, readonly, accountInformation }: IPro
     && (accountInformation.activeUsers || accountInformation.pendingInvitations);
 
   return (
-    <form onSubmit={formik.handleSubmit} style={{ width: '600px', height: '100%' }} className="flex column spaceBetween">
+    <form onSubmit={formik.handleSubmit} style={{ width: '600px' }} className="flex column spaceBetween">
       <div>
         <Title
           title={readonly ? 'Firm Information' : 'Register Firm'}
@@ -364,16 +405,30 @@ const Form: React.FC<IProps> = ({ callback, readonly, accountInformation }: IPro
                     && accountInformation.pendingInvitations.length > 0 && (
                       <li>
                         <ul>
-                          <ListSubheader>Invited Users</ListSubheader>
+                          <ListSubheader>Active Invitations</ListSubheader>
+                          <ListItem disablePadding>
+                            <ListItemButton onClick={() => setOpenModal(true)}>
+                              <AddCircleOutline sx={{ marginRight: '8px' }} />
+                              Invite More Users
+                            </ListItemButton>
+                          </ListItem>
                           {accountInformation.pendingInvitations.filter(
                             (i) => i.status === AccountUserInvitationStatus.PENDING,
                           ).map(
                             (item) => (
-                              <ListItem key={item.userEmail}>
-                                <ListItemText
-                                  primary={item.userEmail}
-                                  secondary={convertToDateTime(item.createdAt)}
-                                />
+                              <ListItem key={item.userEmail} disablePadding>
+                                <ListItemButton onClick={() => deleteRequest({
+                                  variables: {
+                                    str: item.userEmail,
+                                  },
+                                })}
+                                >
+                                  <ListItemText
+                                    primary={item.userEmail}
+                                    secondary={convertToDateTime(item.createdAt)}
+                                  />
+                                  <Delete />
+                                </ListItemButton>
                               </ListItem>
                             ),
                           )}
@@ -410,6 +465,17 @@ const Form: React.FC<IProps> = ({ callback, readonly, accountInformation }: IPro
               renderInput={(params) => (
                 <TextField
                   {...params}
+                  helperText={
+                    formik.touched.invitedUserEmails
+                    && formik.errors.invitedUserEmails?.length
+                    && formik.errors.invitedUserEmails[0]
+                  }
+                  error={
+                    Boolean(
+                      formik.touched.invitedUserEmails
+                      && formik.errors.invitedUserEmails,
+                    )
+                  }
                   placeholder="Invite Users To Account"
                 />
               )}
@@ -428,6 +494,11 @@ const Form: React.FC<IProps> = ({ callback, readonly, accountInformation }: IPro
           </div>
         )
       }
+      <InviteUsersModal
+        key={`${openModal}`}
+        open={openModal}
+        onClose={() => setOpenModal(false)}
+      />
     </form>
   );
 };
