@@ -27,4 +27,5 @@ export type Account = {
     createdAt: string,
     users?: User[],
     accountUserInvitations?: AccountUserInvitation[],
+    permission: number,
 }
