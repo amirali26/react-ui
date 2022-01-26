@@ -13,6 +13,12 @@ export enum AccountType {
     NICHE_FIRMS = 'NICHE_FIRMS',
 }
 
+export enum AccountPermission {
+    ADMIN = 'ADMIN',
+    BASIC = 'BASIC',
+    READ_ONLY = 'READ_ONLY',
+}
+
 export type Account = {
     id: string,
     name: string,
@@ -27,5 +33,5 @@ export type Account = {
     createdAt: string,
     users?: User[],
     accountUserInvitations?: AccountUserInvitation[],
-    permission: number,
+    permission: AccountPermission,
 }

@@ -25,11 +25,12 @@ import {
   MenuItem, Select,
   SelectChangeEvent,
   TextField,
+  Typography,
 } from 'helpmycase-storybook/dist/components/External';
 import React, { useState } from 'react';
 import * as Yup from 'yup';
 import useHelpmycaseSnackbar from '../../../../../hooks/useHelpmycaseSnackbar';
-import { Account, AccountType } from '../../../../../models/account';
+import { Account, AccountPermission, AccountType } from '../../../../../models/account';
 import AccountUserInvitation, { AccountUserInvitationStatus } from '../../../../../models/accountUserInvitation';
 import { AreasOfLegalPractice } from '../../../../../models/areas-of-legal-practice';
 import { User } from '../../../../../models/user';
@@ -172,11 +173,13 @@ const Form: React.FC<IProps> = ({ callback, readonly, accountInformation }: IPro
   }
 
   const shouldShowUsers = readonly && accountInformation
-    && (accountInformation.activeUsers || accountInformation.pendingInvitations);
+    && (accountInformation.activeUsers
+      || accountInformation.pendingInvitations
+    ) && user.selectedAccount?.permission === AccountPermission.ADMIN;
 
   return (
     <form onSubmit={formik.handleSubmit} style={{ width: '600px' }} className="flex column spaceBetween">
-      <div>
+      <div style={{ padding: 8 }}>
         <Title
           title={readonly ? 'Firm Information' : 'Register Firm'}
           subtitle={
@@ -186,6 +189,15 @@ const Form: React.FC<IProps> = ({ callback, readonly, accountInformation }: IPro
           }
         />
         <div className="fullWidth flex row" style={{ flexWrap: 'wrap' }}>
+          {
+            readonly && accountInformation && (
+              <Typography sx={{ width: '100%', padding: '8px' }} variant="h6">
+                User permissions on account:
+                {' '}
+                <Chip label={user.selectedAccount?.permission} color="success" sx={{ marginLeft: '8px' }} />
+              </Typography>
+            )
+          }
           <div style={{ width: '47%', padding: 8 }}>
             <InputLabel htmlFor="input-with-icon-adornment" className="marginBottomSmall marginTopSmall">Name</InputLabel>
             <TextField
@@ -400,42 +412,37 @@ const Form: React.FC<IProps> = ({ callback, readonly, accountInformation }: IPro
                       </li>
                     )
                   }
-                  {
-                    accountInformation.pendingInvitations
-                    && accountInformation.pendingInvitations.length > 0 && (
-                      <li>
-                        <ul>
-                          <ListSubheader>Active Invitations</ListSubheader>
-                          <ListItem disablePadding>
-                            <ListItemButton onClick={() => setOpenModal(true)}>
-                              <AddCircleOutline sx={{ marginRight: '8px' }} />
-                              Invite More Users
+                  <li>
+                    <ul>
+                      <ListSubheader>Active Invitations</ListSubheader>
+                      <ListItem disablePadding>
+                        <ListItemButton onClick={() => setOpenModal(true)}>
+                          <AddCircleOutline sx={{ marginRight: '8px' }} />
+                          Invite More Users
+                        </ListItemButton>
+                      </ListItem>
+                      {accountInformation.pendingInvitations?.filter(
+                        (i) => i.status === AccountUserInvitationStatus.PENDING,
+                      ).map(
+                        (item) => (
+                          <ListItem key={item.userEmail} disablePadding>
+                            <ListItemButton onClick={() => deleteRequest({
+                              variables: {
+                                str: item.userEmail,
+                              },
+                            })}
+                            >
+                              <ListItemText
+                                primary={item.userEmail}
+                                secondary={convertToDateTime(item.createdAt)}
+                              />
+                              <Delete />
                             </ListItemButton>
                           </ListItem>
-                          {accountInformation.pendingInvitations.filter(
-                            (i) => i.status === AccountUserInvitationStatus.PENDING,
-                          ).map(
-                            (item) => (
-                              <ListItem key={item.userEmail} disablePadding>
-                                <ListItemButton onClick={() => deleteRequest({
-                                  variables: {
-                                    str: item.userEmail,
-                                  },
-                                })}
-                                >
-                                  <ListItemText
-                                    primary={item.userEmail}
-                                    secondary={convertToDateTime(item.createdAt)}
-                                  />
-                                  <Delete />
-                                </ListItemButton>
-                              </ListItem>
-                            ),
-                          )}
-                        </ul>
-                      </li>
-                    )
-                  }
+                        ),
+                      )}
+                    </ul>
+                  </li>
                 </List>
               </div>
             )

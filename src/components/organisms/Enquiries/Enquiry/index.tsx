@@ -1,13 +1,15 @@
 import { useMutation } from '@apollo/client';
 import { useFormik } from 'formik';
 import {
-  Button, Checkbox, FormControlLabel, InputAdornment, InputLabel, OutlinedInput, TextField,
+  Button, Checkbox, FormControlLabel, InputAdornment, InputLabel, OutlinedInput, TextField, Tooltip,
 } from 'helpmycase-storybook/dist/components/External';
 import React from 'react';
 import * as Yup from 'yup';
 import useHelpmycaseSnackbar from '../../../../hooks/useHelpmycaseSnackbar';
+import { AccountPermission } from '../../../../models/account';
 import EnquiryInput, { Enquiry as EnquiryType } from '../../../../models/enquiry';
 import { ADD_ENQUIRY } from '../../../../mutations/enquiry';
+import { userVar } from '../../../../pages/Dashboard';
 import GET_REQUESTS from '../../../../queries/requests';
 import BackdropLoader from '../../../molecules/backdropLoader';
 import Title from '../../../molecules/Title';
@@ -43,6 +45,7 @@ const Enquiry: React.FC<Props> = ({
   handleCallback,
 }) => {
   const sb = useHelpmycaseSnackbar();
+  const user = userVar();
   const [addEnquiry, { data, loading, error }] = useMutation(ADD_ENQUIRY, {
     onCompleted: () => {
       sb.trigger('Successfully submitted your enquiry', 'success');
@@ -93,6 +96,8 @@ const Enquiry: React.FC<Props> = ({
   const title = enquiry ? 'View Enquiry' : 'Create Enquiry';
   const subtitle = enquiry ? 'Detailed view of an enquiry made to a client from your ogranisation'
     : 'Reach our to potential leads by creating an enquiry relating to their case';
+  const enquiryButtonDisabled = !user.selectedAccount?.permission
+    || user.selectedAccount.permission === AccountPermission.READ_ONLY;
   return (
     <form className="flex spaceBetween column" style={{ height: '100%' }} onSubmit={formik.handleSubmit}>
       <Title
@@ -112,7 +117,7 @@ const Enquiry: React.FC<Props> = ({
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           multiline
-          rows={8}
+          maxRows={8}
           disabled={Boolean(enquiry)}
         />
         <InputLabel htmlFor="input-with-icon-adornment" className="marginBottomSmall marginTopMedium">Initial Consulation Fee</InputLabel>
@@ -184,16 +189,20 @@ const Enquiry: React.FC<Props> = ({
       {
         !enquiry
         && (
-          <Button
-            sx={{ height: '48px' }}
-            fullWidth
-            variant="contained"
-            type="submit"
-            className="marginTop"
-            disabled={Boolean(enquiry)}
-          >
-            Submit enquiry
-          </Button>
+          <Tooltip title={enquiryButtonDisabled ? 'You do not have the required permissions to create an enuiry' : ''}>
+            <div>
+              <Button
+                sx={{ height: '48px' }}
+                fullWidth
+                variant="contained"
+                type="submit"
+                className="marginTop"
+                disabled={Boolean(enquiry) || enquiryButtonDisabled}
+              >
+                Submit enquiry
+              </Button>
+            </div>
+          </Tooltip>
         )
       }
       <BackdropLoader open={loading} />
