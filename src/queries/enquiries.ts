@@ -1,9 +1,16 @@
 import { gql } from '@apollo/client';
 
 const GET_ENQUIRIES = gql`
-query GetEnquiries {
-    enquiries {
-        id,
+query GetEnquiries($before: String, $after: String, $last: Int) {
+  enquiries(before: $before, after: $after, last: $last) {
+    pageInfo {
+      hasNextPage,
+      hasPreviousPage,
+      endCursor,
+      startCursor
+    },
+    nodes {
+       id,
         message,
         initialConsultationFee,
         estimatedPrice,
@@ -29,7 +36,12 @@ query GetEnquiries {
           }
           createdDate,
         }
-    }
+    },
+    edges {
+      cursor
+    },
+    totalCount
+  },
 }
 `;
 

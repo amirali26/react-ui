@@ -1,4 +1,4 @@
-import { Fade, Modal as MuiModal } from 'helpmycase-storybook/dist/components/External';
+import { Box, Fade, Modal as MuiModal } from 'helpmycase-storybook/dist/components/External';
 import theme from 'helpmycase-storybook/dist/theme/theme';
 import React from 'react';
 
@@ -28,7 +28,20 @@ const Modal: React.FC<IProps> = ({ open, children, handleClose }: IProps) => (
         padding: theme.spacing(6, 12, 6, 12),
       }}
       >
-        {children}
+        <Box sx={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: 400,
+          bgcolor: 'background.paper',
+          border: '2px solid #000',
+          boxShadow: 24,
+          p: 4,
+        }}
+        >
+          {children}
+        </Box>
       </div>
     </Fade>
   </MuiModal>

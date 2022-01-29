@@ -63,7 +63,7 @@ const Head: React.FC<IProps> = ({
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
-            align={headCell.numeric ? 'right' : 'left'}
+            align={headCell.numeric || headCell.id === 'createdDate' ? 'right' : 'left'}
             padding={(headCell.disablePadding ? 'none' : 'normal') as any}
             sortDirection={orderBy === headCell.id ? order : false}
           >

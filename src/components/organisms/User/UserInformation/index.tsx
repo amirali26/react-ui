@@ -1,37 +1,24 @@
-import { useQuery, useReactiveVar } from '@apollo/client';
-import { CloudUpload, PhotoCamera } from '@mui/icons-material';
+import { useReactiveVar } from '@apollo/client';
 import {
-  Avatar, Button, Divider, InputLabel, List, ListItemButton, TextField, Typography,
+  Button,
+  InputLabel, List, ListItem, TextField,
 } from 'helpmycase-storybook/dist/components/External';
-import theme from 'helpmycase-storybook/dist/theme/theme';
-import React from 'react';
-import { Account } from '../../../../models/account';
-import { User } from '../../../../models/user';
+import React, { useState } from 'react';
 import { userVar } from '../../../../pages/Dashboard';
-import { GET_USER } from '../../../../queries/user';
-import BackdropLoader from '../../../molecules/backdropLoader';
 import Title from '../../../molecules/Title';
+import ChangePassword from '../../ChangePassword';
 
 const UserInformation: React.FC = () => {
-  const [selectedAccount, setSelectedAccount] = React.useState<Account>();
-
-  const user = useReactiveVar(userVar);
-  const { loading, data } = useQuery<{ user: User }>(GET_USER, {
-    variables: {
-      userId: user.user.id,
-    },
-  });
-
-  const handleSetSelectedAccount = (account?: Account) => setSelectedAccount(account);
+  const { user, accounts } = useReactiveVar(userVar);
+  const [openChangePasswordModal, setOpenChangePasswordModal] = useState<boolean>(false);
 
   return (
     <div>
-      <BackdropLoader open={loading} />
       <Title
         title="User Profile"
         subtitle="View and manage your user profile on this page."
       />
-      <div className="paddingTopMedium paddingMedium flex alignItemsCenter">
+      {/* <div className="paddingTopMedium paddingMedium flex alignItemsCenter">
         <Avatar
           className="marginRight"
           sx={{
@@ -58,7 +45,7 @@ const UserInformation: React.FC = () => {
           Upload
         </Button>
       </div>
-      <Divider className="marginTop marginBottom" />
+      <Divider className="marginTop marginBottom" /> */}
       <div className="paddingTopMedium paddingMedium flex column spaceBetween">
         <div className="flex column marginBottomMedium">
           <div className="flex row marginBottom">
@@ -69,7 +56,7 @@ const UserInformation: React.FC = () => {
                 name="name"
                 fullWidth
                 color="primary"
-                value={data?.user?.name || ''}
+                value={user?.name || ''}
                 disabled
               />
             </div>
@@ -80,7 +67,7 @@ const UserInformation: React.FC = () => {
                 name="name"
                 fullWidth
                 color="primary"
-                value={data?.user?.dateOfBirth || ''}
+                value={user?.dateOfBirth || ''}
                 disabled
               />
             </div>
@@ -93,7 +80,7 @@ const UserInformation: React.FC = () => {
                 name="name"
                 fullWidth
                 color="primary"
-                value={data?.user?.phoneNumber || ''}
+                value={user?.phoneNumber || ''}
                 disabled
               />
             </div>
@@ -104,57 +91,44 @@ const UserInformation: React.FC = () => {
                 name="name"
                 fullWidth
                 color="primary"
-                value={data?.user?.email || ''}
+                value={user?.email || ''}
                 disabled
               />
             </div>
           </div>
         </div>
         <div className="flex row marginTop">
-          <div className="marginRightMedium" style={{ width: '50%' }}>
+          <div style={{ width: '100%' }}>
             <InputLabel htmlFor="input-with-icon-adornment" className="marginBottomSmall">Available Accounts</InputLabel>
             <List
               sx={{
                 width: '100%',
-                maxWidth: 360,
                 position: 'relative',
                 overflow: 'auto',
+                minHeight: 300,
                 maxHeight: 300,
-                border: '1px solid #9994',
+                border: '1px solid rgba(94, 94, 94, 0.267)',
                 padding: 0,
                 '& > div': { padding: '16px' },
               }}
             >
-              {user.accounts?.map((account) => (
-                <ListItemButton key={account.id} onClick={() => handleSetSelectedAccount(account)}>
-                  { account.name }
-                </ListItemButton>
+              {accounts?.map((account) => (
+                <ListItem key={account.id}>
+                  {account.name}
+                </ListItem>
               ))}
             </List>
           </div>
-          <div style={{ width: '50%' }}>
-            <InputLabel htmlFor="input-with-icon-adornment" className="marginBottomSmall">Available Accounts</InputLabel>
-            <List
-              sx={{
-                width: '100%',
-                maxWidth: 360,
-                position: 'relative',
-                overflow: 'auto',
-                maxHeight: 300,
-                border: '1px solid #9994',
-                padding: 0,
-                '& > div': { padding: '16px' },
-              }}
-            >
-              {user.accounts?.map((account) => (
-                <ListItemButton key={account.id} onClick={() => handleSetSelectedAccount(account)}>
-                  { account.name }
-                </ListItemButton>
-              ))}
-            </List>
-          </div>
-
         </div>
+        <div className="flex row marginTop">
+          <div style={{ width: '100%' }}>
+            <Button fullWidth variant="contained" onClick={() => setOpenChangePasswordModal(true)}>Change Your Password</Button>
+          </div>
+        </div>
+        <ChangePassword
+          open={openChangePasswordModal}
+          handleClose={() => setOpenChangePasswordModal(false)}
+        />
       </div>
     </div>
   );

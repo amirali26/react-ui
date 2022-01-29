@@ -1,13 +1,11 @@
 import { ReportProblemOutlined } from '@mui/icons-material';
 import {
   Box,
-  Paper,
+  Button, Paper,
   Table as MuiTable,
   TableBody,
   TableCell,
-  TableContainer,
-  TablePagination,
-  TableRow,
+  TableContainer, TableRow,
 } from 'helpmycase-storybook/dist/components/External';
 import * as React from 'react';
 import { Enquiry as EnquiryType } from '../../../../models/enquiry';
@@ -15,7 +13,6 @@ import { RequestDto } from '../../../../models/request';
 import convertToDateTime from '../../../../utils/datetime';
 import descendingComparator from '../../../../utils/descendingComparator';
 import history from '../../../../utils/routes/history';
-import stableSort from '../../../../utils/stableSort';
 import BigMessage from '../../../molecules/bigMessage';
 import Drawer from '../../../molecules/Drawer';
 import Enquiry from '../Enquiry';
@@ -43,21 +40,27 @@ export type TableItem = RequestDto & {
 
 const Table: React.FC = () => {
   const {
-    page,
-    rows,
+    data,
     order,
     orderBy,
-    rowsPerPage,
     selectedRow,
     getTableItems,
     handleOpenDrawer,
     handleCloseDrawer,
     handleSort,
     handleChangePage,
-    handleChangeRowsPerPage,
   } = useTable();
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+  const rows = data?.enquiries.nodes.map((e) => ({
+    ...e.request,
+    id: e.id,
+    enquiry: { ...e },
+    topic: e.request.topic.name,
+    name: e.request.client.name,
+    phoneNumber: e.request.client.phoneNumber,
+    email: e.request.client.email,
+  })) || [];
+
   return (
     <Box style={{ width: '100%' }}>
       {rows?.length > 0
@@ -77,42 +80,49 @@ const Table: React.FC = () => {
                     onSort={handleSort}
                   />
                   <TableBody style={{ cursor: 'pointer' }}>
-                    {stableSort<TableItem>(rows, getComparator(order, orderBy))
-                      .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                      .map((row: TableItem) => (
-                        <TableRow
-                          hover
-                          onClick={(event) => handleOpenDrawer(event, row)}
-                          tabIndex={-1}
-                          key={row.id}
-                        >
-                          <TableCell align="left">{row.topic}</TableCell>
-                          <TableCell align="left">{row.name}</TableCell>
-                          <TableCell align="left">
-                            {row.phoneNumber}
-                          </TableCell>
-                          <TableCell align="left">{row.email}</TableCell>
-                          <TableCell align="left">
-                            {convertToDateTime(row.createdDate)}
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    {emptyRows > 0 && (
-                      <TableRow style={{ height: 33 * emptyRows }}>
-                        <TableCell colSpan={6} />
+                    {rows.map((row: TableItem) => (
+                      <TableRow
+                        hover
+                        onClick={(event) => handleOpenDrawer(event, row)}
+                        tabIndex={-1}
+                        key={row.id}
+                      >
+                        <TableCell align="left">{row.topic}</TableCell>
+                        <TableCell align="left">{row.name}</TableCell>
+                        <TableCell align="left">
+                          {row.phoneNumber}
+                        </TableCell>
+                        <TableCell align="left">{row.email}</TableCell>
+                        <TableCell align="right">
+                          {convertToDateTime(row.createdDate)}
+                        </TableCell>
                       </TableRow>
-                    )}
+                    ))}
                   </TableBody>
                 </MuiTable>
               </TableContainer>
-              <TablePagination
-                rowsPerPageOptions={[15, 25, 50]}
-                count={rows.length}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
-              />
+              <div style={{
+                boxSizing: 'border-box',
+                padding: '16px',
+                width: '100%',
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'flex-end',
+              }}
+              >
+                <Button
+                  onClick={() => handleChangePage('Previous')}
+                  disabled={!data?.enquiries.pageInfo.hasPreviousPage}
+                >
+                  Previous
+                </Button>
+                <Button
+                  onClick={() => handleChangePage('Next')}
+                  disabled={!data?.enquiries.pageInfo.hasNextPage}
+                >
+                  Next
+                </Button>
+              </div>
             </Paper>
             <Drawer
               onClose={handleCloseDrawer}

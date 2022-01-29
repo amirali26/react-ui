@@ -2,19 +2,18 @@ import { useLazyQuery } from '@apollo/client';
 import * as React from 'react';
 import { Order, TableItem } from '.';
 import { Enquiry } from '../../../../models/enquiry';
+import { Pagination } from '../../../../models/pagination';
 import GET_ENQUIRIES from '../../../../queries/enquiries';
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 const useTable = () => {
   const [getTableItems, { data }] = useLazyQuery<{
-    enquiries: Enquiry[]
+    enquiries: Pagination<Enquiry>
   }>(GET_ENQUIRIES, {
     fetchPolicy: 'cache-and-network',
   });
   const [order, setOrder] = React.useState<Order>('asc');
   const [orderBy, setOrderBy] = React.useState<'createdDate'>('createdDate');
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(15);
   const [selectedRow, setSelectedRow] = React.useState<Enquiry>();
   const [tableItems, setTableItems] = React.useState<string>();
 
@@ -31,15 +30,25 @@ const useTable = () => {
     setOrderBy('createdDate');
   };
 
-  const handleChangePage = (event: unknown, newPage: number) => {
-    setPage(newPage);
-  };
+  const handleChangePage = (action: 'Previous' | 'Next') => {
+    const variables: any = {
+      first: 1,
+      after: undefined,
+      before: undefined,
+      last: undefined,
+    };
 
-  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
+    if (action === 'Previous') {
+      variables.before = data?.enquiries.pageInfo.startCursor;
+      variables.last = 2;
+    } else {
+      variables.after = data?.enquiries.pageInfo.endCursor;
+    }
 
+    getTableItems({
+      variables,
+    });
+  };
   const handleOpenDrawer = (event: React.MouseEvent<unknown>, _tableItem: TableItem) => {
     setSelectedRow(_tableItem.enquiry);
   };
@@ -54,22 +63,10 @@ const useTable = () => {
     setSelectedRow(undefined);
   };
 
-  const rows = data?.enquiries.map((e) => ({
-    ...e.request,
-    id: e.id,
-    enquiry: { ...e },
-    topic: e.request.topic.name,
-    name: e.request.client.name,
-    phoneNumber: e.request.client.phoneNumber,
-    email: e.request.client.email,
-  })) || [];
-
   return {
-    rows,
+    data,
     order,
     orderBy,
-    page,
-    rowsPerPage,
     selectedRow,
     tableItems,
     getTableItems,
@@ -77,7 +74,6 @@ const useTable = () => {
     handleCloseDrawer,
     handleEnquirySort,
     handleChangePage,
-    handleChangeRowsPerPage,
     handleSort,
   };
 };

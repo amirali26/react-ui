@@ -68,7 +68,7 @@ const Dashboard: React.FC = () => {
             id: userIdResponse.username,
             name: userIdResponse.attributes.name,
             email: userIdResponse.attributes.email,
-            dateOfBirth: userIdResponse.attributes.dateOfBirth,
+            dateOfBirth: userIdResponse.attributes.birthdate,
             phoneNumber: userIdResponse.attributes.phone_number,
             accounts: [],
           },
