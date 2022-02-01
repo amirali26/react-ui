@@ -46,18 +46,17 @@ const headCells: readonly HeadCell[] = [
 ];
 
 interface IProps {
-  onRequestSort: (event: React.MouseEvent<unknown>, property: keyof RequestDto) => void;
+  onSort: (event: React.MouseEvent<unknown>, property: string) => void;
   order: Order;
-  orderBy: string;
 }
 
 const Head: React.FC<IProps> = ({
-  order, orderBy, onRequestSort,
+  order, onSort,
 }: IProps) => {
   const createSortHandler = (
     property: keyof RequestDto,
   ) => (event: React.MouseEvent<unknown>) => {
-    onRequestSort(event, property);
+    onSort(event, property);
   };
 
   return (
@@ -66,17 +65,16 @@ const Head: React.FC<IProps> = ({
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
-            align={headCell.numeric ? 'right' : 'left'}
+            align={headCell.numeric || headCell.id === 'createdDate' ? 'right' : 'left'}
             padding={(headCell.disablePadding ? 'none' : 'normal') as any}
-            sortDirection={orderBy === headCell.id ? order : false}
           >
             <TableSortLabel
-              active={orderBy === headCell.id}
-              direction={orderBy === headCell.id ? order : 'asc'}
+              active={false}
+              direction="asc"
               onClick={createSortHandler(headCell.id)}
             >
               {headCell.label}
-              {orderBy === headCell.id ? (
+              {'asc' ? (
                 <Box component="span">
                   {order === 'desc' ? '' : ''}
                 </Box>

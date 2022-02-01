@@ -1,20 +1,16 @@
-import { useLazyQuery } from '@apollo/client';
+import { DocumentNode, useLazyQuery } from '@apollo/client';
 import * as React from 'react';
-import { Order, TableItem } from '.';
-import { Enquiry } from '../../../../models/enquiry';
-import { Pagination } from '../../../../models/pagination';
-import GET_ENQUIRIES from '../../../../queries/enquiries';
+import { Order } from '../components/organisms/Enquiries/Table';
+import { Pagination } from '../models/pagination';
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-const useTable = () => {
+const useTable = <T extends { id: string }>(query: DocumentNode) => {
   const [getTableItems, { data }] = useLazyQuery<{
-    enquiries: Pagination<Enquiry>
-  }>(GET_ENQUIRIES, {
+    [key: string]: Pagination<T>
+  }>(query, {
     fetchPolicy: 'cache-and-network',
   });
   const [order, setOrder] = React.useState<Order>('asc');
-  const [orderBy, setOrderBy] = React.useState<'createdDate'>('createdDate');
-  const [selectedRow, setSelectedRow] = React.useState<Enquiry>();
+  const [selectedRow, setSelectedRow] = React.useState<T>();
   const [tableItems, setTableItems] = React.useState<string>();
 
   React.useEffect(() => {
@@ -23,14 +19,13 @@ const useTable = () => {
 
   const handleEnquirySort = (
     event: React.MouseEvent<unknown>,
-    property: keyof TableItem,
+    property: string,
   ) => {
-    const isAsc = orderBy === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
-    setOrderBy('createdDate');
+    console.log('Handle Sort');
   };
 
   const handleChangePage = (action: 'Previous' | 'Next') => {
+    if (!data) return;
     const variables: any = {
       first: 1,
       after: undefined,
@@ -39,18 +34,18 @@ const useTable = () => {
     };
 
     if (action === 'Previous') {
-      variables.before = data?.enquiries.pageInfo.startCursor;
-      variables.last = 2;
+      variables.before = data[0].pageInfo.startCursor;
+      variables.last = 10;
     } else {
-      variables.after = data?.enquiries.pageInfo.endCursor;
+      variables.after = data[0].pageInfo.endCursor;
     }
 
     getTableItems({
       variables,
     });
   };
-  const handleOpenDrawer = (event: React.MouseEvent<unknown>, _tableItem: TableItem) => {
-    setSelectedRow(_tableItem.enquiry);
+  const handleOpenDrawer = (event: React.MouseEvent<unknown>, _tableItem: T) => {
+    setSelectedRow(_tableItem);
   };
 
   const handleCloseDrawer = () => {
@@ -66,7 +61,6 @@ const useTable = () => {
   return {
     data,
     order,
-    orderBy,
     selectedRow,
     tableItems,
     getTableItems,

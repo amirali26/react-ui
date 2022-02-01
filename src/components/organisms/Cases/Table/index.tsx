@@ -1,6 +1,7 @@
 import { ReportProblemOutlined } from '@mui/icons-material';
 import {
   Box,
+  Button,
   Paper,
   Table as MuiTable,
   TableBody,
@@ -10,7 +11,7 @@ import {
   TableRow,
 } from 'helpmycase-storybook/dist/components/External';
 import * as React from 'react';
-import { RequestDto } from '../../../../models/request';
+import { Request, RequestDto } from '../../../../models/request';
 import convertToDateTime from '../../../../utils/datetime';
 import descendingComparator from '../../../../utils/descendingComparator';
 import stableSort from '../../../../utils/stableSort';
@@ -20,8 +21,9 @@ import Enquiry from '../../Enquiries/Enquiry';
 import Case from '../Case';
 import Head from './Head';
 import Toolbar from './Toolbar';
-import useTable from './useTable';
 import history from '../../../../utils/routes/history';
+import useTable from '../../../../hooks/useTable';
+import GET_REQUESTS from '../../../../queries/requests';
 
 export type Order = 'asc' | 'desc';
 export function getComparator<Key extends keyof never>(
@@ -38,30 +40,37 @@ export function getComparator<Key extends keyof never>(
 
 const Table: React.FC = () => {
   const {
-    page,
-    rows,
+    data,
     order,
-    orderBy,
-    rowsPerPage,
     selectedRow,
-    enquiry,
-    getRequests,
+    getTableItems,
     handleOpenDrawer,
     handleCloseDrawer,
-    handleRequestSort,
+    handleSort,
     handleChangePage,
-    handleChangeRowsPerPage,
-    handleEnquiryClick,
-  } = useTable();
+  } = useTable<Request>(GET_REQUESTS);
+  const [enquiryId, setEnquiryId] = React.useState<string>();
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+  const handleEnquiryClick = () => {
+    handleCloseDrawer();
+    setEnquiryId(selectedRow?.id);
+  };
+
+  const rows = data?.requests ? data.requests.nodes.map((r) => ({
+    ...r,
+    topic: r.topic.name,
+    email: r.client.email,
+    name: r.client.name,
+    phoneNumber: r.client.phoneNumber,
+  })) : [];
+
   return (
     <Box style={{ width: '100%' }}>
       {rows?.length > 0
         ? (
           <>
             <Paper style={{ width: '100%' }}>
-              <Toolbar getRequests={getRequests} />
+              <Toolbar getRequests={getTableItems} />
               <TableContainer>
                 <MuiTable
                   style={{ minWidth: 750 }}
@@ -70,65 +79,78 @@ const Table: React.FC = () => {
                 >
                   <Head
                     order={order}
-                    orderBy={orderBy}
-                    onRequestSort={handleRequestSort}
+                    onSort={handleSort}
                   />
                   <TableBody style={{ cursor: 'pointer' }}>
-                    {stableSort<RequestDto>(rows, getComparator(order, orderBy))
-                      .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                      .map((row: RequestDto) => (
-                        <TableRow
-                          hover
-                          onClick={(event) => handleOpenDrawer(event, row)}
-                          tabIndex={-1}
-                          key={row.id}
-                        >
-                          <TableCell align="left">{row.topic}</TableCell>
-                          <TableCell align="left">{row.name}</TableCell>
-                          <TableCell align="left">
-                            {row.phoneNumber}
-                          </TableCell>
-                          <TableCell align="left">{row.email}</TableCell>
-                          <TableCell align="left">
-                            {convertToDateTime(row.createdDate)}
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    {emptyRows > 0 && (
+                    {rows.map((row: RequestDto) => (
                       <TableRow
-                        style={{
-                          height: 33 * emptyRows,
+                        hover
+                        onClick={(event) => {
+                          const r = data?.requests.nodes.find((_r) => _r.id === row.id);
+                          if (r) {
+                            handleOpenDrawer(event, r);
+                          }
                         }}
+                        tabIndex={-1}
+                        key={row.id}
                       >
-                        <TableCell colSpan={6} />
+                        <TableCell align="left">{row.topic}</TableCell>
+                        <TableCell align="left">{row.name}</TableCell>
+                        <TableCell align="left">
+                          {row.phoneNumber}
+                        </TableCell>
+                        <TableCell align="left">{row.email}</TableCell>
+                        <TableCell align="left">
+                          {convertToDateTime(row.createdDate)}
+                        </TableCell>
                       </TableRow>
-                    )}
+                    ))}
+
                   </TableBody>
                 </MuiTable>
               </TableContainer>
-              <TablePagination
-                rowsPerPageOptions={[15, 25, 50]}
-                count={rows.length}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
-              />
+              <div style={{
+                boxSizing: 'border-box',
+                padding: '16px',
+                width: '100%',
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'flex-end',
+              }}
+              >
+                <Button
+                  onClick={() => handleChangePage('Previous')}
+                  disabled={!data?.requests.pageInfo.hasPreviousPage}
+                >
+                  Previous
+                </Button>
+                <Button
+                  onClick={() => handleChangePage('Next')}
+                  disabled={!data?.requests.pageInfo.hasNextPage}
+                >
+                  Next
+                </Button>
+              </div>
             </Paper>
             <Drawer onClose={handleCloseDrawer} open={Boolean(selectedRow)}>
               {
                 selectedRow
-                && <Case {...selectedRow} handleEnquiryClick={handleEnquiryClick} />
+                && (
+                  <Case
+                    {...rows.find((r) => r.id === selectedRow.id) as RequestDto}
+                    handleEnquiryClick={handleEnquiryClick}
+                  />
+                )
               }
             </Drawer>
             <Drawer
               onClose={handleCloseDrawer}
-              open={Boolean(enquiry)}
+              open={Boolean(enquiryId)}
               onBackdropClick={handleCloseDrawer}
             >
               {
-                enquiry
-                && <Enquiry id={enquiry} handleCallback={handleCloseDrawer} />
+                enquiryId
+                && <Enquiry id={enquiryId} handleCallback={handleCloseDrawer} />
               }
             </Drawer>
           </>

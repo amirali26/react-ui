@@ -8,8 +8,9 @@ import {
   TableContainer, TableRow,
 } from 'helpmycase-storybook/dist/components/External';
 import * as React from 'react';
+import useTable from '../../../../hooks/useTable';
 import { Enquiry as EnquiryType } from '../../../../models/enquiry';
-import { RequestDto } from '../../../../models/request';
+import GET_ENQUIRIES from '../../../../queries/enquiries';
 import convertToDateTime from '../../../../utils/datetime';
 import descendingComparator from '../../../../utils/descendingComparator';
 import history from '../../../../utils/routes/history';
@@ -18,7 +19,6 @@ import Drawer from '../../../molecules/Drawer';
 import Enquiry from '../Enquiry';
 import Head from './Head';
 import Toolbar from './Toolbar';
-import useTable from './useTable';
 
 export type Order = 'asc' | 'desc';
 export function getComparator<Key extends keyof never>(
@@ -33,23 +33,17 @@ export function getComparator<Key extends keyof never>(
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
-export type TableItem = RequestDto & {
-  enquiry: EnquiryType,
-  topic: string,
-}
-
 const Table: React.FC = () => {
   const {
     data,
     order,
-    orderBy,
     selectedRow,
     getTableItems,
     handleOpenDrawer,
     handleCloseDrawer,
     handleSort,
     handleChangePage,
-  } = useTable();
+  } = useTable<EnquiryType>(GET_ENQUIRIES);
 
   const rows = data?.enquiries.nodes.map((e) => ({
     ...e.request,
@@ -76,14 +70,13 @@ const Table: React.FC = () => {
                 >
                   <Head
                     order={order}
-                    orderBy={orderBy}
                     onSort={handleSort}
                   />
                   <TableBody style={{ cursor: 'pointer' }}>
-                    {rows.map((row: TableItem) => (
+                    {rows.map((row) => (
                       <TableRow
                         hover
-                        onClick={(event) => handleOpenDrawer(event, row)}
+                        onClick={(event) => handleOpenDrawer(event, row.enquiry)}
                         tabIndex={-1}
                         key={row.id}
                       >

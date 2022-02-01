@@ -2,11 +2,11 @@ import {
   Box, TableCell, TableHead, TableRow, TableSortLabel,
 } from 'helpmycase-storybook/dist/components/External';
 import React from 'react';
-import { Order, TableItem } from '..';
+import { Order } from '..';
 
 interface HeadCell {
   disablePadding: boolean;
-  id: keyof TableItem;
+  id: string;
   label: string;
   numeric: boolean;
 }
@@ -45,15 +45,14 @@ const headCells: readonly HeadCell[] = [
 ];
 
 interface IProps {
-  onSort: (event: React.MouseEvent<unknown>, property: keyof TableItem) => void;
+  onSort: (event: React.MouseEvent<unknown>, property: string) => void;
   order: Order;
-  orderBy: string;
 }
 
 const Head: React.FC<IProps> = ({
-  order, orderBy, onSort,
+  order, onSort,
 }: IProps) => {
-  const createSortHandler = (property: keyof TableItem) => (event: React.MouseEvent<unknown>) => {
+  const createSortHandler = (property: string) => (event: React.MouseEvent<unknown>) => {
     onSort(event, property);
   };
 
@@ -65,15 +64,14 @@ const Head: React.FC<IProps> = ({
             key={headCell.id}
             align={headCell.numeric || headCell.id === 'createdDate' ? 'right' : 'left'}
             padding={(headCell.disablePadding ? 'none' : 'normal') as any}
-            sortDirection={orderBy === headCell.id ? order : false}
           >
             <TableSortLabel
-              active={orderBy === headCell.id}
-              direction={orderBy === headCell.id ? order : 'asc'}
+              active={false}
+              direction="asc"
               onClick={createSortHandler(headCell.id)}
             >
               {headCell.label}
-              {orderBy === headCell.id ? (
+              {'asc' ? (
                 <Box component="span">
                   {order === 'desc' ? '' : ''}
                 </Box>
