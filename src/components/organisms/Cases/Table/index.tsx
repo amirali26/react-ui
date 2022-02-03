@@ -6,24 +6,21 @@ import {
   Table as MuiTable,
   TableBody,
   TableCell,
-  TableContainer,
-  TablePagination,
-  TableRow,
+  TableContainer, TableRow,
 } from 'helpmycase-storybook/dist/components/External';
 import * as React from 'react';
+import useTable from '../../../../hooks/useTable';
 import { Request, RequestDto } from '../../../../models/request';
+import GET_REQUESTS from '../../../../queries/requests';
 import convertToDateTime from '../../../../utils/datetime';
 import descendingComparator from '../../../../utils/descendingComparator';
-import stableSort from '../../../../utils/stableSort';
+import history from '../../../../utils/routes/history';
 import BigMessage from '../../../molecules/bigMessage';
 import Drawer from '../../../molecules/Drawer';
 import Enquiry from '../../Enquiries/Enquiry';
 import Case from '../Case';
 import Head from './Head';
 import Toolbar from './Toolbar';
-import history from '../../../../utils/routes/history';
-import useTable from '../../../../hooks/useTable';
-import GET_REQUESTS from '../../../../queries/requests';
 
 export type Order = 'asc' | 'desc';
 export function getComparator<Key extends keyof never>(
@@ -70,7 +67,12 @@ const Table: React.FC = () => {
         ? (
           <>
             <Paper style={{ width: '100%' }}>
-              <Toolbar getRequests={getTableItems} />
+              <Toolbar getRequests={() => getTableItems({
+                variables: {
+                  after: null,
+                },
+              })}
+              />
               <TableContainer>
                 <MuiTable
                   style={{ minWidth: 750 }}
@@ -93,6 +95,7 @@ const Table: React.FC = () => {
                         }}
                         tabIndex={-1}
                         key={row.id}
+                        style={{ height: 45 }}
                       >
                         <TableCell align="left">{row.topic}</TableCell>
                         <TableCell align="left">{row.name}</TableCell>
@@ -100,7 +103,7 @@ const Table: React.FC = () => {
                           {row.phoneNumber}
                         </TableCell>
                         <TableCell align="left">{row.email}</TableCell>
-                        <TableCell align="left">
+                        <TableCell align="right">
                           {convertToDateTime(row.createdDate)}
                         </TableCell>
                       </TableRow>

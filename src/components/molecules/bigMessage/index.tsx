@@ -39,7 +39,7 @@ const BigMessage: React.FC<IProps> = ({
 }: IProps) => {
   const classes = useStyles();
   return (
-    <div className={clsx('absolute alignCenter flex column center', variant === 'drawer' && classes.drawer)} style={{ maxWidth: '700px' }}>
+    <div className={clsx('absolute alignCenter flex column center', variant === 'drawer' && classes.drawer)} style={{ maxWidth: '700px', top: '40%' }}>
       <div style={{ width: '100px', height: '100px' }} className={classes.iconHolder}>
         {icon}
       </div>

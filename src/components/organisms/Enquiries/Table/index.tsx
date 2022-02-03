@@ -61,7 +61,12 @@ const Table: React.FC = () => {
         ? (
           <>
             <Paper style={{ width: '100%' }}>
-              <Toolbar getEnquiries={getTableItems} />
+              <Toolbar getEnquiries={() => getTableItems({
+                variables: {
+                  after: null,
+                },
+              })}
+              />
               <TableContainer>
                 <MuiTable
                   style={{ minWidth: 750 }}

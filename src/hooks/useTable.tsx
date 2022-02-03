@@ -34,10 +34,10 @@ const useTable = <T extends { id: string }>(query: DocumentNode) => {
     };
 
     if (action === 'Previous') {
-      variables.before = data[0].pageInfo.startCursor;
+      variables.before = Object.values(data)[0].pageInfo.startCursor;
       variables.last = 10;
     } else {
-      variables.after = data[0].pageInfo.endCursor;
+      variables.after = Object.values(data)[0].pageInfo.endCursor;
     }
 
     getTableItems({
