@@ -10,7 +10,8 @@ interface IProps {
   title: string,
   subtitle: string,
   buttonProps?: ButtonProps,
-  variant?: 'drawer'
+  variant?: 'drawer',
+  style?: React.CSSProperties,
 }
 
 const useStyles = Styles.makeStyles({
@@ -35,11 +36,11 @@ const useStyles = Styles.makeStyles({
 });
 
 const BigMessage: React.FC<IProps> = ({
-  icon, title, subtitle, buttonProps, variant,
+  icon, title, subtitle, buttonProps, variant, style,
 }: IProps) => {
   const classes = useStyles();
   return (
-    <div className={clsx('absolute alignCenter flex column center', variant === 'drawer' && classes.drawer)} style={{ maxWidth: '700px', top: '40%' }}>
+    <div className={clsx('absolute alignCenter flex column center', variant === 'drawer' && classes.drawer)} style={{ maxWidth: '700px', top: '40%', ...style }}>
       <div style={{ width: '100px', height: '100px' }} className={classes.iconHolder}>
         {icon}
       </div>

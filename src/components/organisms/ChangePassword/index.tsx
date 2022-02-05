@@ -39,7 +39,7 @@ const ChangePassword: React.FC<Props> = ({ open, handleClose }) => {
       sb.trigger('Password successfully changed', 'success');
       handleClose();
     } catch (e) {
-      sb.trigger('There was an error changing your password');
+      sb.trigger((e as any)?.message || 'There was an error changing your password');
     }
   };
 

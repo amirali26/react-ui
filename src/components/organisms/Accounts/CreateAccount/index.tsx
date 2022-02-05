@@ -1,4 +1,4 @@
-import { ReportProblemOutlined } from '@mui/icons-material';
+import { WarningAmberRounded } from '@mui/icons-material';
 import React, { useState } from 'react';
 import BigMessage from '../../../molecules/bigMessage';
 import Drawer from '../../../molecules/Drawer';
@@ -18,7 +18,7 @@ const CreateAccount: React.FC = () => {
   return (
     <div>
       <BigMessage
-        icon={<ReportProblemOutlined />}
+        icon={<WarningAmberRounded />}
         title="No Firms Found"
         subtitle="Your user is not currently associated with any firms, please click on the button below to register your firm for free"
         buttonProps={{

@@ -1,4 +1,4 @@
-import { ReportProblemOutlined } from '@mui/icons-material';
+import { WarningAmberRounded } from '@mui/icons-material';
 import {
   Box,
   Button,
@@ -160,7 +160,7 @@ const Table: React.FC = () => {
         )
         : (
           <BigMessage
-            icon={<ReportProblemOutlined />}
+            icon={<WarningAmberRounded />}
             title="No Requests"
             subtitle="Unfortunately, we are unable to find any requests available to you at this time."
             buttonProps={{

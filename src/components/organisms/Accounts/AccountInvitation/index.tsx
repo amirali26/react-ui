@@ -78,6 +78,7 @@ const AccountInvitation: React.FC<IProps> = () => {
             title="All Up To Date"
             subtitle="You are all up to date, you do not have any active invitations."
             variant="drawer"
+            style={{ top: '50%' }}
           />
         )
       }

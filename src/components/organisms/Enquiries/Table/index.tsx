@@ -1,4 +1,4 @@
-import { ReportProblemOutlined } from '@mui/icons-material';
+import { WarningAmberRounded } from '@mui/icons-material';
 import {
   Box,
   Button, Paper,
@@ -84,6 +84,7 @@ const Table: React.FC = () => {
                         onClick={(event) => handleOpenDrawer(event, row.enquiry)}
                         tabIndex={-1}
                         key={row.id}
+                        style={{ height: 45 }}
                       >
                         <TableCell align="left">{row.topic}</TableCell>
                         <TableCell align="left">{row.name}</TableCell>
@@ -142,7 +143,7 @@ const Table: React.FC = () => {
         )
         : (
           <BigMessage
-            icon={<ReportProblemOutlined />}
+            icon={<WarningAmberRounded />}
             title="No Enquiries Found"
             subtitle="Your organisation does not currently have any enquiries"
             buttonProps={{
