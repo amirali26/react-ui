@@ -100,6 +100,13 @@ const Table: React.FC = () => {
                       key={row.id}
                       style={{ height: 45 }}
                     >
+                      <TableCell align="left">
+                        <b>
+                          {
+                            `CA${(`000000${row.requestNumber}`).slice(-4)}`
+                          }
+                        </b>
+                      </TableCell>
                       <TableCell align="left">{row.topic}</TableCell>
                       <TableCell align="left">{row.name}</TableCell>
                       <TableCell align="left">

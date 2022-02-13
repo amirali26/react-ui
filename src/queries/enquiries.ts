@@ -25,6 +25,7 @@ query GetEnquiries($before: String, $after: String, $last: Int, $searchTermInput
         }
         request {
           id,
+          requestNumber,
           client {
             name,
             phoneNumber,

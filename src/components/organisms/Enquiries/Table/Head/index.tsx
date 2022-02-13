@@ -13,6 +13,12 @@ interface HeadCell {
 
 const headCells: readonly HeadCell[] = [
   {
+    id: 'requestNumber',
+    numeric: false,
+    disablePadding: false,
+    label: '#',
+  },
+  {
     id: 'topic',
     numeric: false,
     disablePadding: false,

@@ -2,7 +2,7 @@ import { useReactiveVar } from '@apollo/client';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  AccountBalanceOutlined, AccountCircleOutlined,
+  AccountBalanceOutlined, AccountCircleOutlined, KeyboardArrowDown, ManageAccountsOutlined,
 } from '@mui/icons-material';
 import clsx from 'clsx';
 import {
@@ -83,7 +83,8 @@ const NavigationAppBar: React.FC<IProps> = ({ handleOpen }: IProps) => {
           <Button
             className="marginRightMedium"
             color="inherit"
-            startIcon={<AccountCircleOutlined />}
+            startIcon={<ManageAccountsOutlined />}
+            endIcon={<KeyboardArrowDown />}
             onClick={handleClick}
           >
             {user ? user.name.toUpperCase() : 'Profile'}
