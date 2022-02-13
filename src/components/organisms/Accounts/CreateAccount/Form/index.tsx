@@ -189,15 +189,6 @@ const Form: React.FC<IProps> = ({ callback, readonly, accountInformation }: IPro
           }
         />
         <div className="fullWidth flex row" style={{ flexWrap: 'wrap' }}>
-          {
-            readonly && accountInformation && (
-              <Typography sx={{ width: '100%', padding: '8px' }} variant="h6">
-                User permissions on account:
-                {' '}
-                <Chip label={user.selectedAccount?.permission} color="success" sx={{ marginLeft: '8px' }} />
-              </Typography>
-            )
-          }
           <div style={{ width: '47%', padding: 8 }}>
             <InputLabel htmlFor="input-with-icon-adornment" className="marginBottomSmall marginTopSmall">Name</InputLabel>
             <TextField

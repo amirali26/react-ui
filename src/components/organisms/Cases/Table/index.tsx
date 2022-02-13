@@ -167,13 +167,24 @@ const Table: React.FC = () => {
             }
           </Drawer>
           <Drawer
-            onClose={handleCloseDrawer}
+            onClose={() => {
+              handleCloseDrawer();
+              setEnquiryId(undefined);
+            }}
             open={Boolean(enquiryId)}
             onBackdropClick={handleCloseDrawer}
           >
             {
               enquiryId
-              && <Enquiry id={enquiryId} handleCallback={handleCloseDrawer} />
+              && (
+                <Enquiry
+                  id={enquiryId}
+                  handleCallback={() => {
+                    handleCloseDrawer();
+                    setEnquiryId(undefined);
+                  }}
+                />
+              )
             }
           </Drawer>
         </>

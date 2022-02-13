@@ -33,6 +33,7 @@ const useTable = <T extends { id: string }>(query: DocumentNode) => {
       after: undefined,
       before: undefined,
       last: undefined,
+      searchTerm,
     };
 
     if (action === 'Previous') {

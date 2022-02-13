@@ -2,7 +2,7 @@ import { useReactiveVar } from '@apollo/client';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  AccountBalanceOutlined, AccountCircleOutlined, KeyboardArrowDown, ManageAccountsOutlined,
+  AccountBalanceOutlined, KeyboardArrowDown, ManageAccountsOutlined,
 } from '@mui/icons-material';
 import clsx from 'clsx';
 import {
