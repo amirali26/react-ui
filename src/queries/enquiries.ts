@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 const GET_ENQUIRIES = gql`
-query GetEnquiries($before: String, $after: String, $last: Int) {
-  enquiries(before: $before, after: $after, last: $last) {
+query GetEnquiries($before: String, $after: String, $last: Int, $searchTermInput: String) {
+  enquiries(before: $before, after: $after, last: $last, searchTermInput: $searchTermInput) {
     pageInfo {
       hasNextPage,
       hasPreviousPage,
