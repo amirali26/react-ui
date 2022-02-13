@@ -6,7 +6,7 @@ import {
   Table as MuiTable,
   TableBody,
   TableCell,
-  TableContainer, TableRow,
+  TableContainer, TableRow, Typography,
 } from 'helpmycase-storybook/dist/components/External';
 import * as React from 'react';
 import useTable from '../../../../hooks/useTable';
@@ -88,6 +88,15 @@ const Table: React.FC = () => {
                   onSort={handleSort}
                 />
                 <TableBody style={{ cursor: 'pointer' }}>
+                  {
+                    rows.length === 0 && searchTerm && (
+                      <div style={{ padding: '16px' }}>
+                        <Typography sx={{ fontWeight: 'bold' }}>
+                          No Search Results found
+                        </Typography>
+                      </div>
+                    )
+                  }
                   {rows.map((row: RequestDto) => (
                     <TableRow
                       hover
