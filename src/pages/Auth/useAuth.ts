@@ -147,16 +147,7 @@ const useAuth = () => {
     }
   };
 
-  const isLoggedIn = async () => {
-    try {
-      return await Auth.currentSession();
-    } catch (e: any) {
-      if (!(e === 'No current user')) {
-        sb.trigger(e.message || 'There was an issue hi');
-      }
-    }
-    return false;
-  };
+  const isLoggedIn = async () => Auth.currentSession();
 
   const handleLogout = async () => {
     try {

@@ -15,6 +15,7 @@ import GET_REQUESTS from '../../../../queries/requests';
 import convertToDateTime from '../../../../utils/datetime';
 import descendingComparator from '../../../../utils/descendingComparator';
 import history from '../../../../utils/routes/history';
+import BackdropLoader from '../../../molecules/backdropLoader';
 import BigMessage from '../../../molecules/bigMessage';
 import Drawer from '../../../molecules/Drawer';
 import Enquiry from '../../Enquiries/Enquiry';
@@ -40,11 +41,14 @@ const Table: React.FC = () => {
     data,
     order,
     selectedRow,
+    loading,
+    searchTerm,
     getTableItems,
     handleOpenDrawer,
     handleCloseDrawer,
     handleSort,
     handleChangePage,
+    handleSearch,
   } = useTable<Request>(GET_REQUESTS);
   const [enquiryId, setEnquiryId] = React.useState<string>();
 
@@ -60,116 +64,127 @@ const Table: React.FC = () => {
     name: r.client.name,
     phoneNumber: r.client.phoneNumber,
   })) : [];
-
   return (
     <Box style={{ width: '100%' }}>
-      {rows?.length > 0
-        ? (
-          <>
-            <Paper style={{ width: '100%' }}>
-              <Toolbar getRequests={() => getTableItems({
+      {(rows?.length > 0 || searchTerm) && (
+        <>
+          <Paper style={{ width: '100%' }}>
+            <Toolbar
+              getRequests={() => getTableItems({
                 variables: {
                   after: null,
                 },
               })}
-              />
-              <TableContainer>
-                <MuiTable
-                  style={{ minWidth: 750 }}
-                  aria-labelledby="tableTitle"
-                  size="small"
-                >
-                  <Head
-                    order={order}
-                    onSort={handleSort}
-                  />
-                  <TableBody style={{ cursor: 'pointer' }}>
-                    {rows.map((row: RequestDto) => (
-                      <TableRow
-                        hover
-                        onClick={(event) => {
-                          const r = data?.requests.nodes.find((_r) => _r.id === row.id);
-                          if (r) {
-                            handleOpenDrawer(event, r);
-                          }
-                        }}
-                        tabIndex={-1}
-                        key={row.id}
-                        style={{ height: 45 }}
-                      >
-                        <TableCell align="left">{row.topic}</TableCell>
-                        <TableCell align="left">{row.name}</TableCell>
-                        <TableCell align="left">
-                          {row.phoneNumber}
-                        </TableCell>
-                        <TableCell align="left">{row.email}</TableCell>
-                        <TableCell align="right">
-                          {convertToDateTime(row.createdDate)}
-                        </TableCell>
-                      </TableRow>
-                    ))}
-
-                  </TableBody>
-                </MuiTable>
-              </TableContainer>
-              <div style={{
-                boxSizing: 'border-box',
-                padding: '16px',
-                width: '100%',
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'flex-end',
-              }}
+              handleSearch={handleSearch}
+            />
+            <TableContainer>
+              <MuiTable
+                style={{ minWidth: 750 }}
+                aria-labelledby="tableTitle"
+                size="small"
               >
-                <Button
-                  onClick={() => handleChangePage('Previous')}
-                  disabled={!data?.requests.pageInfo.hasPreviousPage}
-                >
-                  Previous
-                </Button>
-                <Button
-                  onClick={() => handleChangePage('Next')}
-                  disabled={!data?.requests.pageInfo.hasNextPage}
-                >
-                  Next
-                </Button>
-              </div>
-            </Paper>
-            <Drawer onClose={handleCloseDrawer} open={Boolean(selectedRow)}>
-              {
-                selectedRow
-                && (
-                  <Case
-                    {...rows.find((r) => r.id === selectedRow.id) as RequestDto}
-                    handleEnquiryClick={handleEnquiryClick}
-                  />
-                )
-              }
-            </Drawer>
-            <Drawer
-              onClose={handleCloseDrawer}
-              open={Boolean(enquiryId)}
-              onBackdropClick={handleCloseDrawer}
-            >
-              {
-                enquiryId
-                && <Enquiry id={enquiryId} handleCallback={handleCloseDrawer} />
-              }
-            </Drawer>
-          </>
-        )
-        : (
-          <BigMessage
-            icon={<WarningAmberRounded />}
-            title="No Requests"
-            subtitle="Unfortunately, we are unable to find any requests available to you at this time."
-            buttonProps={{
-              children: 'View All Enquiries',
-              onClick: () => history.push('/dashboard/enquiries'),
-            }}
-          />
-        )}
+                <Head
+                  order={order}
+                  onSort={handleSort}
+                />
+                <TableBody style={{ cursor: 'pointer' }}>
+                  {rows.map((row: RequestDto) => (
+                    <TableRow
+                      hover
+                      onClick={(event) => {
+                        const r = data?.requests.nodes.find((_r) => _r.id === row.id);
+                        if (r) {
+                          handleOpenDrawer(event, r);
+                        }
+                      }}
+                      tabIndex={-1}
+                      key={row.id}
+                      style={{ height: 45 }}
+                    >
+                      <TableCell align="left">
+                        <b>
+                          {
+                            `CA${(`000000${row.requestNumber}`).slice(-4)}`
+                          }
+                        </b>
+                      </TableCell>
+                      <TableCell align="left">{row.topic}</TableCell>
+                      <TableCell align="left">{row.name}</TableCell>
+                      <TableCell align="left">
+                        {row.phoneNumber}
+                      </TableCell>
+                      <TableCell align="left">{row.email}</TableCell>
+                      <TableCell align="right">
+                        {convertToDateTime(row.createdDate)}
+                      </TableCell>
+                    </TableRow>
+                  ))}
 
+                </TableBody>
+              </MuiTable>
+            </TableContainer>
+            <div style={{
+              boxSizing: 'border-box',
+              padding: '16px',
+              width: '100%',
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'flex-end',
+            }}
+            >
+              <Button
+                onClick={() => handleChangePage('Previous')}
+                disabled={!data?.requests.pageInfo.hasPreviousPage}
+              >
+                Previous
+              </Button>
+              <Button
+                onClick={() => handleChangePage('Next')}
+                disabled={!data?.requests.pageInfo.hasNextPage}
+              >
+                Next
+              </Button>
+            </div>
+          </Paper>
+          <Drawer onClose={handleCloseDrawer} open={Boolean(selectedRow)}>
+            {
+              selectedRow
+              && (
+                <Case
+                  {...rows.find((r) => r.id === selectedRow.id) as RequestDto}
+                  handleEnquiryClick={handleEnquiryClick}
+                />
+              )
+            }
+          </Drawer>
+          <Drawer
+            onClose={handleCloseDrawer}
+            open={Boolean(enquiryId)}
+            onBackdropClick={handleCloseDrawer}
+          >
+            {
+              enquiryId
+              && <Enquiry id={enquiryId} handleCallback={handleCloseDrawer} />
+            }
+          </Drawer>
+        </>
+      )}
+      {rows?.length <= 0 && !loading && !searchTerm && (
+        <BigMessage
+          icon={<WarningAmberRounded />}
+          title="No Requests"
+          subtitle="Unfortunately, we are unable to find any requests available to you at this time."
+          buttonProps={{
+            children: 'View All Enquiries',
+            onClick: () => history.push('/dashboard/enquiries'),
+          }}
+        />
+      )}
+      {
+        searchTerm && (
+          <BackdropLoader open={loading} />
+        )
+      }
     </Box>
   );
 };

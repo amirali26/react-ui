@@ -1,3 +1,4 @@
+import { fas } from '@fortawesome/free-solid-svg-icons';
 import {
   Box, TableCell, TableHead, TableRow, TableSortLabel,
 } from 'helpmycase-storybook/dist/components/External';
@@ -13,6 +14,12 @@ interface HeadCell {
 }
 
 const headCells: readonly HeadCell[] = [
+  {
+    id: 'requestNumber',
+    numeric: false,
+    disablePadding: false,
+    label: '#',
+  },
   {
     id: 'topic',
     numeric: false,

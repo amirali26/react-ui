@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 const GET_REQUESTS = gql`
-query GetRequests($before: String, $after: String, $last: Int) {
-  requests(before: $before, after: $after, last: $last) {
+query GetRequests($before: String, $after: String, $last: Int, $searchTermInput: String) {
+  requests(before: $before, after: $after, last: $last, searchTermInput: $searchTermInput) {
     pageInfo {
       hasNextPage,
       hasPreviousPage,
@@ -11,6 +11,7 @@ query GetRequests($before: String, $after: String, $last: Int) {
     },
     nodes {
       id,
+      requestNumber,
       client {
         name,
         email,

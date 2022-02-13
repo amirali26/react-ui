@@ -1,5 +1,5 @@
 import {
-  Button, InputLabel, TextField, Tooltip,
+  Button, InputLabel, TextField, Tooltip, Typography,
 } from 'helpmycase-storybook/dist/components/External';
 import React from 'react';
 import { AccountPermission } from '../../../../models/account';
@@ -19,6 +19,7 @@ const Case: React.FC<IProps> = ({
   email,
   description,
   createdDate,
+  requestNumber,
   handleEnquiryClick,
 }) => {
   const user = userVar();
@@ -32,6 +33,12 @@ const Case: React.FC<IProps> = ({
         subtitle="View information relating to a specific clients case"
       />
       <div className="fullWidth">
+        <Typography className="marginBottom">
+          Case Number:
+          <b>
+            {`  #CA${(`000000${requestNumber}`).slice(-4)}`}
+          </b>
+        </Typography>
         <InputLabel htmlFor="input-with-icon-adornment" className="marginBottomSmall">Topic</InputLabel>
         <TextField
           id="input-with-icon-adornment"
@@ -40,6 +47,7 @@ const Case: React.FC<IProps> = ({
           color="primary"
           value={topic}
           disabled
+          className="marginBottomSmall"
         />
         <InputLabel htmlFor="input-with-icon-adornment" className="marginBottomSmall">Name</InputLabel>
         <TextField

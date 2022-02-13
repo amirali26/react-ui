@@ -1,10 +1,11 @@
 import { DocumentNode, useLazyQuery } from '@apollo/client';
+import { debounce } from 'lodash';
 import * as React from 'react';
 import { Order } from '../components/organisms/Enquiries/Table';
 import { Pagination } from '../models/pagination';
 
 const useTable = <T extends { id: string }>(query: DocumentNode) => {
-  const [getTableItems, { data }] = useLazyQuery<{
+  const [getTableItems, { data, loading }] = useLazyQuery<{
     [key: string]: Pagination<T>
   }>(query, {
     fetchPolicy: 'cache-and-network',
@@ -12,6 +13,7 @@ const useTable = <T extends { id: string }>(query: DocumentNode) => {
   const [order, setOrder] = React.useState<Order>('asc');
   const [selectedRow, setSelectedRow] = React.useState<T>();
   const [tableItems, setTableItems] = React.useState<string>();
+  const [searchTerm, setSearchTerm] = React.useState<string>('');
 
   React.useEffect(() => {
     getTableItems();
@@ -26,7 +28,7 @@ const useTable = <T extends { id: string }>(query: DocumentNode) => {
 
   const handleChangePage = (action: 'Previous' | 'Next') => {
     if (!data) return;
-    const variables: any = {
+    const variables: Record<string, any> = {
       first: 1,
       after: undefined,
       before: undefined,
@@ -44,6 +46,16 @@ const useTable = <T extends { id: string }>(query: DocumentNode) => {
       variables,
     });
   };
+  const handleSearch = debounce((searchTermInput: string) => {
+    const variables: Record<string, string> = {
+      searchTermInput,
+    };
+    getTableItems({
+      variables,
+    });
+    setSearchTerm(searchTermInput);
+  }, 250);
+
   const handleOpenDrawer = (event: React.MouseEvent<unknown>, _tableItem: T) => {
     setSelectedRow(_tableItem);
   };
@@ -63,12 +75,15 @@ const useTable = <T extends { id: string }>(query: DocumentNode) => {
     order,
     selectedRow,
     tableItems,
+    loading,
+    searchTerm,
     getTableItems,
     handleOpenDrawer,
     handleCloseDrawer,
     handleEnquirySort,
     handleChangePage,
     handleSort,
+    handleSearch,
   };
 };
 

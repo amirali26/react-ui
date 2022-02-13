@@ -21,6 +21,7 @@ const CreateAccount: React.FC = () => {
         icon={<WarningAmberRounded />}
         title="No Firms Found"
         subtitle="Your user is not currently associated with any firms, please click on the button below to register your firm for free"
+        style={{ top: '50%' }}
         buttonProps={{
           children: 'Register Firm',
           onClick: handleOpen,

@@ -1,15 +1,16 @@
 import { OperationVariables, QueryLazyOptions } from '@apollo/client';
-import { RefreshOutlined } from '@mui/icons-material';
+import { RefreshOutlined, SearchOutlined } from '@mui/icons-material';
 import {
-  IconButton, Toolbar as MuiToolbar, Tooltip, Typography,
+  IconButton, Input, Toolbar as MuiToolbar, Tooltip, Typography,
 } from 'helpmycase-storybook/dist/components/External';
 import * as React from 'react';
 
 interface IProps {
   getRequests: (options?: QueryLazyOptions<OperationVariables> | undefined) => void;
+  handleSearch: (sti: string) => void;
 }
 
-const Toolbar: React.FC<IProps> = ({ getRequests }: IProps) => {
+const Toolbar: React.FC<IProps> = ({ getRequests, handleSearch }: IProps) => {
   const handleRefetch = async () => {
     getRequests();
   };
@@ -29,6 +30,15 @@ const Toolbar: React.FC<IProps> = ({ getRequests }: IProps) => {
           <FilterListOutlined />
         </IconButton>
       </Tooltip> */}
+      <Input
+        sx={{
+          width: '320px',
+          marginRight: '16px',
+        }}
+        placeholder="Case number or email address"
+        startAdornment={<SearchOutlined />}
+        onChange={(e) => handleSearch(e.target.value)}
+      />
       <Tooltip title="Refetch Cases" onClick={handleRefetch}>
         <IconButton>
           <RefreshOutlined />
