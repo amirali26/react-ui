@@ -37,6 +37,16 @@ const formValidationSchema = Yup.object().shape({
     .required('Please provide an initial consulation fee'),
   estimatedPrice: Yup.number()
     .required('Please provide an estimated price covering the whole case'),
+  officeAppointment: Yup.boolean(),
+  phoneAppointment: Yup.boolean(),
+  videoCallAppointment: Yup.boolean(),
+  appointmentErrors: Yup.boolean().when(['officeAppointment', 'phoneAppointment', 'videoCallAppointment'], {
+    is: (
+      officeAppointment: boolean, phoneAppointment: boolean, videoCallAppointment: boolean,
+    ) => officeAppointment || phoneAppointment || videoCallAppointment,
+    then: Yup.bool().notRequired(),
+    otherwise: Yup.bool().required(),
+  }),
 });
 
 const Enquiry: React.FC<Props> = ({
@@ -197,7 +207,7 @@ const Enquiry: React.FC<Props> = ({
                 variant="contained"
                 type="submit"
                 className="marginTop"
-                disabled={Boolean(enquiry) || enquiryButtonDisabled}
+                disabled={Boolean(enquiry) || enquiryButtonDisabled || !formik.isValid}
               >
                 Submit enquiry
               </Button>
