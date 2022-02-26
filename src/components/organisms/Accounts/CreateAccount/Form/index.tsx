@@ -25,7 +25,6 @@ import {
   MenuItem, Select,
   SelectChangeEvent,
   TextField,
-  Typography,
 } from 'helpmycase-storybook/dist/components/External';
 import React, { useState } from 'react';
 import * as Yup from 'yup';
@@ -54,6 +53,10 @@ type InitialValues = {
   invitedUserEmails?: string[],
   activeUsers?: User[],
   pendingInvitations?: AccountUserInvitation[],
+  postCode: string,
+  address: string,
+  region: string,
+  areaInRegion: string,
 }
 
 const initialValues: InitialValues = {
@@ -64,6 +67,10 @@ const initialValues: InitialValues = {
   type: AccountType.LONDON_LARGE_COMMERCIAL,
   handledAreasOfPractice: [],
   registeredDate: '',
+  postCode: '',
+  address: '',
+  areaInRegion: '',
+  region: '',
 };
 
 const regMatch = /^((http|https):\/\/)?(www.)?(?!.*(http|https|www.))[a-zA-Z0-9_-]+(\.[a-zA-Z]+)+(\/)?.([\w\\?[a-zA-Z-_%\\/@?]+)*([^\\/\w\\?[a-zA-Z0-9_-]+=\w+(&[a-zA-Z0-9_]+=\w+)*)?$/;
@@ -83,6 +90,10 @@ const formValidationSchema = Yup.object().shape({
   users: Yup.array().of(Yup.string().email('Please provide a valid email address')),
   registeredDate: Yup.date().required('Please provide a incorporation date for your firm'),
   invitedUserEmails: Yup.array().of(Yup.string().email('Invalid Email')),
+  address: Yup.string().required('Please provide an address').max(100, 'Address too long').min(6, 'Address too short'),
+  postCode: Yup.string().required('Please provide a postcode').max(10, 'Postcode too long'),
+  region: Yup.string().required(),
+  areaInRegion: Yup.string().required(),
 });
 
 interface IProps {
@@ -94,6 +105,7 @@ interface IProps {
 const Form: React.FC<IProps> = ({ callback, readonly, accountInformation }: IProps) => {
   const sb = useHelpmycaseSnackbar();
   const [openModal, setOpenModal] = useState<boolean>(false);
+  const [options, setOptions] = React.useState<string[]>([]);
   const user = useReactiveVar(userVar);
   const legalPracticeQuery = useQuery<{
     areasOfPractices: AreasOfLegalPractice[]
@@ -144,6 +156,7 @@ const Form: React.FC<IProps> = ({ callback, readonly, accountInformation }: IPro
             accountInput: {
               ...values,
               areasOfPracticeId: values.handledAreasOfPractice,
+              invitedUserEmails: values.invitedUserEmails || [],
             },
           },
         });
@@ -171,6 +184,20 @@ const Form: React.FC<IProps> = ({ callback, readonly, accountInformation }: IPro
       callback();
     }
   }
+
+  const handleAutoComplete = async (postcode: string) => {
+    const response = await (await fetch(`https://api.postcodes.io/postcodes/${postcode}/autocomplete`)).json();
+    setOptions(response.result || []);
+  };
+
+  const handlePostcodeSelect = async (postcode: string) => {
+    const response = await (await fetch(`https://api.postcodes.io/postcodes/${postcode}`)).json();
+    if (!response.error) {
+      formik.setFieldValue('postCode', postcode);
+      formik.setFieldValue('areaInRegion', response.result.primary_care_trust);
+      formik.setFieldValue('region', response.result.region);
+    }
+  };
 
   const shouldShowUsers = readonly && accountInformation
     && (accountInformation.activeUsers
@@ -325,6 +352,55 @@ const Form: React.FC<IProps> = ({ callback, readonly, accountInformation }: IPro
               />
             </LocalizationProvider>
           </Box>
+          <div style={{ width: '47%', padding: 8 }}>
+            <InputLabel htmlFor="input-with-icon-adornment" className="marginBottomSmall marginTopSmall">Post Code</InputLabel>
+            <Autocomplete
+              sx={{ marginBottom: '16px' }}
+              disablePortal
+              id="combo-box-demo"
+              options={options}
+              fullWidth
+              onChange={(e, newValue) => {
+                if (newValue) {
+                  handlePostcodeSelect(newValue);
+                }
+              }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  placeholder="Postcode"
+                  inputProps={{
+                    ...params.inputProps,
+                    autoComplete: 'new-password',
+                  }}
+                />
+              )}
+              onInputChange={(event) => handleAutoComplete((event.target as any).value as string)}
+            />
+
+          </div>
+          <div style={{ width: '47%', padding: 8 }}>
+            <InputLabel htmlFor="input-with-icon-adornment" className="marginBottomSmall marginTopSmall">Address</InputLabel>
+            <TextField
+              id="input-with-icon-adornment"
+              name="address"
+              fullWidth
+              color="primary"
+              helperText={formik.touched.address && formik.errors.address}
+              error={Boolean(formik.touched.address && formik.errors.address)}
+              value={formik.values.address}
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
+              disabled={readonly}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <BadgeOutlined />
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </div>
         </div>
         <div className="marginTopMedium flex row">
           <div style={{

@@ -3,6 +3,7 @@ import { SnackbarProvider } from 'notistack';
 import React, { useState } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import './App.css';
+import VerifiedAccount from './components/organisms/Accounts/VerifiedAccount';
 import AuthContext from './context/AuthContext';
 import Auth from './pages/Auth';
 import Dashboard from './pages/Dashboard';
@@ -19,6 +20,9 @@ const App: React.FC = () => {
           </Route>
           <Route path="/dashboard">
             <Dashboard />
+          </Route>
+          <Route path="/activate/firm/:id">
+            <VerifiedAccount />
           </Route>
           <Redirect to="/auth" />
         </Switch>

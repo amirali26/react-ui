@@ -41,7 +41,6 @@ export const userVar = makeVar<UserAccount>({
 });
 
 const Dashboard: React.FC = () => {
-  const location = useLocation();
   const { isLoggedIn } = useAuth();
   const user = useReactiveVar(userVar);
   const prevUser = usePrevious(user);

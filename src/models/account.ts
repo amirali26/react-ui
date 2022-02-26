@@ -34,4 +34,8 @@ export type Account = {
     users?: User[],
     accountUserInvitations?: AccountUserInvitation[],
     permission: AccountPermission,
+    postCode: string,
+    address: string,
+    region: string,
+    areaInRegion: string,
 }

@@ -2,7 +2,7 @@ import { useLazyQuery, useMutation, useReactiveVar } from '@apollo/client';
 import { Autocomplete } from '@mui/lab';
 import { useFormik } from 'formik';
 import {
-  Box, Button, Chip, CircularProgress, TextField,
+  Button, Chip, CircularProgress, TextField,
 } from 'helpmycase-storybook/dist/components/External';
 import React from 'react';
 import * as Yup from 'yup';
