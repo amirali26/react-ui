@@ -348,7 +348,12 @@ const Form: React.FC<IProps> = ({ callback, readonly, accountInformation }: IPro
                 onChange={(newValue) => {
                   formik.setFieldValue('registeredDate', newValue);
                 }}
-                renderInput={(params) => <TextField {...params} />}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    error={Boolean(formik.touched.registeredDate && formik.errors.registeredDate)}
+                  />
+                )}
               />
             </LocalizationProvider>
           </Box>

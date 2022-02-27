@@ -1,6 +1,7 @@
 import { Styles } from 'helpmycase-storybook/dist/components/External';
 import React from 'react';
 import logoPNG from '../../../assets/images/logoPNG.png';
+import history from '../../../utils/routes/history';
 
 const useStyles = Styles.makeStyles({
   logo: {
@@ -22,9 +23,16 @@ interface IProps {
 const Logo: React.FC<IProps> = ({ width }: IProps) => {
   const styles = useStyles();
   return (
-    <div className={styles.logo} style={{ width }}>
+    <button
+      className={styles.logo}
+      style={{
+        width, backgroundColor: 'transparent', border: 0, cursor: 'pointer',
+      }}
+      type="button"
+      onClick={() => history.push('/dashboard')}
+    >
       <img src={logoPNG} alt="HelpMyCase logo" />
-    </div>
+    </button>
   );
 };
 

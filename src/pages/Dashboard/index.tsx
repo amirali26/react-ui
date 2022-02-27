@@ -41,7 +41,7 @@ export const userVar = makeVar<UserAccount>({
 });
 
 const Dashboard: React.FC = () => {
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, handleLogout } = useAuth();
   const user = useReactiveVar(userVar);
   const prevUser = usePrevious(user);
   const [getInvitations, invitations] = useLazyQuery<{
@@ -51,13 +51,14 @@ const Dashboard: React.FC = () => {
   const [getUser, { loading, data }] = useLazyQuery<IGetUser>(GET_USER, {
     onCompleted: (_data) => {
       getInvitations();
-      if (user) {
+      if (user && _data.user.length) {
         userVar({
           ...user,
           accounts: _data.user[0].accounts,
           selectedAccount: _data.user[0].accounts[0],
         });
       }
+      if (!data?.user.length && !loading) handleLogout();
     },
   });
 
@@ -110,6 +111,10 @@ const Dashboard: React.FC = () => {
       getUser({ variables: { userId: user.user.id } });
     }
   }, [user.user, user.accounts]);
+
+  if (!data?.user.length && !loading) {
+    return <BackdropLoader open={loading} />;
+  }
 
   return (
     <Route path={[routes.dashboard, routes.base]}>

@@ -1,11 +1,9 @@
 import { useMutation } from '@apollo/client';
 import { CancelOutlined, CheckCircleOutline } from '@mui/icons-material';
 import { Button, Styles } from 'helpmycase-storybook/dist/components/External';
-import { sumBy } from 'lodash';
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import BackgroundImage from '../../../../assets/images/login-background.png';
-import useHelpmycaseSnackbar from '../../../../hooks/useHelpmycaseSnackbar';
 import VERIFY_ACCOUNT from '../../../../mutations/verifyAccount';
 import history from '../../../../utils/routes/history';
 import BackdropLoader from '../../../molecules/backdropLoader';
@@ -45,9 +43,7 @@ const useStyles = Styles.makeStyles({
 const VerifiedAccount = () => {
   const styles = useStyles();
   const params: { id?: string } = useParams();
-  const [mutateVerifyAccount, { error, loading }] = useMutation(VERIFY_ACCOUNT, {
-    onError: () => 'Errored',
-  });
+  const [mutateVerifyAccount, { error, loading }] = useMutation(VERIFY_ACCOUNT);
   const title = error?.message ? 'Error Verifying Firm' : 'Firm Verified';
   const subtitle = error?.message
     ? 'There was an error verifying your firm'

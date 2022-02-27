@@ -1,4 +1,3 @@
-import { fas } from '@fortawesome/free-solid-svg-icons';
 import {
   Box, TableCell, TableHead, TableRow, TableSortLabel,
 } from 'helpmycase-storybook/dist/components/External';

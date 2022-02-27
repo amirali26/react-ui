@@ -1,6 +1,4 @@
 import { useReactiveVar } from '@apollo/client';
-import { faBars } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   AccountBalanceOutlined, KeyboardArrowDown, ManageAccountsOutlined,
 } from '@mui/icons-material';
@@ -8,9 +6,7 @@ import clsx from 'clsx';
 import {
   AppBar,
   Badge,
-  Button,
-  IconButton,
-  Menu,
+  Button, Menu,
   MenuItem,
   Styles,
   Theme,
@@ -43,7 +39,7 @@ interface IProps {
   handleOpen: (open: boolean) => void;
 }
 
-const NavigationAppBar: React.FC<IProps> = ({ handleOpen }: IProps) => {
+const NavigationAppBar: React.FC<IProps> = () => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [addAccountOpen, setAddAccountOpen] = React.useState<boolean>(false);
@@ -68,7 +64,7 @@ const NavigationAppBar: React.FC<IProps> = ({ handleOpen }: IProps) => {
     <div className={classes.root}>
       <AppBar position="static" color="secondary">
         <Toolbar>
-          <IconButton
+          {/* <IconButton
             edge="start"
             className={classes.menuButton}
             color="inherit"
@@ -76,7 +72,7 @@ const NavigationAppBar: React.FC<IProps> = ({ handleOpen }: IProps) => {
             onClick={() => handleOpen(true)}
           >
             <FontAwesomeIcon icon={faBars} />
-          </IconButton>
+          </IconButton> */}
           <div className={clsx(classes.title)}>
             <Logo width={200} />
           </div>
