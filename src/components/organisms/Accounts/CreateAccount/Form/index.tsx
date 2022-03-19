@@ -144,6 +144,11 @@ const Form: React.FC<IProps> = ({ callback, readonly, accountInformation }: IPro
         },
       });
     },
+    onError: (data) => {
+      if (data.graphQLErrors.length) {
+        sb.trigger(data.graphQLErrors[0].extensions?.message, 'error');
+      }
+    },
   });
 
   const formik = useFormik({
