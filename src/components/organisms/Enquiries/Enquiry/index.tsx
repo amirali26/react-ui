@@ -56,29 +56,28 @@ const Enquiry: React.FC<Props> = ({
 }) => {
   const sb = useHelpmycaseSnackbar();
   const user = userVar();
-  const [addEnquiry, { data, loading, error }] = useMutation(ADD_ENQUIRY, {
+  const [addEnquiry, { loading }] = useMutation(ADD_ENQUIRY, {
     onCompleted: () => {
       sb.trigger('Successfully submitted your enquiry', 'success');
       if (handleCallback) handleCallback();
     },
+    onError: ({ networkError }: any) => {
+      sb.trigger(networkError?.result?.errors[0].message || networkError.message, 'error');
+    },
   });
 
   async function handleFormSubmit(values: EnquiryInput) {
-    try {
-      await addEnquiry({
-        variables: {
-          eq: {
-            ...values,
-            requestId: id,
-            estimatedPrice: +values.estimatedPrice,
-            initialConsultationFee: +values.initialConsultationFee,
-          },
+    addEnquiry({
+      variables: {
+        eq: {
+          ...values,
+          requestId: id,
+          estimatedPrice: +values.estimatedPrice,
+          initialConsultationFee: +values.initialConsultationFee,
         },
-        refetchQueries: [GET_REQUESTS],
-      });
-    } catch (e) {
-      sb.trigger(e instanceof Error ? e.message : 'Something went wrong submitting your enquiry');
-    }
+      },
+      refetchQueries: [GET_REQUESTS],
+    });
   }
 
   const formik = useFormik({
