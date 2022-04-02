@@ -76,6 +76,8 @@ const initialValues: InitialValues = {
 const regMatch = /^((http|https):\/\/)?(www.)?(?!.*(http|https|www.))[a-zA-Z0-9_-]+(\.[a-zA-Z]+)+(\/)?.([\w\\?[a-zA-Z-_%\\/@?]+)*([^\\/\w\\?[a-zA-Z0-9_-]+=\w+(&[a-zA-Z0-9_]+=\w+)*)?$/;
 
 const formValidationSchema = Yup.object().shape({
+  name: Yup.string()
+    .required('Name is required'),
   email: Yup.string().email().required('Please provide an email'),
   phoneNumber: Yup.string()
     .matches(new RegExp('^[0-9]*$'), 'Phone number should be only numbers')
@@ -142,8 +144,8 @@ const Form: React.FC<IProps> = ({ callback, readonly, accountInformation }: IPro
         },
       });
     },
-    onError: (error) => {
-      sb.trigger(error.message, 'error');
+    onError: ({ networkError }: any) => {
+      sb.trigger(networkError?.result?.errors[0].message || networkError.message, 'error');
     },
   });
 
@@ -559,7 +561,6 @@ const Form: React.FC<IProps> = ({ callback, readonly, accountInformation }: IPro
               color="primary"
               className="marginTop fullWidth"
               type="submit"
-              disabled={Boolean(!formik.isValid || loading)}
               startIcon={loading && <CircularProgress color="secondary" size="12px" />}
             >
               Create Account
