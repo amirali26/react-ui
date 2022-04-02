@@ -76,8 +76,6 @@ const initialValues: InitialValues = {
 const regMatch = /^((http|https):\/\/)?(www.)?(?!.*(http|https|www.))[a-zA-Z0-9_-]+(\.[a-zA-Z]+)+(\/)?.([\w\\?[a-zA-Z-_%\\/@?]+)*([^\\/\w\\?[a-zA-Z0-9_-]+=\w+(&[a-zA-Z0-9_]+=\w+)*)?$/;
 
 const formValidationSchema = Yup.object().shape({
-  name: Yup.string()
-    .required('Name is required'),
   email: Yup.string().email().required('Please provide an email'),
   phoneNumber: Yup.string()
     .matches(new RegExp('^[0-9]*$'), 'Phone number should be only numbers')
@@ -134,7 +132,7 @@ const Form: React.FC<IProps> = ({ callback, readonly, accountInformation }: IPro
       sb.trigger('Deleted invitation', 'info');
     },
   });
-  const [addAccount, { loading, error }] = useMutation<{ addAccount: Account }>(ADD_ACCOUNT, {
+  const [addAccount, { loading }] = useMutation<{ addAccount: Account }>(ADD_ACCOUNT, {
     onCompleted: (data) => {
       // eslint-disable-next-line @typescript-eslint/no-use-before-define
       updateUserVar(data.addAccount);
@@ -144,10 +142,8 @@ const Form: React.FC<IProps> = ({ callback, readonly, accountInformation }: IPro
         },
       });
     },
-    onError: (data) => {
-      if (data.graphQLErrors.length) {
-        sb.trigger(data.graphQLErrors[0].extensions?.message, 'error');
-      }
+    onError: (error) => {
+      sb.trigger(error.message, 'error');
     },
   });
 
@@ -155,22 +151,15 @@ const Form: React.FC<IProps> = ({ callback, readonly, accountInformation }: IPro
     initialValues: readonly && accountInformation ? accountInformation : initialValues,
     validateOnMount: true,
     onSubmit: async (values) => {
-      try {
-        addAccount({
-          variables: {
-            accountInput: {
-              ...values,
-              areasOfPracticeId: values.handledAreasOfPractice,
-              invitedUserEmails: values.invitedUserEmails || [],
-            },
+      addAccount({
+        variables: {
+          accountInput: {
+            ...values,
+            areasOfPracticeId: values.handledAreasOfPractice,
+            invitedUserEmails: values.invitedUserEmails || [],
           },
-        });
-        if (error) {
-          throw Error(error.message);
-        }
-      } catch (e) {
-        sb.trigger(e instanceof Error ? e.message : '');
-      }
+        },
+      });
     },
     validationSchema: formValidationSchema,
   });
