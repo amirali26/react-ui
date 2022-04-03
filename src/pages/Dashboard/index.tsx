@@ -5,6 +5,7 @@ import { isEqual } from 'lodash';
 import React, { useEffect } from 'react';
 import { Route, Switch, useLocation } from 'react-router-dom';
 import BackdropLoader from '../../components/molecules/backdropLoader';
+import PersistentCard from '../../components/molecules/PersistentCard';
 import TopBar from '../../components/molecules/topBar';
 import CreateAccount from '../../components/organisms/Accounts/CreateAccount';
 import Navigation from '../../components/templates/Navigation';
@@ -118,6 +119,7 @@ const Dashboard: React.FC = () => {
 
   return (
     <Route path={[routes.dashboard, routes.base]}>
+      <PersistentCard visible={!user.selectedAccount?.firmVerified} />
       <Navigation />
       <BackdropLoader open={loading} />
       {

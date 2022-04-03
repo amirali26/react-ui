@@ -18,7 +18,8 @@ export const CORE_ACCOUNT_DETAILS = gql`
             name,
         },
         permission,
-        createdAt
+        createdAt,
+        firmVerified,
     }
 `;
 

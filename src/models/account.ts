@@ -38,4 +38,5 @@ export type Account = {
     address: string,
     region: string,
     areaInRegion: string,
+    firmVerified: boolean,
 }
