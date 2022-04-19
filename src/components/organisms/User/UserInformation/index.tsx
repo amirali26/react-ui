@@ -5,6 +5,7 @@ import {
 } from 'helpmycase-storybook/dist/components/External';
 import React, { useState } from 'react';
 import { userVar } from '../../../../pages/Dashboard';
+import AccountItemCard from '../../../molecules/AccountItemCard';
 import Title from '../../../molecules/Title';
 import ChangePassword from '../../ChangePassword';
 
@@ -100,24 +101,9 @@ const UserInformation: React.FC = () => {
         <div className="flex row marginTop">
           <div style={{ width: '100%' }}>
             <InputLabel htmlFor="input-with-icon-adornment" className="marginBottomSmall">Available Accounts</InputLabel>
-            <List
-              sx={{
-                width: '100%',
-                position: 'relative',
-                overflow: 'auto',
-                minHeight: 300,
-                maxHeight: 300,
-                border: '1px solid rgba(94, 94, 94, 0.267)',
-                padding: 0,
-                '& > div': { padding: '16px' },
-              }}
-            >
-              {accounts?.map((account) => (
-                <ListItem key={account.id}>
-                  {account.name}
-                </ListItem>
-              ))}
-            </List>
+            {accounts?.map((account) => (
+              <AccountItemCard key={account.id} {...account} />
+            ))}
           </div>
         </div>
         <div className="flex row marginTop">

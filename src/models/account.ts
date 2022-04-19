@@ -37,6 +37,7 @@ export type Account = {
     postCode: string,
     address: string,
     region: string,
+    imageUrl: string,
     areaInRegion: string,
     firmVerified: boolean,
 }

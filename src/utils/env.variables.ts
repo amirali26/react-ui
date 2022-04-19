@@ -7,6 +7,7 @@ interface CognitoConfig {
 interface EnvironmentConfig {
   REACT_APP_API_URL: string;
   REACT_APP_COGNITO: CognitoConfig;
+  S3_URL: string;
 }
 
 // Default is development

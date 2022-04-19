@@ -9,6 +9,7 @@ export const CORE_ACCOUNT_DETAILS = gql`
         size,
         email,
         registeredDate,
+        imageUrl,
         areasOfPractice {
             id,
             name

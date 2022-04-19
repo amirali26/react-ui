@@ -6,6 +6,7 @@ import {
 import React from 'react';
 import useHelpmycaseSnackbar from '../../../../hooks/useHelpmycaseSnackbar';
 import { userVar } from '../../../../pages/Dashboard';
+import AccountItemCard from '../../../molecules/AccountItemCard';
 import Title from '../../../molecules/Title';
 
 interface IProps {
@@ -16,10 +17,10 @@ const SwitchAccount: React.FC<IProps> = ({ callback }: IProps) => {
   const sb = useHelpmycaseSnackbar();
   const user = useReactiveVar(userVar);
   const items = user?.accounts?.map((account) => (
-    <ListItem
+    <AccountItemCard
       key={account.id}
+      {...account}
       disabled={account.id === user.selectedAccount?.id}
-      button
       onClick={() => {
         userVar({
           ...user,
@@ -28,14 +29,7 @@ const SwitchAccount: React.FC<IProps> = ({ callback }: IProps) => {
         if (callback) callback();
         sb.trigger(`Successfully switched account to: ${account.name}`, 'success');
       }}
-    >
-      <ListItemAvatar>
-        <Avatar>
-          <Person />
-        </Avatar>
-      </ListItemAvatar>
-      <ListItemText primary={account.name} secondary="Administrator" />
-    </ListItem>
+    />
   ));
   return (
     <>

@@ -119,7 +119,10 @@ const Dashboard: React.FC = () => {
 
   return (
     <Route path={[routes.dashboard, routes.base]}>
-      <PersistentCard visible={!user.selectedAccount?.firmVerified} />
+      <PersistentCard visible={
+        Boolean(user.selectedAccount && !user.selectedAccount.firmVerified)
+      }
+      />
       <Navigation />
       <BackdropLoader open={loading} />
       {

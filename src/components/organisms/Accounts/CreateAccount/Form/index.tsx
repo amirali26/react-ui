@@ -39,10 +39,11 @@ import { UserAccount, userVar } from '../../../../../pages/Dashboard';
 import { GET_ACCOUNT } from '../../../../../queries/account';
 import GET_AREASOFLEGALPRACTICE from '../../../../../queries/areas-of-legal-practice';
 import convertToDateTime from '../../../../../utils/datetime';
+import ImageUpload from '../../../../molecules/ImageUpload';
 import InviteUsersModal from '../../../../molecules/InviteUsersModal';
 import Title from '../../../../molecules/Title';
 
-type InitialValues = {
+export type InitialValues = {
   name: string,
   email: string,
   phoneNumber: string,
@@ -57,6 +58,7 @@ type InitialValues = {
   address: string,
   region: string,
   areaInRegion: string,
+  imageUrl?: string,
 }
 
 const initialValues: InitialValues = {
@@ -71,6 +73,7 @@ const initialValues: InitialValues = {
   address: '',
   areaInRegion: '',
   region: '',
+  imageUrl: '',
 };
 
 const regMatch = /^((http|https):\/\/)?(www.)?(?!.*(http|https|www.))[a-zA-Z0-9_-]+(\.[a-zA-Z]+)+(\/)?.([\w\\?[a-zA-Z-_%\\/@?]+)*([^\\/\w\\?[a-zA-Z0-9_-]+=\w+(&[a-zA-Z0-9_]+=\w+)*)?$/;
@@ -94,6 +97,7 @@ const formValidationSchema = Yup.object().shape({
   postCode: Yup.string().required('Please provide a postcode').max(10, 'Postcode too long'),
   region: Yup.string().required(),
   areaInRegion: Yup.string().required(),
+  imageUrl: Yup.string().required('Please upload an image'),
 });
 
 interface IProps {
@@ -212,6 +216,13 @@ const Form: React.FC<IProps> = ({ callback, readonly, accountInformation }: IPro
           }
         />
         <div className="fullWidth flex row" style={{ flexWrap: 'wrap' }}>
+          <div style={{ padding: 8, width: '100%' }}>
+            <ImageUpload
+              setFieldValue={formik.setFieldValue}
+              imageUrl={formik.values.imageUrl}
+              display={!readonly}
+            />
+          </div>
           <div style={{ width: '47%', padding: 8 }}>
             <InputLabel htmlFor="input-with-icon-adornment" className="marginBottomSmall marginTopSmall">Name</InputLabel>
             <TextField
