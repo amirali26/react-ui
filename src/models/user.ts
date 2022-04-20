@@ -6,5 +6,6 @@ export type User = {
     dateOfBirth: string,
     email: string,
     phoneNumber: string,
+    imageUrl?: string,
     accounts: Account[],
 }

@@ -17,12 +17,13 @@ const Input = styled('input')({
 interface Props {
   display?: boolean,
   imageUrl?: string,
-  setFieldValue: (
-    field: string, value: any, shouldValidate?: boolean | undefined
-  ) => Promise<void> | Promise<FormikErrors<InitialValues>>
+  submitImage: (imageUrl: string) => void;
+  clearImage: () => void;
 }
 
-const ImageUpload: React.FC<Props> = ({ display, imageUrl, setFieldValue }) => {
+const ImageUpload: React.FC<Props> = ({
+  display, imageUrl, submitImage, clearImage,
+}) => {
   const [loading, setLoading] = React.useState<boolean>(false);
   const sb = useHelpmycaseSnackbar();
 
@@ -47,7 +48,7 @@ const ImageUpload: React.FC<Props> = ({ display, imageUrl, setFieldValue }) => {
           data: formData,
         });
 
-        setFieldValue('imageUrl', s3BucketUrl + uuid);
+        submitImage(s3BucketUrl + uuid);
       } catch {
         sb.trigger('Something went wrong uploading your file');
       } finally {
@@ -111,7 +112,7 @@ const ImageUpload: React.FC<Props> = ({ display, imageUrl, setFieldValue }) => {
               <Button variant="contained" color="secondary" style={{ marginRight: 8 }} component="span">
                 Upload Image
               </Button>
-              <Button variant="contained" color="error" onClick={() => setFieldValue('imageUrl', '')}>
+              <Button variant="contained" color="error" onClick={clearImage}>
                 Remove Image
               </Button>
             </div>

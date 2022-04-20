@@ -11,6 +11,7 @@ export interface IGetUser {
         phoneNumber: string,
         email: string,
         createdAt: string,
+        imageUrl?: string,
         accounts: Account[],
     }[]
 }
@@ -24,6 +25,7 @@ export const GET_USER = gql`
             dateOfBirth,
             phoneNumber,
             email,
+            imageUrl,
             accounts {
               ...AccountDetails,
               accountUserInvitations {

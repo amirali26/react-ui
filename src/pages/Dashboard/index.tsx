@@ -55,6 +55,10 @@ const Dashboard: React.FC = () => {
       if (user && _data.user.length) {
         userVar({
           ...user,
+          user: {
+            ...user.user,
+            imageUrl: _data.user[0].imageUrl,
+          },
           accounts: _data.user[0].accounts,
           selectedAccount: _data.user[0].accounts[0],
         });

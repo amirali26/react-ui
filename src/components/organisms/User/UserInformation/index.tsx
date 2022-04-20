@@ -1,17 +1,34 @@
-import { useReactiveVar } from '@apollo/client';
+import { useMutation, useReactiveVar } from '@apollo/client';
 import {
   Button,
-  InputLabel, List, ListItem, TextField,
+  InputLabel, TextField,
 } from 'helpmycase-storybook/dist/components/External';
 import React, { useState } from 'react';
+import useHelpmycaseSnackbar from '../../../../hooks/useHelpmycaseSnackbar';
+import { User } from '../../../../models/user';
+import UPDATE_USER_PROFILE_IMAGE from '../../../../mutations/updateUserProfileImage';
 import { userVar } from '../../../../pages/Dashboard';
+import { GET_USER } from '../../../../queries/user';
 import AccountItemCard from '../../../molecules/AccountItemCard';
+import ImageUpload from '../../../molecules/ImageUpload';
 import Title from '../../../molecules/Title';
 import ChangePassword from '../../ChangePassword';
 
 const UserInformation: React.FC = () => {
+  const sb = useHelpmycaseSnackbar();
   const { user, accounts } = useReactiveVar(userVar);
   const [openChangePasswordModal, setOpenChangePasswordModal] = useState<boolean>(false);
+  const [updateProfileImage] = useMutation<{ user: User }>(UPDATE_USER_PROFILE_IMAGE, {
+    refetchQueries: [GET_USER],
+    awaitRefetchQueries: true,
+    onCompleted: (data) => {
+      const successMessage = data.user.imageUrl ? 'Successfully updated profile image' : 'Removed image';
+      sb.trigger(successMessage, 'success');
+    },
+    onError: () => {
+      sb.trigger('There was an error updating your profile imnage');
+    },
+  });
 
   return (
     <div>
@@ -19,34 +36,22 @@ const UserInformation: React.FC = () => {
         title="User Profile"
         subtitle="View and manage your user profile on this page."
       />
-      {/* <div className="paddingTopMedium paddingMedium flex alignItemsCenter">
-        <Avatar
-          className="marginRight"
-          sx={{
-            width: theme.spacing(10),
-            height: theme.spacing(10),
-            border: '2px solid black',
-          }}
-        >
-          <PhotoCamera />
-        </Avatar>
-        <div style={{ width: '350px' }} className="marginRight">
-          <Typography variant="subtitle1">
-            Change Avatar
-          </Typography>
-          <Typography variant="subtitle1" className="grey">
-            Update or set a new profile picture by clicking on the button on the right
-          </Typography>
-        </div>
-        <Button
-          variant="outlined"
-          color="primary"
-          startIcon={<CloudUpload />}
-        >
-          Upload
-        </Button>
+      <div>
+        <ImageUpload
+          display
+          imageUrl={user.imageUrl}
+          clearImage={() => updateProfileImage({
+            variables: {
+              imageUrl: null,
+            },
+          })}
+          submitImage={(imageUrl: string) => updateProfileImage({
+            variables: {
+              imageUrl,
+            },
+          })}
+        />
       </div>
-      <Divider className="marginTop marginBottom" /> */}
       <div className="paddingTopMedium paddingMedium flex column spaceBetween">
         <div className="flex column marginBottomMedium">
           <div className="flex row marginBottom">

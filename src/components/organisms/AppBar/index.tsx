@@ -1,10 +1,11 @@
 import { useReactiveVar } from '@apollo/client';
 import {
-  AccountBalanceOutlined, KeyboardArrowDown, ManageAccountsOutlined,
+  AccountBalanceOutlined, KeyboardArrowDown,
 } from '@mui/icons-material';
 import clsx from 'clsx';
 import {
   AppBar,
+  Avatar,
   Badge,
   Button, Menu,
   MenuItem,
@@ -79,7 +80,7 @@ const NavigationAppBar: React.FC<IProps> = () => {
           <Button
             className="marginRightMedium"
             color="inherit"
-            startIcon={<ManageAccountsOutlined />}
+            startIcon={<Avatar sx={{ width: '30px', height: '30px' }} src={user.imageUrl}>{user.imageUrl || user.name[0]}</Avatar>}
             endIcon={<KeyboardArrowDown />}
             onClick={handleClick}
           >

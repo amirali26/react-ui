@@ -218,7 +218,8 @@ const Form: React.FC<IProps> = ({ callback, readonly, accountInformation }: IPro
         <div className="fullWidth flex row" style={{ flexWrap: 'wrap' }}>
           <div style={{ padding: 8, width: '100%' }}>
             <ImageUpload
-              setFieldValue={formik.setFieldValue}
+              submitImage={(imageUrl: string) => formik.setFieldValue('imageUrl', imageUrl)}
+              clearImage={() => formik.setFieldValue('imageUrl', '')}
               imageUrl={formik.values.imageUrl}
               display={!readonly}
             />
