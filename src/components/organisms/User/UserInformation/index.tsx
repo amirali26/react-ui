@@ -1,4 +1,5 @@
 import { useMutation, useReactiveVar } from '@apollo/client';
+import { CancelOutlined } from '@mui/icons-material';
 import {
   Button,
   InputLabel, TextField,
@@ -10,6 +11,7 @@ import UPDATE_USER_PROFILE_IMAGE from '../../../../mutations/updateUserProfileIm
 import { userVar } from '../../../../pages/Dashboard';
 import { GET_USER } from '../../../../queries/user';
 import AccountItemCard from '../../../molecules/AccountItemCard';
+import BigMessage from '../../../molecules/bigMessage';
 import ImageUpload from '../../../molecules/ImageUpload';
 import Title from '../../../molecules/Title';
 import ChangePassword from '../../ChangePassword';
@@ -18,14 +20,17 @@ const UserInformation: React.FC = () => {
   const sb = useHelpmycaseSnackbar();
   const { user, accounts } = useReactiveVar(userVar);
   const [openChangePasswordModal, setOpenChangePasswordModal] = useState<boolean>(false);
-  const [updateProfileImage] = useMutation<{ user: User }>(UPDATE_USER_PROFILE_IMAGE, {
+  const [updateProfileImage] = useMutation<{
+    addUserProfileImage: User
+  }>(UPDATE_USER_PROFILE_IMAGE, {
     refetchQueries: [GET_USER],
     awaitRefetchQueries: true,
     onCompleted: (data) => {
-      const successMessage = data.user.imageUrl ? 'Successfully updated profile image' : 'Removed image';
+      const successMessage = data.addUserProfileImage.imageUrl ? 'Successfully updated profile image' : 'Removed image';
       sb.trigger(successMessage, 'success');
     },
-    onError: () => {
+    onError: (e) => {
+      console.log(e, e.message);
       sb.trigger('There was an error updating your profile imnage');
     },
   });
@@ -105,10 +110,25 @@ const UserInformation: React.FC = () => {
         </div>
         <div className="flex row marginTop">
           <div style={{ width: '100%' }}>
-            <InputLabel htmlFor="input-with-icon-adornment" className="marginBottomSmall">Available Accounts</InputLabel>
-            {accounts?.map((account) => (
+            {
+              accounts?.length && accounts?.length > 0 ? (
+                <InputLabel htmlFor="input-with-icon-adornment" className="marginBottomSmall">Available Accounts</InputLabel>
+              )
+                : <></>
+            }
+            {accounts?.length ? accounts?.map((account) => (
               <AccountItemCard key={account.id} {...account} />
-            ))}
+            )) : (
+              <div style={{ width: '100%', height: '200px', position: 'relative' }}>
+                <BigMessage
+                  icon={<CancelOutlined />}
+                  title="No accounts found"
+                  subtitle="Your user is not currently associated with any accounts."
+                  variant="drawer"
+                  style={{ top: '50%' }}
+                />
+              </div>
+            )}
           </div>
         </div>
         <div className="flex row marginTop">

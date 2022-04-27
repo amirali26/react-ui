@@ -1,20 +1,17 @@
 import { makeVar, useLazyQuery, useReactiveVar } from '@apollo/client';
 import { Auth } from 'aws-amplify';
 import { Button, Typography } from 'helpmycase-storybook/dist/components/External';
-import { isEqual } from 'lodash';
 import React, { useEffect } from 'react';
-import { Route, Switch, useLocation } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import BackdropLoader from '../../components/molecules/backdropLoader';
 import PersistentCard from '../../components/molecules/PersistentCard';
 import TopBar from '../../components/molecules/topBar';
 import CreateAccount from '../../components/organisms/Accounts/CreateAccount';
 import Navigation from '../../components/templates/Navigation';
 import RoutePage from '../../components/templates/RoutePage';
-import usePrevious from '../../hooks/usePrev';
 import { Account } from '../../models/account';
 import AccountUserInvitation from '../../models/accountUserInvitation';
 import { User } from '../../models/user';
-import GET_ACCOUNT_USER_INVITATION from '../../queries/account-user-invitations';
 import { GET_USER, IGetUser } from '../../queries/user';
 import history from '../../utils/routes/history';
 import routes from '../../utils/routes/routes';
@@ -44,14 +41,9 @@ export const userVar = makeVar<UserAccount>({
 const Dashboard: React.FC = () => {
   const { isLoggedIn, handleLogout } = useAuth();
   const user = useReactiveVar(userVar);
-  const prevUser = usePrevious(user);
-  const [getInvitations, invitations] = useLazyQuery<{
-    accountUserInvitations: AccountUserInvitation[]
-  }>(GET_ACCOUNT_USER_INVITATION);
 
-  const [getUser, { loading, data }] = useLazyQuery<IGetUser>(GET_USER, {
+  const [getUser, { loading }] = useLazyQuery<IGetUser>(GET_USER, {
     onCompleted: (_data) => {
-      getInvitations();
       if (user && _data.user.length) {
         userVar({
           ...user,
@@ -59,33 +51,35 @@ const Dashboard: React.FC = () => {
             ...user.user,
             imageUrl: _data.user[0].imageUrl,
           },
-          accounts: _data.user[0].accounts,
-          selectedAccount: _data.user[0].accounts[0],
+          accounts: [],
         });
       }
-      if (!data?.user.length && !loading) handleLogout();
+      if (!_data?.user.length && !loading) handleLogout();
     },
   });
 
   const getUserOrRedirectToLogin = async (): Promise<void> => {
-    const response = await isLoggedIn();
-    if (response) {
-      const userIdResponse = await Auth.currentAuthenticatedUser();
-      if (userIdResponse) {
-        userVar({
-          user: {
-            id: userIdResponse.username,
-            name: userIdResponse.attributes.name,
-            email: userIdResponse.attributes.email,
-            dateOfBirth: userIdResponse.attributes.birthdate,
-            phoneNumber: userIdResponse.attributes.phone_number,
-            accounts: [],
-          },
-        });
-        return;
+    try {
+      const response = await isLoggedIn();
+      if (response) {
+        const userIdResponse = await Auth.currentAuthenticatedUser();
+        if (userIdResponse) {
+          userVar({
+            user: {
+              id: userIdResponse.username,
+              name: userIdResponse.attributes.name,
+              email: userIdResponse.attributes.email,
+              dateOfBirth: userIdResponse.attributes.birthdate,
+              phoneNumber: userIdResponse.attributes.phone_number,
+              accounts: [],
+            },
+          });
+          return;
+        }
       }
+    } catch {
+      history.push('/auth/login');
     }
-    history.push('/auth/login');
   };
 
   useEffect(() => {
@@ -93,31 +87,10 @@ const Dashboard: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (user) {
-      userVar({
-        ...user,
-        accountUserInvitations: invitations.data?.accountUserInvitations,
-      });
-    }
-  }, [invitations.data]);
+    getUser();
+  }, [getUser]);
 
-  useEffect(() => {
-    if (user) {
-      userVar({
-        ...user,
-        accounts: data?.user[0].accounts,
-        selectedAccount: data?.user[0].accounts[0],
-      });
-    }
-  }, [data]);
-
-  useEffect(() => {
-    if (!isEqual(user, prevUser)) {
-      getUser({ variables: { userId: user.user.id } });
-    }
-  }, [user.user, user.accounts]);
-
-  if (!data?.user.length && !loading) {
+  if (loading) {
     return <BackdropLoader open={loading} />;
   }
 
@@ -130,11 +103,11 @@ const Dashboard: React.FC = () => {
       <Navigation />
       <BackdropLoader open={loading} />
       {
-        Boolean(!data?.user[0].accounts.length) && !loading
+        Boolean(!user.accounts?.length) && !loading
         && <CreateAccount />
       }
       {
-        Boolean(data?.user[0].accounts.length) && (
+        Boolean(user.accounts?.length) && (
           <Switch>
             <Route path={['/dashboard/enquiries']} key={user.selectedAccount?.id}>
               <TopBar

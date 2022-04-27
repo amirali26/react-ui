@@ -51,6 +51,7 @@ const NavigationAppBar: React.FC<IProps> = () => {
   const {
     user, selectedAccount, accountUserInvitations, accounts,
   } = useReactiveVar(userVar);
+
   const { handleLogout } = useAuth();
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {

@@ -1,7 +1,6 @@
 import { gql } from '@apollo/client';
 import { CORE_ACCOUNT_DETAILS } from '../fragments/account';
 import CORE_ACCOUNT_USER_INVITATIONS from '../fragments/accountUserInvitations';
-import { Account } from '../models/account';
 
 export interface IGetUser {
     user: {
@@ -12,10 +11,24 @@ export interface IGetUser {
         email: string,
         createdAt: string,
         imageUrl?: string,
-        accounts: Account[],
+        userApproval: boolean,
     }[]
 }
+
 export const GET_USER = gql`
+    query user {
+        user {
+            id,
+            name,
+            dateOfBirth,
+            phoneNumber,
+            email,
+            imageUrl,
+            userApproval
+        }
+    }`;
+
+export const GET_USER_ACCOUNT = gql`
     ${CORE_ACCOUNT_DETAILS}
     ${CORE_ACCOUNT_USER_INVITATIONS}
     query user {
@@ -26,6 +39,7 @@ export const GET_USER = gql`
             phoneNumber,
             email,
             imageUrl,
+            userApproval,
             accounts {
               ...AccountDetails,
               accountUserInvitations {
@@ -45,4 +59,5 @@ export const GET_USER = gql`
 
 export default {
   GET_USER,
+  GET_USER_ACCOUNT,
 };

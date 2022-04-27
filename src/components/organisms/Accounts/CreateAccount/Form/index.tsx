@@ -41,7 +41,9 @@ import GET_AREASOFLEGALPRACTICE from '../../../../../queries/areas-of-legal-prac
 import convertToDateTime from '../../../../../utils/datetime';
 import ImageUpload from '../../../../molecules/ImageUpload';
 import InviteUsersModal from '../../../../molecules/InviteUsersModal';
+import Modal from '../../../../molecules/modal';
 import Title from '../../../../molecules/Title';
+import DeleteAccountModal from '../../DeleteAccountModal';
 
 export type InitialValues = {
   name: string,
@@ -110,6 +112,7 @@ const Form: React.FC<IProps> = ({ callback, readonly, accountInformation }: IPro
   const sb = useHelpmycaseSnackbar();
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [options, setOptions] = React.useState<string[]>([]);
+  const [openDeleteAccountModal, setOpenDeleteAccountModal] = useState(false);
   const user = useReactiveVar(userVar);
   const legalPracticeQuery = useQuery<{
     areasOfPractices: AreasOfLegalPractice[]
@@ -585,6 +588,12 @@ const Form: React.FC<IProps> = ({ callback, readonly, accountInformation }: IPro
         key={`${openModal}`}
         open={openModal}
         onClose={() => setOpenModal(false)}
+      />
+      <DeleteAccountModal
+        open={openDeleteAccountModal}
+        handleClose={() => {
+          setOpenDeleteAccountModal(false);
+        }}
       />
     </form>
   );
