@@ -43,25 +43,6 @@ export const userVar = makeVar<UserAccount>({
   accountUserInvitations: [],
 });
 
-const DemoSocket = () => {
-  useEffect(() => {
-    const ws = new WebSocket('wss://demo.piesocket.com/v3/channel_1?api_key=VCXCEuvhGcBDP7XhiJJUDvR1e1D3eiVjgZ9VRiaV&notify_self');
-    window.localStorage.setItem('ws', JSON.stringify(ws));
-
-    console.log(JSON.stringify(ws), ws.);
-    // const storageWs = JSON.parse(window.localStorage.getItem('ws')!);
-    // storageWs.onopen = () => {
-    //   console.log('ws opened');
-    // };
-
-    // return () => {
-    //   storageWs.close();
-    // };
-  }, []);
-
-  return <></>;
-};
-
 const Dashboard: React.FC = () => {
   const { isLoggedIn, handleLogout } = useAuth();
   const user = useReactiveVar(userVar);
@@ -214,7 +195,6 @@ const Dashboard: React.FC = () => {
           </Switch>
         )
       }
-      <DemoSocket />
     </Route>
   );
 };
