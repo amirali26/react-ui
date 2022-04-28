@@ -6,13 +6,18 @@ import { Route, Switch } from 'react-router-dom';
 import BackdropLoader from '../../components/molecules/backdropLoader';
 import PersistentCard from '../../components/molecules/PersistentCard';
 import TopBar from '../../components/molecules/topBar';
+import AccountPersistentCard from '../../components/organisms/Accounts/AccountPersistentCard';
 import CreateAccount from '../../components/organisms/Accounts/CreateAccount';
+import UserApprovalBigMessage from '../../components/organisms/User/UserApprovalBigMessage';
+import UserAccountPersistentCard from '../../components/organisms/User/UserApprovalPersistentCard';
 import Navigation from '../../components/templates/Navigation';
 import RoutePage from '../../components/templates/RoutePage';
 import { Account } from '../../models/account';
 import AccountUserInvitation from '../../models/accountUserInvitation';
 import { User } from '../../models/user';
-import { GET_USER, IGetUser } from '../../queries/user';
+import {
+  GET_USER, GET_USER_ACCOUNT, IGetUser, IGetUserAccount,
+} from '../../queries/user';
 import history from '../../utils/routes/history';
 import routes from '../../utils/routes/routes';
 import useAuth from '../Auth/useAuth';
@@ -38,6 +43,25 @@ export const userVar = makeVar<UserAccount>({
   accountUserInvitations: [],
 });
 
+const DemoSocket = () => {
+  useEffect(() => {
+    const ws = new WebSocket('wss://demo.piesocket.com/v3/channel_1?api_key=VCXCEuvhGcBDP7XhiJJUDvR1e1D3eiVjgZ9VRiaV&notify_self');
+    window.localStorage.setItem('ws', JSON.stringify(ws));
+
+    console.log(JSON.stringify(ws), ws.);
+    // const storageWs = JSON.parse(window.localStorage.getItem('ws')!);
+    // storageWs.onopen = () => {
+    //   console.log('ws opened');
+    // };
+
+    // return () => {
+    //   storageWs.close();
+    // };
+  }, []);
+
+  return <></>;
+};
+
 const Dashboard: React.FC = () => {
   const { isLoggedIn, handleLogout } = useAuth();
   const user = useReactiveVar(userVar);
@@ -49,9 +73,29 @@ const Dashboard: React.FC = () => {
           ...user,
           user: {
             ...user.user,
+            userApproval: _data.user[0].userApproval,
             imageUrl: _data.user[0].imageUrl,
           },
           accounts: [],
+        });
+      }
+      if (!_data?.user.length && !loading) handleLogout();
+    },
+  });
+
+  const [getUserAccount, getUserAccountState] = useLazyQuery<IGetUserAccount>(GET_USER_ACCOUNT, {
+    onCompleted: (_data) => {
+      if (user && _data.user.length) {
+        userVar({
+          ...user,
+          user: {
+            ...user.user,
+            userApproval: _data.user[0].userApproval,
+            imageUrl: _data.user[0].imageUrl,
+          },
+          accounts: _data.user[0].accounts,
+          accountUserInvitations: _data.user[0].accountUserInvitations,
+          selectedAccount: _data.user[0].accounts[0],
         });
       }
       if (!_data?.user.length && !loading) handleLogout();
@@ -87,24 +131,34 @@ const Dashboard: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    if (!user.user.userApproval) return;
+    getUserAccount();
+  }, [user.user.userApproval]);
+
+  useEffect(() => {
     getUser();
   }, [getUser]);
 
-  if (loading) {
-    return <BackdropLoader open={loading} />;
+  if (loading || getUserAccountState.loading) {
+    return <BackdropLoader open />;
   }
 
   return (
     <Route path={[routes.dashboard, routes.base]}>
-      <PersistentCard visible={
+      <AccountPersistentCard visible={
         Boolean(user.selectedAccount && !user.selectedAccount.firmVerified)
       }
       />
+      <UserAccountPersistentCard visible={!user.user.userApproval} />
       <Navigation />
       <BackdropLoader open={loading} />
       {
-        Boolean(!user.accounts?.length) && !loading
+        Boolean(!user.accounts?.length) && !loading && user.user.userApproval
         && <CreateAccount />
+      }
+      {
+        !user.user.userApproval && !loading
+        && <UserApprovalBigMessage />
       }
       {
         Boolean(user.accounts?.length) && (
@@ -160,6 +214,7 @@ const Dashboard: React.FC = () => {
           </Switch>
         )
       }
+      <DemoSocket />
     </Route>
   );
 };

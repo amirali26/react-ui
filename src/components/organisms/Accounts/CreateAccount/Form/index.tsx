@@ -41,7 +41,6 @@ import GET_AREASOFLEGALPRACTICE from '../../../../../queries/areas-of-legal-prac
 import convertToDateTime from '../../../../../utils/datetime';
 import ImageUpload from '../../../../molecules/ImageUpload';
 import InviteUsersModal from '../../../../molecules/InviteUsersModal';
-import Modal from '../../../../molecules/modal';
 import Title from '../../../../molecules/Title';
 import DeleteAccountModal from '../../DeleteAccountModal';
 
@@ -573,7 +572,7 @@ const Form: React.FC<IProps> = ({ callback, readonly, accountInformation }: IPro
             <Button
               sx={{ height: '48px' }}
               variant="contained"
-              disabled={Boolean(!formik.isValid || loading)}
+              disabled={Boolean(!formik.isValid || loading || !user.user.userApproval)}
               color="primary"
               className="marginTop fullWidth"
               type="submit"

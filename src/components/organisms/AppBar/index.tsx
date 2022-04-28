@@ -66,19 +66,15 @@ const NavigationAppBar: React.FC<IProps> = () => {
     <div className={classes.root}>
       <AppBar position="static" color="secondary">
         <Toolbar>
-          {/* <IconButton
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="menu"
-            onClick={() => handleOpen(true)}
-          >
-            <FontAwesomeIcon icon={faBars} />
-          </IconButton> */}
           <div className={clsx(classes.title)}>
             <Logo width={200} />
           </div>
           <Button
+            sx={{
+              '& .MuiAvatar-circular': {
+                border: `2px solid ${user.userApproval ? 'lightgreen' : 'red'}`,
+              },
+            }}
             className="marginRightMedium"
             color="inherit"
             startIcon={<Avatar sx={{ width: '30px', height: '30px' }} src={user.imageUrl}>{user.imageUrl || user.name[0]}</Avatar>}
@@ -119,6 +115,7 @@ const NavigationAppBar: React.FC<IProps> = () => {
               My Profile
             </MenuItem>
             <MenuItem
+              disabled={!user.userApproval}
               onClick={() => {
                 handleClose();
                 setAddAccountOpen(true);
@@ -140,6 +137,7 @@ const NavigationAppBar: React.FC<IProps> = () => {
               )
             }
             <MenuItem
+              disabled={!user.userApproval}
               onClick={() => {
                 handleClose();
                 setAccountInvitationOpen(true);

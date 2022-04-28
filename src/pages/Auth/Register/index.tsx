@@ -56,7 +56,7 @@ const Register: React.FC = () => {
   return (
     <form onSubmit={formik.handleSubmit}>
       <FormTitle
-        title="Create account"
+        title="Create user"
         subtitle={'Manage your clients effectively. Let\'s get you all set up so you can start in no time!'}
       />
       <div className="flex row spaceBetween fullWidth">

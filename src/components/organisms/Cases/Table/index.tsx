@@ -200,11 +200,7 @@ const Table: React.FC = () => {
           }}
         />
       )}
-      {
-        searchTerm && (
-          <BackdropLoader open={loading} />
-        )
-      }
+      <BackdropLoader open={loading} />
     </Box>
   );
 };
