@@ -1,7 +1,8 @@
 import { useMutation } from '@apollo/client';
 import { useFormik } from 'formik';
 import {
-  Button, Checkbox, FormControlLabel, InputAdornment, InputLabel, OutlinedInput, TextField, Tooltip,
+  Button, Checkbox, Divider, Chip,
+  FormControlLabel, InputAdornment, InputLabel, OutlinedInput, TextField, Tooltip,
 } from 'helpmycase-storybook/dist/components/External';
 import React from 'react';
 import * as Yup from 'yup';
@@ -11,6 +12,7 @@ import EnquiryInput, { Enquiry as EnquiryType } from '../../../../models/enquiry
 import { ADD_ENQUIRY } from '../../../../mutations/enquiry';
 import { userVar } from '../../../../pages/Dashboard';
 import GET_REQUESTS from '../../../../queries/requests';
+import convertToDateTime from '../../../../utils/datetime';
 import BackdropLoader from '../../../molecules/backdropLoader';
 import Title from '../../../molecules/Title';
 
@@ -195,6 +197,61 @@ const Enquiry: React.FC<Props> = ({
           disabled={Boolean(enquiry)}
         />
       </div>
+      {
+        enquiry
+        && (
+          <>
+            <Divider sx={{
+              marginTop: '16px',
+              '&::before, ::after': {
+                position: 'static',
+              },
+            }}
+            >
+              <Chip label="Solicitor Information" color="primary" />
+            </Divider>
+            <div className="flex row marginTopMedium marginBottomMedium">
+              <div className="marginRightMedium" style={{ width: '50%' }}>
+                <InputLabel htmlFor="input-with-icon-adornment">Name</InputLabel>
+                <OutlinedInput
+                  id="input-with-icon-adornment"
+                  name="solicitorName"
+                  fullWidth
+                  color="primary"
+                  value={enquiry.user.name}
+                  disabled
+                />
+              </div>
+              <div style={{ width: '50%' }}>
+                <InputLabel htmlFor="input-with-icon-adornment">Email</InputLabel>
+                <OutlinedInput
+                  id="input-with-icon-adornment"
+                  name="solicitorEmail"
+                  fullWidth
+                  color="primary"
+                  value={enquiry.user.email}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  disabled
+                />
+              </div>
+            </div>
+            <div>
+              <InputLabel htmlFor="input-with-icon-adornment">Enquiry Creation Date</InputLabel>
+              <OutlinedInput
+                id="input-with-icon-adornment"
+                name="solicitorEnquiryDate"
+                fullWidth
+                color="primary"
+                value={convertToDateTime(enquiry.createdAt)}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                disabled
+              />
+            </div>
+          </>
+        )
+      }
       {
         !enquiry
         && (

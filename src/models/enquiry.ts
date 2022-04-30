@@ -1,4 +1,5 @@
 import { Request } from './request';
+import { User } from './user';
 
 export type EnquiryInput = {
     message: string,
@@ -20,6 +21,7 @@ export type Enquiry = {
     videoCallAppointment: boolean,
     createdAt: string,
     request: Request,
+    user: User,
 };
 
 export default EnquiryInput;
