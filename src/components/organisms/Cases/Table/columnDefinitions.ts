@@ -36,6 +36,7 @@ export const ColumnDefs: (ColDef | ColGroupDef)[] = [
 
 export const DefaultColDef = {
   filter: 'agTextColumnFilter',
+  sortable: true,
 };
 
 export default ColumnDefs;

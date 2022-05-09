@@ -10,8 +10,8 @@ export const ColumnDefs: (ColDef | ColGroupDef)[] = [
 ];
 
 export const DefaultColDef = {
-  editable: true,
   filter: 'agTextColumnFilter',
+  sortable: true,
 };
 
 export default ColumnDefs;
