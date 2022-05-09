@@ -1,6 +1,6 @@
 import { ColDef, ColGroupDef } from 'ag-grid-community';
 
-const filterParams = {
+export const filterParams = {
   comparator(filterLocalDateAtMidnight: Date, cellValue: string) {
     const dateAsString = cellValue;
     if (dateAsString == null) return -1;
@@ -24,7 +24,7 @@ const filterParams = {
   browserDatePicker: true,
 };
 export const ColumnDefs: (ColDef | ColGroupDef)[] = [
-  { field: 'id', headerName: '#' },
+  { field: 'requestNumber', headerName: 'Request Number' },
   { field: 'topic', headerName: 'Topic' },
   { field: 'name', headerName: 'Name' },
   { field: 'phoneNumber', headerName: 'Phone Number' },
