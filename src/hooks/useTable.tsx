@@ -1,7 +1,7 @@
 import { DocumentNode, useLazyQuery } from '@apollo/client';
+import { RowClickedEvent } from 'ag-grid-community';
 import { debounce } from 'lodash';
 import * as React from 'react';
-import { Order } from '../components/organisms/Enquiries/Table';
 import { Pagination } from '../models/pagination';
 
 const useTable = <T extends { id: string }>(query: DocumentNode) => {
@@ -10,7 +10,6 @@ const useTable = <T extends { id: string }>(query: DocumentNode) => {
   }>(query, {
     fetchPolicy: 'cache-and-network',
   });
-  const [order, setOrder] = React.useState<Order>('asc');
   const [selectedRow, setSelectedRow] = React.useState<T>();
   const [tableItems, setTableItems] = React.useState<string>();
   const [searchTerm, setSearchTerm] = React.useState<string>('');
@@ -57,8 +56,8 @@ const useTable = <T extends { id: string }>(query: DocumentNode) => {
     setSearchTerm(searchTermInput);
   }, 250);
 
-  const handleOpenDrawer = (event: React.MouseEvent<unknown>, _tableItem: T) => {
-    setSelectedRow(_tableItem);
+  const handleOpenDrawer = (event: RowClickedEvent) => {
+    setSelectedRow(event.data);
   };
 
   const handleCloseDrawer = () => {
@@ -73,7 +72,6 @@ const useTable = <T extends { id: string }>(query: DocumentNode) => {
 
   return {
     data,
-    order,
     selectedRow,
     tableItems,
     loading,

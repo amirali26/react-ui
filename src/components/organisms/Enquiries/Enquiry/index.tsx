@@ -19,6 +19,7 @@ import Title from '../../../molecules/Title';
 type Props = {
   id: string,
   enquiry?: EnquiryType,
+  style?: React.CSSProperties,
   handleCallback?: () => void,
 }
 
@@ -54,6 +55,7 @@ const formValidationSchema = Yup.object().shape({
 const Enquiry: React.FC<Props> = ({
   id,
   enquiry,
+  style,
   handleCallback,
 }) => {
   const sb = useHelpmycaseSnackbar();
@@ -110,7 +112,7 @@ const Enquiry: React.FC<Props> = ({
   const enquiryButtonDisabled = !user.selectedAccount?.permission
     || user.selectedAccount.permission === AccountPermission.READ_ONLY;
   return (
-    <form className="flex spaceBetween column" style={{ height: '100%' }} onSubmit={formik.handleSubmit}>
+    <form className="flex spaceBetween column" style={{ height: '100%', ...style }} onSubmit={formik.handleSubmit}>
       <Title
         title={title}
         subtitle={subtitle}
@@ -203,6 +205,7 @@ const Enquiry: React.FC<Props> = ({
           <>
             <Divider sx={{
               marginTop: '16px',
+              marginBottom: '8px',
               '&::before, ::after': {
                 position: 'static',
               },

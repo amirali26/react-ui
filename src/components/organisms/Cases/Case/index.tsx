@@ -9,6 +9,8 @@ import convertToDateTime from '../../../../utils/datetime';
 import Title from '../../../molecules/Title';
 
 type IProps = RequestDto & {
+  style?: React.CSSProperties,
+  readonly?: boolean,
   handleEnquiryClick: () => void
 };
 
@@ -20,6 +22,8 @@ const Case: React.FC<IProps> = ({
   description,
   createdDate,
   requestNumber,
+  style,
+  readonly,
   handleEnquiryClick,
 }) => {
   const user = userVar();
@@ -27,7 +31,7 @@ const Case: React.FC<IProps> = ({
   const enquiryButtonDisabled = !user.selectedAccount?.permission
     || user.selectedAccount.permission === AccountPermission.READ_ONLY;
   return (
-    <div className="flex spaceBetween column" style={{ height: '100%' }}>
+    <div className="flex spaceBetween column" style={{ height: '100%', ...style }}>
       <Title
         title="Case"
         subtitle="View information relating to a specific clients case"
@@ -102,20 +106,24 @@ const Case: React.FC<IProps> = ({
           className="marginBottomSmall"
         />
       </div>
-      <Tooltip title={enquiryButtonDisabled ? 'You do not have the required permissions to create an enuiry' : ''}>
-        <div>
-          <Button
-            sx={{ height: '48px' }}
-            className="marginTop"
-            fullWidth
-            variant="contained"
-            disabled={enquiryButtonDisabled}
-            onClick={handleEnquiryClick}
-          >
-            Make an enquiry
-          </Button>
-        </div>
-      </Tooltip>
+      {
+        readonly === false && (
+          <Tooltip title={enquiryButtonDisabled ? 'You do not have the required permissions to create an enquiry' : ''}>
+            <div>
+              <Button
+                sx={{ height: '48px' }}
+                className="marginTop"
+                fullWidth
+                variant="contained"
+                disabled={enquiryButtonDisabled}
+                onClick={handleEnquiryClick}
+              >
+                Make an enquiry
+              </Button>
+            </div>
+          </Tooltip>
+        )
+      }
     </div>
   );
 };

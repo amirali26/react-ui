@@ -58,9 +58,6 @@ export const GET_USER_ACCOUNT = gql`
             userApproval,
             accounts {
               ...AccountDetails,
-              accountUserInvitations {
-                  ...AccountUserInvitationDetails,
-              }
               users {
                   id,
                   email,
