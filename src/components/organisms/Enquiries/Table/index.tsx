@@ -43,7 +43,7 @@ const Table: React.FC = () => {
         createdDate: e.request.createdDate,
       },
       id: e.request.id,
-      requestNumber: `#${e.request.requestNumber}`,
+      requestNumber: e.request.requestNumber,
       enquiry: { ...e },
       topic: e.request.topic.name,
       name: e.request.client.name,

@@ -101,7 +101,7 @@ const Case: React.FC<IProps> = ({
           name="name"
           fullWidth
           color="primary"
-          value={convertToDateTime(createdDate)}
+          value={createdDate}
           disabled
           className="marginBottomSmall"
         />
