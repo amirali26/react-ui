@@ -7,7 +7,7 @@ import useTable from '../../../../hooks/useTable';
 import { Enquiry as EnquiryType } from '../../../../models/enquiry';
 import { RequestDto } from '../../../../models/request';
 import GET_ENQUIRIES from '../../../../queries/enquiries';
-import { convertToDateTimeShort } from '../../../../utils/datetime';
+import convertToDateTime from '../../../../utils/datetime';
 import Drawer from '../../../molecules/Drawer';
 import EnquiryAndRequest from '../../EnquiryAndRequest';
 import ColumnDefs, { DefaultColDef } from './columnDefinitions';
@@ -49,7 +49,7 @@ const Table: React.FC = () => {
       name: e.request.client.name,
       phoneNumber: e.request.client.phoneNumber,
       email: e.request.client.email,
-      createdDate: convertToDateTimeShort(e.request.createdDate),
+      createdDate: convertToDateTime(e.request.createdDate),
     })) || [], [data?.enquiries?.nodes],
   );
 
