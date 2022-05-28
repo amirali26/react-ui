@@ -1,5 +1,5 @@
 {
-  "url": "https://dev-solicitor.helpmycase.co.uk",
+  "url": "https://dev-solicitor-api.helpmycase.co.uk",
     "REACT_APP_COGNITO": {
     "poolId": "eu-west-1_pZPfXLEoJ",
     "clientId": "3g7qe10d56bncsu11raqerql5s",
