@@ -25,7 +25,7 @@ const authLink = setContext(async (_, { headers }) => {
 });
 
 const splitLink = authLink.concat(
-  createHttpLink({ uri: `${environmentVars.REACT_APP_API_URL}/graphql` }),
+  createHttpLink({ uri: `${window.location.href.includes('localhost') ? 'http://localhost:8080' : environmentVars.REACT_APP_API_URL}/graphql` }),
 );
 
 export default splitLink;
