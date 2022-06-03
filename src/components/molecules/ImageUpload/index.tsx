@@ -31,7 +31,7 @@ const ImageUpload: React.FC<Props> = ({
       try {
         setLoading(true);
         const file = e.target.files[0];
-        const response = await axios.post(`${environmentVars.lambdaUrl}/`, {
+        const response = await axios.post(environmentVars.lambdaUrl, {
           contentType: file.type,
         });
         const { url, uuid } = response.data;
