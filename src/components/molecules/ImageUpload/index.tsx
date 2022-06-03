@@ -8,7 +8,6 @@ import EmptyProfileImage from '../../../assets/images/empty-profile-image.png';
 import useHelpmycaseSnackbar from '../../../hooks/useHelpmycaseSnackbar';
 import environmentVars from '../../../utils/env.variables';
 
-const s3BucketUrl = 'https://handlemycases3buckets-helpmycaseimageuploadbucket-q1yy9du4333e.s3.eu-west-1.amazonaws.com/firm/';
 const Input = styled('input')({
   display: 'none',
 });
@@ -47,7 +46,7 @@ const ImageUpload: React.FC<Props> = ({
           data: formData,
         });
 
-        submitImage(s3BucketUrl + uuid);
+        submitImage(environmentVars.s3BucketUrl + uuid);
       } catch {
         sb.trigger('Something went wrong uploading your file');
       } finally {
