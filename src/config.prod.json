@@ -5,5 +5,6 @@
     "clientId": "4omvhgtavgbgflv4q4hv6b0b99",
     "storage": "localStorage"
   },
-  "lambdaUrl": "https://f6yryxvbgz3pfab6kxntg7f2qy0obwms.lambda-url.eu-west-1.on.aws"
+  "lambdaUrl": "https://f6yryxvbgz3pfab6kxntg7f2qy0obwms.lambda-url.eu-west-1.on.aws",
+  "s3BucketUrl": "https://prod-handlemycases3bucke-helpmycaseimageuploadbuc-1g2lg3iy3kmuf.s3.eu-west-1.amazonaws.com/firm/"
 }
