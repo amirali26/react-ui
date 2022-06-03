@@ -1,13 +1,12 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import axios from 'axios';
-import { FormikErrors } from 'formik';
 import {
   Box, Button, CircularProgress, styled,
 } from 'helpmycase-storybook/dist/components/External';
 import React from 'react';
 import EmptyProfileImage from '../../../assets/images/empty-profile-image.png';
 import useHelpmycaseSnackbar from '../../../hooks/useHelpmycaseSnackbar';
-import { InitialValues } from '../../organisms/Accounts/CreateAccount/Form';
+import environmentVars from '../../../utils/env.variables';
 
 const s3BucketUrl = 'https://handlemycases3buckets-helpmycaseimageuploadbucket-q1yy9du4333e.s3.eu-west-1.amazonaws.com/firm/';
 const Input = styled('input')({
@@ -32,7 +31,7 @@ const ImageUpload: React.FC<Props> = ({
       try {
         setLoading(true);
         const file = e.target.files[0];
-        const response = await axios.post('https://uyfhzjzvqgme2lslu7exl7opri0gqibm.lambda-url.eu-west-1.on.aws/', {
+        const response = await axios.post(`${environmentVars.lambdaUrl}/`, {
           contentType: file.type,
         });
         const { url, uuid } = response.data;

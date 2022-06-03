@@ -10,6 +10,7 @@ interface CognitoConfig {
 interface EnvironmentConfig {
   REACT_APP_API_URL: string;
   REACT_APP_COGNITO: CognitoConfig;
+  lambdaUrl: string;
 }
 // Default is development
 const environmentVars: EnvironmentConfig = {
@@ -19,6 +20,7 @@ const environmentVars: EnvironmentConfig = {
     clientId: env.REACT_APP_COGNITO.clientId,
     storage: localStorage,
   },
+  lambdaUrl: env.lambdaUrl,
 };
 
 export default environmentVars;
