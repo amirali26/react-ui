@@ -7,7 +7,7 @@ type Props = {
 const RoutePage: React.FC<Props> = ({ children }) => (
   <div
     style={{
-      margin: '12px 24px', position: 'relative', minHeight: 'calc(100vh - 289px)',
+      position: 'relative', minHeight: '74vh', boxSizing: 'border-box',
     }}
   >
     {children}

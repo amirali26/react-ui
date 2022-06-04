@@ -4,7 +4,6 @@ import { Button, Typography } from 'helpmycase-storybook/dist/components/Externa
 import React, { useEffect } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import BackdropLoader from '../../components/molecules/backdropLoader';
-import PersistentCard from '../../components/molecules/PersistentCard';
 import TopBar from '../../components/molecules/topBar';
 import AccountPersistentCard from '../../components/organisms/Accounts/AccountPersistentCard';
 import CreateAccount from '../../components/organisms/Accounts/CreateAccount';

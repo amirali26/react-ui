@@ -5,7 +5,6 @@ import React from 'react';
 import { AccountPermission } from '../../../../models/account';
 import { RequestDto } from '../../../../models/request';
 import { userVar } from '../../../../pages/Dashboard';
-import convertToDateTime from '../../../../utils/datetime';
 import Title from '../../../molecules/Title';
 
 type IProps = RequestDto & {
@@ -107,7 +106,7 @@ const Case: React.FC<IProps> = ({
         />
       </div>
       {
-        readonly === false && (
+        !readonly && (
           <Tooltip title={enquiryButtonDisabled ? 'You do not have the required permissions to create an enquiry' : ''}>
             <div>
               <Button
