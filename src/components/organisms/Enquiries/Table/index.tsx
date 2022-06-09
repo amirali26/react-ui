@@ -73,7 +73,6 @@ const Table: React.FC = () => {
           }}
           onRowClicked={handleOpenDrawer}
           animateRows
-          onCellClicked={() => { console.log('Hello World'); }}
         />
       </div>
       <Drawer

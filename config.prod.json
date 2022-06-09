@@ -1,0 +1,8 @@
+{
+  "url": "solicitor.helpmycase.co.uk",
+    "REACT_APP_COGNITO": {
+    "poolId": "eu-west-1_SJTIP47Ta",
+    "clientId": "4omvhgtavgbgflv4q4hv6b0b99",
+    "storage": "localStorage"
+  }
+}
