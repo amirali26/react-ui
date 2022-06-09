@@ -107,7 +107,7 @@ const Case: React.FC<IProps> = ({
         />
       </div>
       {
-        readonly === false && (
+        !readonly && (
           <Tooltip title={enquiryButtonDisabled ? 'You do not have the required permissions to create an enquiry' : ''}>
             <div>
               <Button
