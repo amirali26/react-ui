@@ -30,7 +30,7 @@ const UserInformation: React.FC = () => {
       sb.trigger(successMessage, 'success');
     },
     onError: (e) => {
-      sb.trigger('There was an error updating your profile imnage');
+      sb.trigger('There was an error updating your profile image');
     },
   });
 

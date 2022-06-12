@@ -53,8 +53,8 @@ const InviteAdditionalUsersModal: React.FC<Props> = ({ open, onClose }) => {
       });
       sb.trigger('Invitation(s) sent', 'success');
     },
-    onError: ({ networkError }: any) => {
-      sb.trigger(networkError?.result?.errors[0].message || networkError.message, 'error');
+    onError: (e) => {
+      sb.trigger(e.message || 'There was something wrong inviting selected accounts');
     },
   });
 
