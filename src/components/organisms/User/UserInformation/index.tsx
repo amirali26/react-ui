@@ -18,7 +18,7 @@ import ChangePassword from '../../ChangePassword';
 
 const UserInformation: React.FC = () => {
   const sb = useHelpmycaseSnackbar();
-  const { user, accounts } = useReactiveVar(userVar);
+  const userAccount = useReactiveVar(userVar);
   const [openChangePasswordModal, setOpenChangePasswordModal] = useState<boolean>(false);
   const [updateProfileImage] = useMutation<{
     addUserProfileImage: User
@@ -43,7 +43,7 @@ const UserInformation: React.FC = () => {
       <div>
         <ImageUpload
           display
-          imageUrl={user.imageUrl}
+          imageUrl={userAccount.user.imageUrl}
           clearImage={() => updateProfileImage({
             variables: {
               imageUrl: null,
@@ -66,7 +66,7 @@ const UserInformation: React.FC = () => {
                 name="name"
                 fullWidth
                 color="primary"
-                value={user?.name || ''}
+                value={userAccount.user?.name || ''}
                 disabled
               />
             </div>
@@ -77,7 +77,7 @@ const UserInformation: React.FC = () => {
                 name="name"
                 fullWidth
                 color="primary"
-                value={user?.dateOfBirth || ''}
+                value={userAccount.user?.dateOfBirth || ''}
                 disabled
               />
             </div>
@@ -90,7 +90,7 @@ const UserInformation: React.FC = () => {
                 name="name"
                 fullWidth
                 color="primary"
-                value={user?.phoneNumber || ''}
+                value={userAccount.user?.phoneNumber || ''}
                 disabled
               />
             </div>
@@ -101,7 +101,7 @@ const UserInformation: React.FC = () => {
                 name="name"
                 fullWidth
                 color="primary"
-                value={user?.email || ''}
+                value={userAccount.user?.email || ''}
                 disabled
               />
             </div>
@@ -110,13 +110,22 @@ const UserInformation: React.FC = () => {
         <div className="flex row marginTop">
           <div style={{ width: '100%' }}>
             {
-              accounts?.length && accounts?.length > 0 ? (
+              userAccount.accounts?.length && userAccount.accounts?.length > 0 && (
                 <InputLabel htmlFor="input-with-icon-adornment" className="marginBottomSmall">Available Accounts</InputLabel>
               )
-                : <></>
             }
-            {accounts?.length ? accounts?.map((account) => (
-              <AccountItemCard key={account.id} {...account} />
+            {userAccount.accounts?.length ? userAccount.accounts?.map((account) => (
+              <AccountItemCard
+                key={account.id}
+                {...account}
+                disabled={userAccount.selectedAccount?.id === account.id}
+                onClick={() => {
+                  userVar({
+                    ...userAccount,
+                    selectedAccount: account,
+                  });
+                }}
+              />
             )) : (
               <div style={{ width: '100%', height: '200px', position: 'relative' }}>
                 <BigMessage
