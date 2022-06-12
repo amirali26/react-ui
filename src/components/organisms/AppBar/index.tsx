@@ -26,6 +26,8 @@ import UserInformation from '../User/UserInformation';
 export const useStyles = Styles.makeStyles((theme: Theme) => ({
   root: {
     flexGrow: 1,
+    position: 'absolute',
+    width: '100%',
   },
   menuButton: {
     marginRight: theme.spacing(2),

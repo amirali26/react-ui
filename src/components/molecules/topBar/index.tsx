@@ -13,7 +13,10 @@ type ISummaryProps = {
 const TopBar: React.FC<ISummaryProps> = ({
   breadcrumbs, title, subtitle, rightElement,
 }) => (
-  <div style={{ height: '153px', backgroundColor: 'rgb(247,247,247)', padding: '24px' }}>
+  <div style={{
+    height: '26vh', backgroundColor: 'rgb(247,247,247)', padding: '94px 24px 24px 24px', boxSizing: 'border-box',
+  }}
+  >
     <Breadcrumbs aria-label="breadcrumb">
       <Link key="/dashboard" color="inherit" to="/dashboard" style={{ color: 'inherit', textDecoration: 'none' }}>
         Home
