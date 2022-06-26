@@ -55,7 +55,7 @@ const VerifyMfa: React.FC = () => {
     <form onSubmit={formik.handleSubmit}>
       <FormTitle
         title={
-         location.state?.verify ? 'Verify Email' : 'Authenticate Account'
+          location.state?.verify ? 'Verify Email' : 'Authenticate Account'
         }
         subtitle={
           location.state?.verify ? 'Please verify your email address address using the code sent.'
@@ -87,9 +87,12 @@ const VerifyMfa: React.FC = () => {
         <Typography variant="subtitle1">
           It may take a minute to receive your code?
           <button
+            style={{
+              cursor: 'pointer',
+              backgroundColor: 'transparent',
+            }}
             type="button"
             className="underline red borderNone font"
-            style={{ backgroundColor: 'transparent' }}
             onClick={location.state?.verify ? resendSignUpEmail : resendConfirmationCode}
           >
             Resend a new code

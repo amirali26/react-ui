@@ -7,7 +7,7 @@ import useTable from '../../../../hooks/useTable';
 import { Enquiry as EnquiryType } from '../../../../models/enquiry';
 import { RequestDto } from '../../../../models/request';
 import GET_ENQUIRIES from '../../../../queries/enquiries';
-import convertToDateTime from '../../../../utils/datetime';
+import { convertToDateTimeShort } from '../../../../utils/datetime';
 import Drawer from '../../../molecules/Drawer';
 import EnquiryAndRequest from '../../EnquiryAndRequest';
 import ColumnDefs, { DefaultColDef } from './columnDefinitions';
@@ -17,14 +17,8 @@ const Table: React.FC = () => {
   const {
     data,
     selectedRow,
-    handleSearch,
-    loading,
-    searchTerm,
-    getTableItems,
     handleOpenDrawer,
     handleCloseDrawer,
-    handleSort,
-    handleChangePage,
   } = useTable<EnquiryType>(GET_ENQUIRIES);
 
   const rows: () => {
@@ -40,16 +34,17 @@ const Table: React.FC = () => {
         phoneNumber: e.request.client.phoneNumber,
         email: e.request.client.email,
         description: e.request.description,
-        createdDate: e.request.createdDate,
+        createdDate: convertToDateTimeShort(e.request.createdDate),
       },
       id: e.request.id,
       requestNumber: e.request.requestNumber,
+      enquiryNumber: e.enquiryNumber,
       enquiry: { ...e },
       topic: e.request.topic.name,
       name: e.request.client.name,
       phoneNumber: e.request.client.phoneNumber,
       email: e.request.client.email,
-      createdDate: convertToDateTime(e.request.createdDate),
+      createdDate: convertToDateTimeShort(e.request.createdDate),
     })) || [], [data?.enquiries?.nodes],
   );
 

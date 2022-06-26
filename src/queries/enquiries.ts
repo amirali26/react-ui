@@ -19,6 +19,7 @@ query GetEnquiries($before: String, $after: String, $last: Int, $searchTermInput
         videoCallAppointment,
         createdAt,
         status,
+        enquiryNumber,
         user {
             name,
             email,

@@ -19,13 +19,8 @@ const Table: React.FC = () => {
     data,
     selectedRow,
     loading,
-    searchTerm,
-    getTableItems,
     handleOpenDrawer,
     handleCloseDrawer,
-    handleSort,
-    handleChangePage,
-    handleSearch,
   } = useTable<Request>(GET_REQUESTS);
   const [enquiryId, setEnquiryId] = React.useState<string>();
   const initialLoad = React.useRef<boolean>(true);

@@ -22,6 +22,7 @@ export type Enquiry = {
     createdAt: string,
     request: Request,
     user: User,
+    enquiryNumber: number,
 };
 
 export default EnquiryInput;

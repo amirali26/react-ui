@@ -2,7 +2,7 @@ import { useMutation } from '@apollo/client';
 import { useFormik } from 'formik';
 import {
   Button, Checkbox, Divider, Chip,
-  FormControlLabel, InputAdornment, InputLabel, OutlinedInput, TextField, Tooltip,
+  FormControlLabel, InputAdornment, InputLabel, OutlinedInput, TextField, Tooltip, Typography,
 } from 'helpmycase-storybook/dist/components/External';
 import React from 'react';
 import * as Yup from 'yup';
@@ -118,6 +118,23 @@ const Enquiry: React.FC<Props> = ({
         subtitle={subtitle}
       />
       <div className="fullWidth">
+        <div style={{
+          display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', gap: '16px',
+        }}
+        >
+          <Typography className="marginBottom">
+            Enquiry Number:
+            <b>
+              {`  #EN${(`000000${enquiry?.enquiryNumber}`).slice(-4)}`}
+            </b>
+          </Typography>
+          <Typography className="marginBottom">
+            Case Number:
+            <b>
+              {`  #CA${(`000000${enquiry?.request.requestNumber}`).slice(-4)}`}
+            </b>
+          </Typography>
+        </div>
         <InputLabel htmlFor="input-with-icon-adornment" className="marginBottomSmall marginTopMedium">Message</InputLabel>
         <TextField
           id="input-with-icon-adornment"
