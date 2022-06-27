@@ -24,7 +24,7 @@ export const filterParams = {
   browserDatePicker: true,
 };
 export const ColumnDefs: (ColDef | ColGroupDef)[] = [
-  { field: 'requestNumber', headerName: 'Request Number' },
+  { field: 'requestNumber', headerName: 'Enquiry Number' },
   { field: 'topic', headerName: 'Topic' },
   { field: 'name', headerName: 'Name' },
   { field: 'phoneNumber', headerName: 'Phone Number' },

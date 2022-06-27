@@ -119,19 +119,22 @@ const Enquiry: React.FC<Props> = ({
       />
       <div className="fullWidth">
         <div style={{
-          display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', gap: '16px',
+          flexDirection: 'column',
+          justifyContent: 'flex-start',
+          gap: '8px',
+          display: enquiry?.request.requestNumber && enquiry?.enquiryNumber ? 'flex' : 'none',
         }}
         >
-          <Typography className="marginBottom">
-            Enquiry Number:
+          <Typography>
+            Solicitor Enquiry Number:
             <b>
-              {`  #EN${(`000000${enquiry?.enquiryNumber}`).slice(-4)}`}
+              {`  #SN${(`000000${enquiry?.enquiryNumber}`).slice(-4)}`}
             </b>
           </Typography>
-          <Typography className="marginBottom">
-            Case Number:
+          <Typography className="marginBottomMedium">
+            Enquiry Number:
             <b>
-              {`  #CA${(`000000${enquiry?.request.requestNumber}`).slice(-4)}`}
+              {`  #EN${(`000000${enquiry?.request.requestNumber}`).slice(-4)}`}
             </b>
           </Typography>
         </div>
@@ -147,8 +150,11 @@ const Enquiry: React.FC<Props> = ({
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           multiline
+          minRows={4}
           maxRows={8}
-          disabled={Boolean(enquiry)}
+          inputProps={{
+            disabled: Boolean(enquiry),
+          }}
         />
         <InputLabel htmlFor="input-with-icon-adornment" className="marginBottomSmall marginTopMedium">Initial Consulation Fee</InputLabel>
         <OutlinedInput
@@ -160,7 +166,9 @@ const Enquiry: React.FC<Props> = ({
           startAdornment={<InputAdornment position="start">£</InputAdornment>}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          disabled={Boolean(enquiry)}
+          inputProps={{
+            disabled: Boolean(enquiry),
+          }}
         />
         <InputLabel htmlFor="input-with-icon-adornment" className="marginBottomSmall marginTopMedium">Estimated Fee</InputLabel>
         <OutlinedInput
@@ -172,7 +180,9 @@ const Enquiry: React.FC<Props> = ({
           onChange={formik.handleChange}
           startAdornment={<InputAdornment position="start">£</InputAdornment>}
           onBlur={formik.handleBlur}
-          disabled={Boolean(enquiry)}
+          inputProps={{
+            disabled: Boolean(enquiry),
+          }}
         />
         <InputLabel htmlFor="input-with-icon-adornment" className="marginBottomSmall marginTopMedium">Availablity</InputLabel>
         <FormControlLabel
@@ -186,7 +196,6 @@ const Enquiry: React.FC<Props> = ({
           }
           label="Office Appointments"
           sx={{ margin: 0, marginTop: '0 !important', width: '100%' }}
-          disabled={Boolean(enquiry)}
         />
         <br />
         <FormControlLabel
@@ -200,7 +209,6 @@ const Enquiry: React.FC<Props> = ({
           }
           label="Video Call Appointments"
           sx={{ margin: 0, marginTop: '0 !important', width: '100%' }}
-          disabled={Boolean(enquiry)}
         />
         <FormControlLabel
           checked={formik.values.phoneAppointment}
@@ -213,7 +221,6 @@ const Enquiry: React.FC<Props> = ({
           }
           label="Phone Appointments"
           sx={{ margin: 0, marginTop: '0 !important', width: '100%' }}
-          disabled={Boolean(enquiry)}
         />
       </div>
       {
@@ -239,7 +246,9 @@ const Enquiry: React.FC<Props> = ({
                   fullWidth
                   color="primary"
                   value={enquiry.user.name}
-                  disabled
+                  inputProps={{
+                    disabled: true,
+                  }}
                 />
               </div>
               <div style={{ width: '50%' }}>
@@ -252,7 +261,9 @@ const Enquiry: React.FC<Props> = ({
                   value={enquiry.user.email}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  disabled
+                  inputProps={{
+                    disabled: true,
+                  }}
                 />
               </div>
             </div>
@@ -266,7 +277,9 @@ const Enquiry: React.FC<Props> = ({
                 value={convertToDateTime(enquiry.createdAt)}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                disabled
+                inputProps={{
+                  disabled: true,
+                }}
               />
             </div>
           </>

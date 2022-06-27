@@ -143,37 +143,13 @@ const Dashboard: React.FC = () => {
       {
         Boolean(user.accounts?.length) && (
           <Switch>
-            <Route path={['/dashboard/enquiries']} key={user.selectedAccount?.id}>
+            <Route path={['/dashboard/actioned-enquiries']} key={user.selectedAccount?.id}>
               <TopBar
                 breadcrumbs={[
-                  <Typography key="Enquiries" color="text.primary">Enquiries</Typography>,
+                  <Typography key="Enquiries" color="text.primary">Actioned Enquiries</Typography>,
                 ]}
-                title="Enquiries"
-                subtitle="A detailed list of all enquiries made on behalf of your organisation"
-                rightElement={(
-                  <Button
-                    variant="contained"
-                    style={{
-                      width: '250px',
-                      height: '50px',
-                    }}
-                    onClick={() => history.push('/dashboard/cases')}
-                  >
-                    View Available Cases
-                  </Button>
-                )}
-              />
-              <RoutePage>
-                <Enquiries />
-              </RoutePage>
-            </Route>
-            <Route path={['/dashboard/cases', '/dashboard']} key={user.selectedAccount?.id}>
-              <TopBar
-                breadcrumbs={[
-                  <Typography key="Cases" color="text.primary">Available Cases</Typography>,
-                ]}
-                title="Available Cases"
-                subtitle="A detailed list of all available cases which you are able to reply to"
+                title="Actioned Enquiries"
+                subtitle="A detailed list of all enquiries which have been responsed to by your organisation"
                 rightElement={(
                   <Button
                     variant="contained"
@@ -183,7 +159,31 @@ const Dashboard: React.FC = () => {
                     }}
                     onClick={() => history.push('/dashboard/enquiries')}
                   >
-                    View Enquiries
+                    View Available Enquiries
+                  </Button>
+                )}
+              />
+              <RoutePage>
+                <Enquiries />
+              </RoutePage>
+            </Route>
+            <Route path={['/dashboard/enquiries', '/dashboard']} key={user.selectedAccount?.id}>
+              <TopBar
+                breadcrumbs={[
+                  <Typography key="Cases" color="text.primary">Available Enquiries</Typography>,
+                ]}
+                title="Available Enquiries"
+                subtitle="A detailed list of all available enquiries which you are able to reply to"
+                rightElement={(
+                  <Button
+                    variant="contained"
+                    style={{
+                      width: '250px',
+                      height: '50px',
+                    }}
+                    onClick={() => history.push('/dashboard/actioned-enquiries')}
+                  >
+                    View Actioned Enquiries
                   </Button>
                 )}
               />

@@ -1,5 +1,5 @@
 import {
-  Chat, Home, Logout, MeetingRoom,
+  Chat, Home, MeetingRoom,
 } from '@mui/icons-material';
 import {
   Box, List, ListItem, ListItemIcon, ListItemText, SwipeableDrawer,
@@ -10,12 +10,12 @@ import history from '../../../utils/routes/history';
 const routes: { name: string, route: string, icon: React.ReactElement }[] = [
   {
     name: 'Dashboard',
-    route: '/dashboard/cases',
+    route: '/dashboard/enquiries',
     icon: <Home />,
   },
   {
-    name: 'Enquiries',
-    route: '/dashboard/enquiries',
+    name: 'Actioned Enquiries',
+    route: '/dashboard/actioned-enquiries',
     icon: <Chat />,
   },
   {
