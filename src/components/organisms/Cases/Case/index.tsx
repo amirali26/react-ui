@@ -32,14 +32,14 @@ const Case: React.FC<IProps> = ({
   return (
     <div className="flex spaceBetween column" style={{ height: '100%', ...style }}>
       <Title
-        title="Case"
-        subtitle="View information relating to a specific clients case"
+        title="Enquiry"
+        subtitle="View information relating to a specific clients enquiry"
       />
       <div className="fullWidth">
         <Typography className="marginBottom">
           Enquiry Number:
           <b>
-            {`  #CA${(`000000${requestNumber}`).slice(-4)}`}
+            {`  #EN${(`000000${requestNumber}`).slice(-4)}`}
           </b>
         </Typography>
         <InputLabel htmlFor="input-with-icon-adornment" className="marginBottomSmall">Topic</InputLabel>
