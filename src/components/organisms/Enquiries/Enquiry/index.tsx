@@ -106,9 +106,9 @@ const Enquiry: React.FC<Props> = ({
     }
   }, []);
 
-  const title = enquiry ? 'View Enquiry' : 'Create Enquiry';
-  const subtitle = enquiry ? 'Detailed view of an enquiry made to a client from your ogranisation'
-    : 'Reach our to potential leads by creating an enquiry relating to their case';
+  const title = enquiry ? 'View Enquiry Response' : 'Respond to Enquiry';
+  const subtitle = enquiry ? 'Detailed view of an enquiry response made to a client from your ogranisation'
+    : 'Reach out to potential leads by responding to an enquiry';
   const enquiryButtonDisabled = !user.selectedAccount?.permission
     || user.selectedAccount.permission === AccountPermission.READ_ONLY;
   return (
