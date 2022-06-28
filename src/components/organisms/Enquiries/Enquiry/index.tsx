@@ -126,7 +126,7 @@ const Enquiry: React.FC<Props> = ({
         }}
         >
           <Typography>
-            Solicitor Enquiry Number:
+            Solicitor Response Number:
             <b>
               {`  #SN${(`000000${enquiry?.enquiryNumber}`).slice(-4)}`}
             </b>
