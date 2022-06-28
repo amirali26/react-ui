@@ -17,8 +17,8 @@ const useAuth = () => {
       history.push('/auth/verify', {
         verify: false,
       });
-    } catch (e: any) {
-      sb.trigger(e.message || 'Something went wrong with signing you in');
+    } catch (e) {
+      sb.trigger(e instanceof Error ? e.message : 'Something went wrong with signing you in');
     } finally {
       setLoading(false);
     }
@@ -53,9 +53,9 @@ const useAuth = () => {
           password,
         });
       }
-    } catch (e: any) {
-      if (e.message === 'Unable to get logged in user session') history.push('/auth/login');
-      sb.trigger(e.message || 'Something went wrong signing you up');
+    } catch (e) {
+      if (e instanceof Error && e.message === 'Unable to get logged in user session') history.push('/auth/login');
+      sb.trigger(e instanceof Error ? e.message : 'Something went wrong signing you up');
     } finally {
       setLoading(false);
     }
@@ -74,8 +74,8 @@ const useAuth = () => {
       });
 
       await signIn(username, password);
-    } catch (e: any) {
-      sb.trigger(e.message || 'Something went wrong confirming your sign up');
+    } catch (e) {
+      sb.trigger(e instanceof Error ? e.message : 'Something went wrong confirming your sign up');
       history.push('/auth/signup');
     } finally {
       setLoading(false);
@@ -90,8 +90,8 @@ const useAuth = () => {
       const result = await Auth.confirmSignIn(user, code);
       setUser(result);
       history.push('/dashboard');
-    } catch (e: any) {
-      sb.trigger(e.message || 'Something went wrong when verifying your MFA');
+    } catch (e) {
+      sb.trigger(e instanceof Error ? e.message : 'Something went wrong when verifying your MFA');
     } finally {
       setLoading(false);
     }
@@ -103,8 +103,8 @@ const useAuth = () => {
 
       const response = await Auth.resendSignUp(user.getUsername());
       sb.trigger(`Email resent to ${response.CodeDeliveryDetails.Destination}`, 'info');
-    } catch (e: any) {
-      sb.trigger(e.message || 'There was an error sending your email address');
+    } catch (e) {
+      sb.trigger(e instanceof Error ? e.message : 'There was an error sending your email address');
     }
   };
 
@@ -118,8 +118,8 @@ const useAuth = () => {
         if (err) throw Error(err.message);
         sb.trigger(`Code resent to ${response.CodeDeliveryDetails.Destination}`, 'info');
       });
-    } catch (e: any) {
-      sb.trigger(e.message || 'There was an issue');
+    } catch (e) {
+      sb.trigger(e instanceof Error ? e.message : 'There was an issue');
       history.push('/auth/login');
     } finally {
       setLoading(false);
@@ -132,8 +132,8 @@ const useAuth = () => {
       history.push('/auth/reset-password/confirm', {
         email,
       });
-    } catch (e: any) {
-      sb.trigger(e.message);
+    } catch (e) {
+      sb.trigger(e instanceof Error ? e.message : 'Something went wrong');
     }
   };
 
@@ -142,8 +142,8 @@ const useAuth = () => {
       await Auth.forgotPasswordSubmit(email, code, password);
       history.push('/auth/login');
       sb.trigger('Password successfully reset', 'info');
-    } catch (e: any) {
-      sb.trigger(e.message || 'There was an issue');
+    } catch (e) {
+      sb.trigger(e instanceof Error ? e.message : 'There was an issue');
     }
   };
 
@@ -153,8 +153,8 @@ const useAuth = () => {
     try {
       await Auth.signOut();
       history.push('/auth/login');
-    } catch (e: any) {
-      sb.trigger(e.message || 'There was an issue signing you out');
+    } catch (e) {
+      sb.trigger(e instanceof Error ? e.message : 'There was an issue signing you out');
     }
   };
 

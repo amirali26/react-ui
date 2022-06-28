@@ -35,7 +35,7 @@ const list = (handleClose: () => void) => (
     role="presentation"
   >
     <List>
-      {routes.map((route, index) => (
+      {routes.map((route) => (
         <ListItem
           button
           key={route.name}
