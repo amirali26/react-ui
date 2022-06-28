@@ -15,7 +15,13 @@ const useTable = <T extends { id: string }>(query: DocumentNode) => {
   const [searchTerm, setSearchTerm] = React.useState<string>('');
 
   React.useEffect(() => {
-    getTableItems();
+    const interval = setInterval(() => {
+      getTableItems();
+    }, 2000);
+
+    return () => {
+      clearInterval(interval);
+    };
   }, []);
 
   const handleEnquirySort = (
